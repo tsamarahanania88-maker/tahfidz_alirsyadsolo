@@ -188,17 +188,17 @@ export const dbService = {
           list.push({ id: docSnap.id, ...docSnap.data() } as Class);
         });
 
-        if (list.length === 0) {
-          const initDoc = await getDoc(doc(db, "settings", "classes_init"));
-          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+        const initDoc = await getDoc(doc(db, "settings", "classes_init"));
+        const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
 
-          if (!isInitialized) {
+        if (!isInitialized) {
+          await setDoc(doc(db, "settings", "classes_init"), { initialized: true });
+          if (list.length === 0) {
             // Initialize with default classes if empty and not initialized before
             for (const c of DEFAULT_CLASSES) {
               await setDoc(doc(db, "classes", c.id), { nama: c.nama });
               list.push(c);
             }
-            await setDoc(doc(db, "settings", "classes_init"), { initialized: true });
           }
         }
         return list;
@@ -250,11 +250,12 @@ export const dbService = {
           list.push({ id: docSnap.id, ...docSnap.data() } as Musyrif);
         });
 
-        if (list.length === 0) {
-          const initDoc = await getDoc(doc(db, "settings", "musyrifs_init"));
-          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+        const initDoc = await getDoc(doc(db, "settings", "musyrifs_init"));
+        const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
 
-          if (!isInitialized) {
+        if (!isInitialized) {
+          await setDoc(doc(db, "settings", "musyrifs_init"), { initialized: true });
+          if (list.length === 0) {
             // Initialize with default musyrifs if empty and not initialized before
             for (const m of DEFAULT_MUSYRIFS) {
               await setDoc(doc(db, "musyrif", m.id), {
@@ -266,7 +267,6 @@ export const dbService = {
               });
               list.push(m);
             }
-            await setDoc(doc(db, "settings", "musyrifs_init"), { initialized: true });
           }
         }
         return list;
@@ -324,11 +324,12 @@ export const dbService = {
           list.push({ id: docSnap.id, ...docSnap.data() } as Student);
         });
 
-        if (list.length === 0) {
-          const initDoc = await getDoc(doc(db, "settings", "students_init"));
-          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+        const initDoc = await getDoc(doc(db, "settings", "students_init"));
+        const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
 
-          if (!isInitialized) {
+        if (!isInitialized) {
+          await setDoc(doc(db, "settings", "students_init"), { initialized: true });
+          if (list.length === 0) {
             // Initialize with default students
             for (const s of DEFAULT_STUDENTS) {
               await setDoc(doc(db, "students", s.id), {
@@ -340,7 +341,6 @@ export const dbService = {
               });
               list.push(s);
             }
-            await setDoc(doc(db, "settings", "students_init"), { initialized: true });
           }
         }
         return list;
@@ -435,11 +435,12 @@ export const dbService = {
           list.push({ id: docSnap.id, ...docSnap.data() } as Capaian);
         });
         
-        if (list.length === 0) {
-          const initDoc = await getDoc(doc(db, "settings", "capaian_init"));
-          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+        const initDoc = await getDoc(doc(db, "settings", "capaian_init"));
+        const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
 
-          if (!isInitialized) {
+        if (!isInitialized) {
+          await setDoc(doc(db, "settings", "capaian_init"), { initialized: true });
+          if (list.length === 0) {
             // Initialize
             for (const c of DEFAULT_CAPAIAN) {
               await setDoc(doc(db, "capaian", c.id), {
@@ -461,7 +462,6 @@ export const dbService = {
               });
               list.push(c);
             }
-            await setDoc(doc(db, "settings", "capaian_init"), { initialized: true });
           }
         }
         return list;
