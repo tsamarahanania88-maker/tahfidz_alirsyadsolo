@@ -201,14 +201,14 @@ export default function AdminPanel({
   // --- MUSYRIF HANDLERS ---
   const handleSaveMusyrifSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!musyrifForm?.nik || !musyrifForm?.nama || !musyrifForm?.username || !musyrifForm?.passwordHash) {
+    if (!musyrifForm?.id || !musyrifForm?.nik || !musyrifForm?.nama || !musyrifForm?.username || !musyrifForm?.passwordHash) {
       showNotification("Semua field musyrif harus diisi!", "error");
       return;
     }
 
     const musyrifToSave: Musyrif = {
-      id: musyrifForm.id || musyrifForm.nik,
-      nik: musyrifForm.nik,
+      id: musyrifForm.id.trim(),
+      nik: musyrifForm.nik.trim(),
       nama: musyrifForm.nama,
       jumlahSiswa: musyrifForm.jumlahSiswa || 0,
       username: musyrifForm.username.toLowerCase(),
@@ -916,7 +916,7 @@ export default function AdminPanel({
                   <p className="text-sm text-slate-500 mt-1">Mengelola akun dan biodata pembimbing tahfidz (Musyrif).</p>
                 </div>
                 <button
-                  onClick={() => setMusyrifForm({ nik: "", nama: "", username: "", passwordHash: "" })}
+                  onClick={() => setMusyrifForm({ id: "", nik: "", nama: "", username: "", passwordHash: "" })}
                   className="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-700 hover:bg-brand-800 text-white font-bold rounded-xl shadow-sm transition-all text-sm transform active:scale-95"
                   id="btn-add-musyrif"
                 >
@@ -926,24 +926,38 @@ export default function AdminPanel({
 
               {/* Musyrif Form Modal */}
               {musyrifForm && (
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-6 max-w-xl">
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-md p-6 max-w-2xl">
                   <h3 className="text-base font-bold text-slate-800 mb-4">
-                    {musyrifForm.id ? "Edit Akun Musyrif" : "Tambah Musyrif Baru"}
+                    {musyrifForm.id && musyrifs.some(m => m.id === musyrifForm.id) ? "Edit Akun Musyrif" : "Tambah Musyrif Baru"}
                   </h3>
                   <form onSubmit={handleSaveMusyrifSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">ID Musyrif (Acuan Data)</label>
+                        <input
+                          type="text"
+                          required
+                          disabled={musyrifForm.id ? musyrifs.some(m => m.id === musyrifForm.id) : false}
+                          value={musyrifForm.id || ""}
+                          onChange={(e) => setMusyrifForm({ ...musyrifForm, id: e.target.value.replace(/\s+/g, "") })}
+                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-950 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm disabled:bg-slate-100 font-mono font-bold"
+                          placeholder="Contoh: m1"
+                          id="form-musyrif-id"
+                        />
+                        <p className="text-[10px] text-slate-400 mt-1 font-medium leading-tight">ID unik sebagai acuan relasi data, tidak dapat diubah setelah disimpan.</p>
+                      </div>
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">NIK (Nomor Induk Karyawan)</label>
                         <input
                           type="text"
                           required
-                          disabled={!!musyrifForm.id}
                           value={musyrifForm.nik || ""}
                           onChange={(e) => setMusyrifForm({ ...musyrifForm, nik: e.target.value })}
-                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm disabled:bg-slate-100 font-mono"
+                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-mono"
                           placeholder="Contoh: 19940101"
                           id="form-musyrif-nik"
                         />
+                        <p className="text-[10px] text-slate-400 mt-1 font-medium leading-tight">Dapat diubah sewaktu-waktu dan akan tercetak pada laporan.</p>
                       </div>
                       <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Nama Lengkap & Gelar</label>
@@ -1013,6 +1027,7 @@ export default function AdminPanel({
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
                       <tr className="bg-slate-50 text-slate-500 border-b border-slate-200 uppercase font-bold tracking-wider">
+                        <th className="py-3.5 px-6">ID Musyrif</th>
                         <th className="py-3.5 px-6">NIK</th>
                         <th className="py-3.5 px-6">Nama Lengkap</th>
                         <th className="py-3.5 px-6">Binaan Siswa</th>
@@ -1024,13 +1039,14 @@ export default function AdminPanel({
                     <tbody className="divide-y divide-slate-100">
                       {musyrifs.length === 0 ? (
                         <tr>
-                          <td colSpan={6} className="py-10 px-6 text-center text-slate-400 italic">
+                          <td colSpan={7} className="py-10 px-6 text-center text-slate-400 italic">
                             Belum ada musyrif yang terdaftar.
                           </td>
                         </tr>
                       ) : (
                         musyrifs.map((m) => (
                           <tr key={m.id} className="hover:bg-slate-50/60 transition-colors">
+                            <td className="py-3 px-6 font-mono text-brand-700 font-bold">{m.id}</td>
                             <td className="py-3 px-6 font-mono text-slate-500">{m.nik}</td>
                             <td className="py-3 px-6 font-semibold text-slate-900">{m.nama}</td>
                             <td className="py-3 px-6 font-bold text-slate-700">

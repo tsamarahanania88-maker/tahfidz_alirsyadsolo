@@ -318,7 +318,7 @@ export default function ReportPrinter({
                     <p className="text-slate-500 mb-16">Surakarta, {new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}<br/><strong>Musyrif Halaqoh</strong></p>
                     <div className="w-48 border-b border-slate-800 mx-auto mb-1"></div>
                     <p className="font-bold text-slate-900">{musyrifSignName}</p>
-                    <p className="text-[10px] text-slate-400">{musyrifSignId ? `NIK. ${musyrifSignId}` : "Pembina Tahfidz"}</p>
+                    <p className="text-[10px] text-slate-400">{musyrifSignId ? `NIK. ${musyrifs.find((m) => m.id === musyrifSignId)?.nik || musyrifSignId}` : "Pembina Tahfidz"}</p>
                   </div>
                 </div>
 
@@ -469,7 +469,7 @@ export default function ReportPrinter({
                     <p className="text-slate-500 mb-16">Surakarta, {new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}<br/><strong>Musyrif Halaqoh</strong></p>
                     <div className="w-48 border-b border-slate-800 mx-auto mb-1"></div>
                     <p className="font-bold text-slate-900">{student.musyrifNama}</p>
-                    <p className="text-xs text-slate-400">NIK. {student.musyrifId}</p>
+                    <p className="text-xs text-slate-400">NIK. {musyrifs.find((m) => m.id === student.musyrifId)?.nik || student.musyrifId}</p>
                   </div>
                 </div>
 
