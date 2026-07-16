@@ -97,6 +97,14 @@ export default function AdminPanel({
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // Delete confirmation modal state
+  const [confirmModal, setConfirmModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => Promise<void> | void;
+  } | null>(null);
+
   const showNotification = (text: string, type: "success" | "error" = "success") => {
     setNotification({ text, type });
     setTimeout(() => setNotification(null), 3000);
@@ -132,15 +140,22 @@ export default function AdminPanel({
     }
   };
 
-  const handleDeleteStudentClick = async (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus siswa ini?")) {
-      try {
-        await onDeleteStudent(id);
-        showNotification("Siswa berhasil dihapus!");
-      } catch (err) {
-        showNotification("Gagal menghapus siswa", "error");
-      }
-    }
+  const handleDeleteStudentClick = (id: string) => {
+    const student = students.find((s) => s.id === id);
+    const studentName = student ? student.nama : "";
+    setConfirmModal({
+      isOpen: true,
+      title: "Hapus Data Siswa",
+      message: `Apakah Anda yakin ingin menghapus data siswa "${studentName || id}"? Tindakan ini bersifat permanen dan tidak dapat dibatalkan!`,
+      onConfirm: async () => {
+        try {
+          await onDeleteStudent(id);
+          showNotification("Siswa berhasil dihapus!");
+        } catch (err) {
+          showNotification("Gagal menghapus siswa", "error");
+        }
+      },
+    });
   };
 
   // --- CLASS HANDLERS ---
@@ -165,15 +180,22 @@ export default function AdminPanel({
     }
   };
 
-  const handleDeleteClassClick = async (id: string) => {
-    if (confirm("Apakah Anda yakin ingin menghapus kelas ini?")) {
-      try {
-        await onDeleteClass(id);
-        showNotification("Kelas berhasil dihapus!");
-      } catch (err) {
-        showNotification("Gagal menghapus kelas", "error");
-      }
-    }
+  const handleDeleteClassClick = (id: string) => {
+    const cls = classes.find((c) => c.id === id);
+    const className = cls ? cls.nama : "";
+    setConfirmModal({
+      isOpen: true,
+      title: "Hapus Data Kelas",
+      message: `Apakah Anda yakin ingin menghapus kelas "${className || id}"? Tindakan ini bersifat permanen dan tidak dapat dibatalkan!`,
+      onConfirm: async () => {
+        try {
+          await onDeleteClass(id);
+          showNotification("Kelas berhasil dihapus!");
+        } catch (err) {
+          showNotification("Gagal menghapus kelas", "error");
+        }
+      },
+    });
   };
 
   // --- MUSYRIF HANDLERS ---
@@ -202,27 +224,40 @@ export default function AdminPanel({
     }
   };
 
-  const handleDeleteMusyrifClick = async (id: string) => {
-    if (confirm("Menghapus Musyrif akan melepaskan relasi dari siswa terkait. Lanjutkan?")) {
-      try {
-        await onDeleteMusyrif(id);
-        showNotification("Musyrif berhasil dihapus!");
-      } catch (err) {
-        showNotification("Gagal menghapus musyrif", "error");
-      }
-    }
+  const handleDeleteMusyrifClick = (id: string) => {
+    const m = musyrifs.find((x) => x.id === id);
+    const mName = m ? m.nama : "";
+    setConfirmModal({
+      isOpen: true,
+      title: "Hapus Data Musyrif",
+      message: `Apakah Anda yakin ingin menghapus Musyrif "${mName || id}"? Tindakan ini akan melepaskan relasi bimbingan dari siswa terkait.`,
+      onConfirm: async () => {
+        try {
+          await onDeleteMusyrif(id);
+          showNotification("Musyrif berhasil dihapus!");
+        } catch (err) {
+          showNotification("Gagal menghapus musyrif", "error");
+        }
+      },
+    });
   };
 
-  const handleClearAllCapaiansClick = async () => {
-    if (confirm("Apakah Anda yakin ingin menghapus semua data hasil inputan capaian tahfidz? Tindakan ini bersifat permanen dan tidak dapat dibatalkan!")) {
-      try {
-        await onClearAllCapaians();
-        showNotification("Semua data hasil capaian tahfidz berhasil dihapus!");
-      } catch (err) {
-        showNotification("Gagal menghapus data capaian", "error");
-      }
-    }
+  const handleClearAllCapaiansClick = () => {
+    setConfirmModal({
+      isOpen: true,
+      title: "Kosongkan Semua Data Capaian",
+      message: "Apakah Anda yakin ingin menghapus semua data hasil inputan capaian tahfidz? Tindakan ini bersifat permanen, menghapus seluruh riwayat setoran, dan tidak dapat dibatalkan!",
+      onConfirm: async () => {
+        try {
+          await onClearAllCapaians();
+          showNotification("Semua data hasil capaian tahfidz berhasil dihapus!");
+        } catch (err) {
+          showNotification("Gagal menghapus data capaian", "error");
+        }
+      },
+    });
   };
+
 
   // --- PASSWORD UPDATE ---
   const handleUpdatePasswordSubmit = async (e: React.FormEvent) => {
@@ -1261,6 +1296,51 @@ export default function AdminPanel({
           </div>
         </div>
       </main>
+
+      {/* Custom Confirmation Modal */}
+      {confirmModal && confirmModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-fadeIn">
+          <div className="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-100 transform scale-100 transition-all animate-scaleUp">
+            {/* Header / Icon */}
+            <div className="p-6 pb-4 text-center">
+              <div className="mx-auto w-14 h-14 bg-rose-50 rounded-2xl flex items-center justify-center text-rose-600 mb-4 border border-rose-100">
+                <AlertTriangle className="w-7 h-7" />
+              </div>
+              <h3 className="text-lg font-extrabold text-slate-900 leading-snug">
+                {confirmModal.title}
+              </h3>
+              <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                {confirmModal.message}
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="bg-slate-50 px-6 py-4 flex flex-row items-center justify-end gap-3 border-t border-slate-100">
+              <button
+                type="button"
+                onClick={() => setConfirmModal(null)}
+                className="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-800 hover:bg-slate-100 border border-slate-200 rounded-xl transition-all cursor-pointer"
+                id="confirm-modal-cancel"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  const onConf = confirmModal.onConfirm;
+                  setConfirmModal(null);
+                  await onConf();
+                }}
+                className="px-5 py-2 text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white rounded-xl shadow-sm hover:shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
+                id="confirm-modal-submit"
+              >
+                <Trash2 className="w-3.5 h-3.5" /> Ya, Hapus Data
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

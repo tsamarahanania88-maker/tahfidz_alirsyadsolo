@@ -187,11 +187,18 @@ export const dbService = {
         querySnapshot.forEach((docSnap) => {
           list.push({ id: docSnap.id, ...docSnap.data() } as Class);
         });
+
         if (list.length === 0) {
-          // Initialize with default classes if empty
-          for (const c of DEFAULT_CLASSES) {
-            await setDoc(doc(db, "classes", c.id), { nama: c.nama });
-            list.push(c);
+          const initDoc = await getDoc(doc(db, "settings", "classes_init"));
+          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+
+          if (!isInitialized) {
+            // Initialize with default classes if empty and not initialized before
+            for (const c of DEFAULT_CLASSES) {
+              await setDoc(doc(db, "classes", c.id), { nama: c.nama });
+              list.push(c);
+            }
+            await setDoc(doc(db, "settings", "classes_init"), { initialized: true });
           }
         }
         return list;
@@ -206,12 +213,11 @@ export const dbService = {
     if (isFirebaseConfigured && db) {
       try {
         await setDoc(doc(db, "classes", classData.id), { nama: classData.nama });
-        return;
       } catch (err) {
         logFirestoreError("saveClass", err);
       }
     }
-    const list = await this.getClasses();
+    const list = getLocal("tahfidz_classes", DEFAULT_CLASSES);
     const index = list.findIndex((c) => c.id === classData.id);
     if (index >= 0) {
       list[index] = classData;
@@ -225,12 +231,11 @@ export const dbService = {
     if (isFirebaseConfigured && db) {
       try {
         await deleteDoc(doc(db, "classes", id));
-        return;
       } catch (err) {
         logFirestoreError("deleteClass", err);
       }
     }
-    const list = await this.getClasses();
+    const list = getLocal("tahfidz_classes", DEFAULT_CLASSES);
     const updated = list.filter((c) => c.id !== id);
     setLocal("tahfidz_classes", updated);
   },
@@ -244,17 +249,24 @@ export const dbService = {
         querySnapshot.forEach((docSnap) => {
           list.push({ id: docSnap.id, ...docSnap.data() } as Musyrif);
         });
+
         if (list.length === 0) {
-          // Initialize with default musyrifs if empty
-          for (const m of DEFAULT_MUSYRIFS) {
-            await setDoc(doc(db, "musyrif", m.id), {
-              nik: m.nik,
-              nama: m.nama,
-              jumlahSiswa: m.jumlahSiswa,
-              username: m.username,
-              passwordHash: m.passwordHash,
-            });
-            list.push(m);
+          const initDoc = await getDoc(doc(db, "settings", "musyrifs_init"));
+          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+
+          if (!isInitialized) {
+            // Initialize with default musyrifs if empty and not initialized before
+            for (const m of DEFAULT_MUSYRIFS) {
+              await setDoc(doc(db, "musyrif", m.id), {
+                nik: m.nik,
+                nama: m.nama,
+                jumlahSiswa: m.jumlahSiswa,
+                username: m.username,
+                passwordHash: m.passwordHash,
+              });
+              list.push(m);
+            }
+            await setDoc(doc(db, "settings", "musyrifs_init"), { initialized: true });
           }
         }
         return list;
@@ -275,12 +287,11 @@ export const dbService = {
           username: musyrifData.username,
           passwordHash: musyrifData.passwordHash,
         });
-        return;
       } catch (err) {
         logFirestoreError("saveMusyrif", err);
       }
     }
-    const list = await this.getMusyrifs();
+    const list = getLocal("tahfidz_musyrifs", DEFAULT_MUSYRIFS);
     const index = list.findIndex((m) => m.id === musyrifData.id);
     if (index >= 0) {
       list[index] = musyrifData;
@@ -294,12 +305,11 @@ export const dbService = {
     if (isFirebaseConfigured && db) {
       try {
         await deleteDoc(doc(db, "musyrif", id));
-        return;
       } catch (err) {
         logFirestoreError("deleteMusyrif", err);
       }
     }
-    const list = await this.getMusyrifs();
+    const list = getLocal("tahfidz_musyrifs", DEFAULT_MUSYRIFS);
     const updated = list.filter((m) => m.id !== id);
     setLocal("tahfidz_musyrifs", updated);
   },
@@ -313,17 +323,24 @@ export const dbService = {
         querySnapshot.forEach((docSnap) => {
           list.push({ id: docSnap.id, ...docSnap.data() } as Student);
         });
+
         if (list.length === 0) {
-          // Initialize with default students
-          for (const s of DEFAULT_STUDENTS) {
-            await setDoc(doc(db, "students", s.id), {
-              noInduk: s.noInduk,
-              nama: s.nama,
-              kelasId: s.kelasId,
-              musyrifId: s.musyrifId,
-              musyrifNama: s.musyrifNama,
-            });
-            list.push(s);
+          const initDoc = await getDoc(doc(db, "settings", "students_init"));
+          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+
+          if (!isInitialized) {
+            // Initialize with default students
+            for (const s of DEFAULT_STUDENTS) {
+              await setDoc(doc(db, "students", s.id), {
+                noInduk: s.noInduk,
+                nama: s.nama,
+                kelasId: s.kelasId,
+                musyrifId: s.musyrifId,
+                musyrifNama: s.musyrifNama,
+              });
+              list.push(s);
+            }
+            await setDoc(doc(db, "settings", "students_init"), { initialized: true });
           }
         }
         return list;
@@ -346,12 +363,11 @@ export const dbService = {
         });
         // Now update counts
         await this.recalculateMusyrifSiswaCount();
-        return;
       } catch (err) {
         logFirestoreError("saveStudent", err);
       }
     }
-    const list = await this.getStudents();
+    const list = getLocal("tahfidz_students", DEFAULT_STUDENTS);
     const index = list.findIndex((s) => s.id === studentData.id);
     if (index >= 0) {
       list[index] = studentData;
@@ -377,12 +393,11 @@ export const dbService = {
           )
         );
         await this.recalculateMusyrifSiswaCount();
-        return;
       } catch (err) {
         logFirestoreError("saveStudentsBatch", err);
       }
     }
-    const list = await this.getStudents();
+    const list = getLocal("tahfidz_students", DEFAULT_STUDENTS);
     for (const studentData of studentsData) {
       const index = list.findIndex((s) => s.id === studentData.id);
       if (index >= 0) {
@@ -400,12 +415,11 @@ export const dbService = {
       try {
         await deleteDoc(doc(db, "students", id));
         await this.recalculateMusyrifSiswaCount();
-        return;
       } catch (err) {
         logFirestoreError("deleteStudent", err);
       }
     }
-    const list = await this.getStudents();
+    const list = getLocal("tahfidz_students", DEFAULT_STUDENTS);
     const updated = list.filter((s) => s.id !== id);
     setLocal("tahfidz_students", updated);
     await this.recalculateMusyrifSiswaCount();
@@ -421,33 +435,34 @@ export const dbService = {
           list.push({ id: docSnap.id, ...docSnap.data() } as Capaian);
         });
         
-        // Check if already initialized before
-        const initDoc = await getDoc(doc(db, "settings", "capaian_init"));
-        const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
+        if (list.length === 0) {
+          const initDoc = await getDoc(doc(db, "settings", "capaian_init"));
+          const isInitialized = initDoc.exists() && initDoc.data().initialized === true;
 
-        if (list.length === 0 && !isInitialized) {
-          // Initialize
-          for (const c of DEFAULT_CAPAIAN) {
-            await setDoc(doc(db, "capaian", c.id), {
-              studentId: c.studentId,
-              noInduk: c.noInduk,
-              namaSiswa: c.namaSiswa,
-              kelasId: c.kelasId,
-              kelasNama: c.kelasNama,
-              musyrifId: c.musyrifId,
-              musyrifNama: c.musyrifNama,
-              juz: c.juz,
-              capaianAwal: c.capaianAwal,
-              capaianAkhir: c.capaianAkhir,
-              totalBaris: c.totalBaris,
-              juziyyah: c.juziyyah,
-              catatan: c.catatan,
-              bulan: c.bulan,
-              updatedAt: c.updatedAt,
-            });
-            list.push(c);
+          if (!isInitialized) {
+            // Initialize
+            for (const c of DEFAULT_CAPAIAN) {
+              await setDoc(doc(db, "capaian", c.id), {
+                studentId: c.studentId,
+                noInduk: c.noInduk,
+                namaSiswa: c.namaSiswa,
+                kelasId: c.kelasId,
+                kelasNama: c.kelasNama,
+                musyrifId: c.musyrifId,
+                musyrifNama: c.musyrifNama,
+                juz: c.juz,
+                capaianAwal: c.capaianAwal,
+                capaianAkhir: c.capaianAkhir,
+                totalBaris: c.totalBaris,
+                juziyyah: c.juziyyah,
+                catatan: c.catatan,
+                bulan: c.bulan,
+                updatedAt: c.updatedAt,
+              });
+              list.push(c);
+            }
+            await setDoc(doc(db, "settings", "capaian_init"), { initialized: true });
           }
-          await setDoc(doc(db, "settings", "capaian_init"), { initialized: true });
         }
         return list;
       } catch (err) {
@@ -467,7 +482,6 @@ export const dbService = {
         });
         await Promise.all(deletePromises);
         await setDoc(doc(db, "settings", "capaian_init"), { initialized: true });
-        return;
       } catch (err) {
         logFirestoreError("clearAllCapaians", err);
       }
@@ -495,12 +509,11 @@ export const dbService = {
           bulan: capaianData.bulan,
           updatedAt: new Date().toISOString(),
         });
-        return;
       } catch (err) {
         logFirestoreError("saveCapaian", err);
       }
     }
-    const list = await this.getCapaians();
+    const list = getLocal("tahfidz_capaians", DEFAULT_CAPAIAN);
     const index = list.findIndex((c) => c.id === capaianData.id);
     const item = { ...capaianData, totalBaris: Number(capaianData.totalBaris), updatedAt: new Date().toISOString() };
     if (index >= 0) {
@@ -515,12 +528,11 @@ export const dbService = {
     if (isFirebaseConfigured && db) {
       try {
         await deleteDoc(doc(db, "capaian", id));
-        return;
       } catch (err) {
         logFirestoreError("deleteCapaian", err);
       }
     }
-    const list = await this.getCapaians();
+    const list = getLocal("tahfidz_capaians", DEFAULT_CAPAIAN);
     const updated = list.filter((c) => c.id !== id);
     setLocal("tahfidz_capaians", updated);
   },
@@ -547,7 +559,6 @@ export const dbService = {
     if (isFirebaseConfigured && db) {
       try {
         await setDoc(doc(db, "settings", "admin"), { adminPassword: newPassword });
-        return;
       } catch (err) {
         logFirestoreError("updateAdminPassword", err);
       }
@@ -557,8 +568,8 @@ export const dbService = {
 
   // Helper: Recalculate Musyrif student counts
   async recalculateMusyrifSiswaCount(): Promise<void> {
-    const students = await this.getStudents();
-    const musyrifs = await this.getMusyrifs();
+    const students = getLocal("tahfidz_students", DEFAULT_STUDENTS);
+    const musyrifs = getLocal("tahfidz_musyrifs", DEFAULT_MUSYRIFS);
 
     const updatedMusyrifs = musyrifs.map((m) => {
       const count = students.filter((s) => s.musyrifId === m.id).length;
@@ -567,15 +578,16 @@ export const dbService = {
 
     if (isFirebaseConfigured && db) {
       try {
-        for (const m of updatedMusyrifs) {
-          await setDoc(doc(db, "musyrif", m.id), {
+        const promises = updatedMusyrifs.map((m) =>
+          setDoc(doc(db, "musyrif", m.id), {
             nik: m.nik,
             nama: m.nama,
             jumlahSiswa: m.jumlahSiswa,
             username: m.username,
             passwordHash: m.passwordHash,
-          });
-        }
+          })
+        );
+        await Promise.all(promises);
         return;
       } catch (err) {
         logFirestoreError("recalculateMusyrifSiswaCount", err);
