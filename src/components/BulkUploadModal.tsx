@@ -48,15 +48,15 @@ export default function BulkUploadModal({
 
   // Generate and download template CSV
   const handleDownloadTemplate = () => {
-    // We can list some example musyrif NIKs or usernames to help them fill it
-    const exampleMusyrif = musyrifs.length > 0 ? musyrifs[0] : { nik: "19920101", nama: "Ust. Ahmad Fauzi" };
+    // We can list some example musyrif IDs or usernames to help them fill it
+    const exampleMusyrif = musyrifs.length > 0 ? musyrifs[0] : { id: "m1", nama: "Ust. Ahmad Fauzi" };
     const exampleClass = classes.length > 0 ? classes[0].id : "7A";
 
     const csvContent = [
       "noInduk,nama,kelasId,musyrifId",
-      `1006,Ahmad Fulan,${exampleClass},${exampleMusyrif.nik}`,
-      `1007,Zaidan Karim,${exampleClass},${exampleMusyrif.nik}`,
-      `1008,Umar Al-Faruq,${exampleClass},${exampleMusyrif.nik}`
+      `1006,Ahmad Fulan,${exampleClass},${exampleMusyrif.id}`,
+      `1007,Zaidan Karim,${exampleClass},${exampleMusyrif.id}`,
+      `1008,Umar Al-Faruq,${exampleClass},${exampleMusyrif.id}`
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -461,9 +461,9 @@ export default function BulkUploadModal({
                   <ul className="text-[11px] text-slate-500 space-y-1 list-disc pl-4">
                     <li>Gunakan file CSV atau format teks yang dipisahkan koma/tab.</li>
                     <li>
-                      Kolom wajib diisi berurutan: <span className="font-bold">No Induk, Nama Lengkap, Kode Kelas, NIK/Username Musyrif</span>.
+                      Kolom wajib diisi berurutan: <span className="font-bold">No Induk, Nama Lengkap, Kode Kelas, ID Musyrif (Acuan Data)</span>.
                     </li>
-                    <li>Sistem akan mencocokkan musyrif berdasarkan NIK, ID, nama, atau username secara otomatis.</li>
+                    <li>Sistem akan mencocokkan musyrif berdasarkan ID Musyrif (Acuan Data seperti m1, m2) secara otomatis.</li>
                   </ul>
                 </div>
 
@@ -522,7 +522,7 @@ export default function BulkUploadModal({
                     rows={4}
                     value={pasteText}
                     onChange={(e) => setPasteText(e.target.value)}
-                    placeholder="Contoh:&#10;1006,Ahmad Fulan,7A,19920101&#10;1007,Zaidan Karim,7B,19940202"
+                    placeholder="Contoh:&#10;1006,Ahmad Fulan,7A,m1&#10;1007,Zaidan Karim,7B,m2"
                     className="w-full border border-slate-200 rounded-2xl p-3 text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none font-mono"
                   ></textarea>
                   <button

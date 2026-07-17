@@ -38,7 +38,7 @@ const DEFAULT_CLASSES: Class[] = [
 
 const DEFAULT_MUSYRIFS: Musyrif[] = [
   {
-    id: "19920101",
+    id: "m1",
     nik: "19920101",
     nama: "Ust. Ahmad Fauzi, S.Pd.I",
     jumlahSiswa: 3,
@@ -46,7 +46,7 @@ const DEFAULT_MUSYRIFS: Musyrif[] = [
     passwordHash: "ahmad123",
   },
   {
-    id: "19940202",
+    id: "m2",
     nik: "19940202",
     nama: "Ust. Muhammad Ridwan, Lc",
     jumlahSiswa: 2,
@@ -61,7 +61,7 @@ const DEFAULT_STUDENTS: Student[] = [
     noInduk: "1001",
     nama: "Abdurrahman Al-Fatih",
     kelasId: "7A",
-    musyrifId: "19920101",
+    musyrifId: "m1",
     musyrifNama: "Ust. Ahmad Fauzi, S.Pd.I",
   },
   {
@@ -69,7 +69,7 @@ const DEFAULT_STUDENTS: Student[] = [
     noInduk: "1002",
     nama: "Muhammad Azzam Kamil",
     kelasId: "7A",
-    musyrifId: "19920101",
+    musyrifId: "m1",
     musyrifNama: "Ust. Ahmad Fauzi, S.Pd.I",
   },
   {
@@ -77,7 +77,7 @@ const DEFAULT_STUDENTS: Student[] = [
     noInduk: "1003",
     nama: "Ali Zainal Abidin",
     kelasId: "7B",
-    musyrifId: "19940202",
+    musyrifId: "m2",
     musyrifNama: "Ust. Muhammad Ridwan, Lc",
   },
   {
@@ -85,7 +85,7 @@ const DEFAULT_STUDENTS: Student[] = [
     noInduk: "1004",
     nama: "Hamzah Syihabuddin",
     kelasId: "8A",
-    musyrifId: "19920101",
+    musyrifId: "m1",
     musyrifNama: "Ust. Ahmad Fauzi, S.Pd.I",
   },
   {
@@ -93,7 +93,7 @@ const DEFAULT_STUDENTS: Student[] = [
     noInduk: "1005",
     nama: "Umar Faruq",
     kelasId: "8B",
-    musyrifId: "19940202",
+    musyrifId: "m2",
     musyrifNama: "Ust. Muhammad Ridwan, Lc",
   },
 ];
@@ -106,7 +106,7 @@ const DEFAULT_CAPAIAN: Capaian[] = [
     namaSiswa: "Abdurrahman Al-Fatih",
     kelasId: "7A",
     kelasNama: "Kelas 7A",
-    musyrifId: "19920101",
+    musyrifId: "m1",
     musyrifNama: "Ust. Ahmad Fauzi, S.Pd.I",
     juz: "30",
     capaianAwal: "An-Naba 1",
@@ -124,7 +124,7 @@ const DEFAULT_CAPAIAN: Capaian[] = [
     namaSiswa: "Muhammad Azzam Kamil",
     kelasId: "7A",
     kelasNama: "Kelas 7A",
-    musyrifId: "19920101",
+    musyrifId: "m1",
     musyrifNama: "Ust. Ahmad Fauzi, S.Pd.I",
     juz: "29",
     capaianAwal: "Al-Mulk 1",
@@ -142,7 +142,7 @@ const DEFAULT_CAPAIAN: Capaian[] = [
     namaSiswa: "Ali Zainal Abidin",
     kelasId: "7B",
     kelasNama: "Kelas 7B",
-    musyrifId: "19940202",
+    musyrifId: "m2",
     musyrifNama: "Ust. Muhammad Ridwan, Lc",
     juz: "1",
     capaianAwal: "Al-Baqarah 1",
