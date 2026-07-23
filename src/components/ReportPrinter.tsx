@@ -384,6 +384,7 @@ export default function ReportPrinter({
                       </p>
                       <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
                       <p className="font-bold text-slate-900">Muhammat Imam Syafi'i S.Pd.</p>
+                      <p className="text-xs font-bold text-slate-700">NIK. 103.244.00205</p>
                     </div>
                     <div className="text-center">
                       <p className="text-slate-600 mb-16">
@@ -392,7 +393,7 @@ export default function ReportPrinter({
                       </p>
                       <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
                       <p className="font-bold text-slate-900">{musyrifSignName}</p>
-                      <p className="text-[10px] text-slate-500 font-medium">
+                      <p className="text-xs font-bold text-slate-700">
                         {musyrifSignId ? `NIK. ${musyrifs.find((m) => m.id === musyrifSignId)?.nik || musyrifSignId}` : "Pembina Tahfidz"}
                       </p>
                     </div>
@@ -530,6 +531,7 @@ export default function ReportPrinter({
                       </p>
                       <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
                       <p className="font-bold text-slate-900">Muhammat Imam Syafi'i S.Pd.</p>
+                      <p className="text-xs font-bold text-slate-700">NIK. 103.244.00205</p>
                     </div>
                     <div className="text-center">
                       <p className="text-slate-600 mb-16">
@@ -538,7 +540,7 @@ export default function ReportPrinter({
                       </p>
                       <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
                       <p className="font-bold text-slate-900">{student.musyrifNama}</p>
-                      <p className="text-[10px] text-slate-500 font-medium">
+                      <p className="text-xs font-bold text-slate-700">
                         NIK. {musyrifs.find((m) => m.id === student.musyrifId)?.nik || student.musyrifId}
                       </p>
                     </div>
