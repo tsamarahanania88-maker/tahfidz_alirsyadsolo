@@ -142,6 +142,11 @@ export default function App() {
     await loadAllData(true);
   };
 
+  const handleDeleteCapaian = async (id: string) => {
+    await dbService.deleteCapaian(id);
+    await loadAllData(true);
+  };
+
   const handleClearAllCapaians = async () => {
     await dbService.clearAllCapaians();
     await loadAllData(true);
@@ -310,6 +315,7 @@ export default function App() {
           onSaveMusyrif={handleSaveMusyrif}
           onDeleteMusyrif={handleDeleteMusyrif}
           onUpdateAdminPassword={handleUpdateAdminPassword}
+          onDeleteCapaian={handleDeleteCapaian}
           onClearAllCapaians={handleClearAllCapaians}
           onTriggerPrint={handleTriggerPrint}
           onLogout={handleLogout}
@@ -322,6 +328,7 @@ export default function App() {
             classes={classes}
             capaians={capaians}
             onSaveCapaian={handleSaveCapaian}
+            onDeleteCapaian={handleDeleteCapaian}
             onUpdateMusyrifPassword={handleUpdateMusyrifPassword}
             onTriggerPrint={handleTriggerPrint}
             onLogout={handleLogout}

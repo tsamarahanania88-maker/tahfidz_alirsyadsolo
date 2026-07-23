@@ -17,7 +17,9 @@ import {
   CheckCircle,
   Clock,
   UserCheck,
-  AlertCircle
+  AlertCircle,
+  RotateCcw,
+  Trash2
 } from "lucide-react";
 
 interface MusyrifPanelProps {
@@ -26,6 +28,7 @@ interface MusyrifPanelProps {
   classes: Class[];
   capaians: Capaian[];
   onSaveCapaian: (capaian: Capaian) => Promise<void>;
+  onDeleteCapaian?: (id: string) => Promise<void>;
   onUpdateMusyrifPassword: (musyrifId: string, newPass: string) => Promise<void>;
   onTriggerPrint: (filters: { classId?: string; level?: string; musyrifId?: string; bulan: string }) => void;
   onLogout: () => void;
@@ -39,6 +42,7 @@ export default function MusyrifPanel({
   classes,
   capaians,
   onSaveCapaian,
+  onDeleteCapaian,
   onUpdateMusyrifPassword,
   onTriggerPrint,
   onLogout,
@@ -120,6 +124,49 @@ export default function MusyrifPanel({
       setTotalBaris(0);
       setJuziyyah("Lancar");
       setCatatan("");
+    }
+  };
+
+  // Reset form input fields
+  const handleResetForm = () => {
+    setJuz("");
+    setCapaianAwal("");
+    setCapaianAkhir("");
+    setTotalBaris(0);
+    setJuziyyah("Lancar");
+    setCatatan("");
+    showNotification("Isian form capaian berhasil direset/dikosongkan.");
+  };
+
+  // Reset/Delete saved capaian data for a student
+  const handleResetSavedCapaian = async (student: Student) => {
+    const capaianId = `${student.id}_${selectedBulan}`;
+    const existing = capaians.find((c) => c.id === capaianId);
+
+    if (!existing) {
+      handleResetForm();
+      return;
+    }
+
+    if (
+      window.confirm(
+        `Apakah Anda yakin ingin menghapus / mereset data capaian tersimpan untuk ${student.nama} pada bulan ${formatIndonesianMonth(selectedBulan)}?`
+      )
+    ) {
+      if (onDeleteCapaian) {
+        try {
+          await onDeleteCapaian(capaianId);
+          showNotification(`Data capaian ${student.nama} berhasil direset/dihapus!`);
+          handleResetForm();
+          if (editingStudent?.id === student.id) {
+            setEditingStudent(null);
+          }
+        } catch (err) {
+          showNotification("Gagal mereset data capaian.", "error");
+        }
+      } else {
+        handleResetForm();
+      }
     }
   };
 
@@ -418,22 +465,47 @@ export default function MusyrifPanel({
                       />
                     </div>
 
-                    <div className="flex justify-end gap-3 pt-2">
-                      <button
-                        type="button"
-                        onClick={() => setEditingStudent(null)}
-                        className="px-4 py-2 border border-slate-300 text-slate-700 font-bold rounded-lg text-sm hover:bg-slate-50"
-                        id="btn-cancel-capaian"
-                      >
-                        Batal
-                      </button>
-                      <button
-                        type="submit"
-                        className="px-5 py-2 bg-brand-700 text-white font-bold rounded-lg text-sm hover:bg-brand-800 inline-flex items-center gap-1.5"
-                        id="btn-save-capaian"
-                      >
-                        <Save className="w-4 h-4" /> Simpan Capaian
-                      </button>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={handleResetForm}
+                          className="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold rounded-lg text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                          id="btn-reset-form-fields"
+                          title="Kosongkan seluruh isian form"
+                        >
+                          <RotateCcw className="w-3.5 h-3.5" /> Reset Isian Form
+                        </button>
+                      </div>
+
+                      <div className="flex flex-wrap items-center justify-end gap-2">
+                        {capaians.some((c) => c.studentId === editingStudent.id && c.bulan === selectedBulan) && (
+                          <button
+                            type="button"
+                            onClick={() => handleResetSavedCapaian(editingStudent)}
+                            className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-lg text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                            id="btn-delete-saved-capaian"
+                            title="Hapus data tersimpan untuk siswa ini pada bulan terpilih"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" /> Reset / Hapus Data Siswa
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => setEditingStudent(null)}
+                          className="px-4 py-2 border border-slate-300 text-slate-700 font-bold rounded-lg text-xs hover:bg-slate-50 transition-colors"
+                          id="btn-cancel-capaian"
+                        >
+                          Batal
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-5 py-2 bg-brand-700 text-white font-bold rounded-lg text-xs hover:bg-brand-800 inline-flex items-center gap-1.5 shadow-sm transition-all transform active:scale-95"
+                          id="btn-save-capaian"
+                        >
+                          <Save className="w-4 h-4" /> Simpan Capaian
+                        </button>
+                      </div>
                     </div>
                   </form>
                 </div>
@@ -576,13 +648,25 @@ export default function MusyrifPanel({
                                 )}
                               </td>
                               <td className="py-4 px-6 text-center">
-                                <button
-                                  onClick={() => handleOpenEditCapaian(s)}
-                                  className="inline-flex items-center gap-1 px-3 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200 rounded-lg text-[10px] font-extrabold transition-colors"
-                                  id={`btn-edit-siswa-${s.noInduk}`}
-                                >
-                                  <Edit className="w-3 h-3" /> Input Capaian
-                                </button>
+                                <div className="flex items-center justify-center gap-1.5">
+                                  <button
+                                    onClick={() => handleOpenEditCapaian(s)}
+                                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200 rounded-lg text-[10px] font-extrabold transition-colors cursor-pointer"
+                                    id={`btn-edit-siswa-${s.noInduk}`}
+                                  >
+                                    <Edit className="w-3 h-3" /> {record ? "Edit" : "Input"} Capaian
+                                  </button>
+                                  {record && (
+                                    <button
+                                      onClick={() => handleResetSavedCapaian(s)}
+                                      className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-[10px] font-bold transition-colors cursor-pointer"
+                                      title="Reset / Hapus data isian capaian siswa ini"
+                                      id={`btn-reset-siswa-${s.noInduk}`}
+                                    >
+                                      <RotateCcw className="w-3 h-3" /> Reset
+                                    </button>
+                                  )}
+                                </div>
                               </td>
                             </tr>
                           );

@@ -40,6 +40,7 @@ interface AdminPanelProps {
   onSaveMusyrif: (musyrif: Musyrif) => Promise<void>;
   onDeleteMusyrif: (id: string) => Promise<void>;
   onUpdateAdminPassword: (newPass: string) => Promise<void>;
+  onDeleteCapaian?: (id: string) => Promise<void>;
   onClearAllCapaians: () => Promise<void>;
   onTriggerPrint: (filters: { classId?: string; level?: string; musyrifId?: string; bulan: string }) => void;
   onLogout: () => void;
@@ -61,6 +62,7 @@ export default function AdminPanel({
   onSaveMusyrif,
   onDeleteMusyrif,
   onUpdateAdminPassword,
+  onDeleteCapaian,
   onClearAllCapaians,
   onTriggerPrint,
   onLogout,
@@ -251,6 +253,23 @@ export default function AdminPanel({
         try {
           await onClearAllCapaians();
           showNotification("Semua data hasil capaian tahfidz berhasil dihapus!");
+        } catch (err) {
+          showNotification("Gagal menghapus data capaian", "error");
+        }
+      },
+    });
+  };
+
+  const handleDeleteSingleCapaianClick = (c: Capaian) => {
+    if (!onDeleteCapaian) return;
+    setConfirmModal({
+      isOpen: true,
+      title: "Hapus / Reset Capaian Siswa",
+      message: `Apakah Anda yakin ingin menghapus data capaian ${c.namaSiswa} (${c.noInduk}) untuk periode ${c.bulan}?`,
+      onConfirm: async () => {
+        try {
+          await onDeleteCapaian(c.id);
+          showNotification(`Data capaian ${c.namaSiswa} berhasil dihapus/direset!`);
         } catch (err) {
           showNotification("Gagal menghapus data capaian", "error");
         }
@@ -1200,12 +1219,13 @@ export default function AdminPanel({
                         <th className="py-3 px-4 w-20 text-center">Baris</th>
                         <th className="py-3 px-4 text-center">Juziyyah</th>
                         <th className="py-3 px-4">Catatan Musyrif</th>
+                        <th className="py-3 px-4 text-center w-16">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
                       {filteredCapaiansReport.length === 0 ? (
                         <tr>
-                          <td colSpan={8} className="py-12 px-6 text-center text-slate-400 italic">
+                          <td colSpan={9} className="py-12 px-6 text-center text-slate-400 italic">
                             Belum ada input capaian untuk kriteria & bulan yang dipilih.
                           </td>
                         </tr>
@@ -1234,6 +1254,16 @@ export default function AdminPanel({
                             </td>
                             <td className="py-3 px-4 text-slate-500 italic max-w-xs truncate" title={c.catatan}>
                               {c.catatan || "-"}
+                            </td>
+                            <td className="py-3 px-4 text-center">
+                              <button
+                                onClick={() => handleDeleteSingleCapaianClick(c)}
+                                className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                                title="Hapus / Reset Data Capaian Siswa Ini"
+                                id={`btn-delete-capaian-${c.id}`}
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
                             </td>
                           </tr>
                         ))
