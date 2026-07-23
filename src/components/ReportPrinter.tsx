@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from "react";
+import React from "react";
 import { Student, Class, Musyrif, Capaian } from "../types";
-import { Printer, ArrowLeft, CheckCircle2, LayoutGrid, FileText } from "lucide-react";
+import { Printer, ArrowLeft, CheckCircle2 } from "lucide-react";
 
 import logoImg from "../assets/images/al_irsyad_logo_hd_1784773161816.jpg";
 
@@ -104,11 +104,6 @@ export default function ReportPrinter({
   if (selectedMusyrifId) {
     filteredStudents = filteredStudents.filter((s) => s.musyrifId === selectedMusyrifId);
   }
-
-  // Default format is kolektif if level or class filter active
-  const [printFormat, setPrintFormat] = useState<"kolektif" | "individu">(
-    selectedLevel || selectedClassId ? "kolektif" : "kolektif"
-  );
 
   // Group students by class
   const studentsByClass: { [classId: string]: Student[] } = {};
@@ -221,54 +216,6 @@ export default function ReportPrinter({
             </ul>
           </div>
         </div>
-
-        {/* Format Selector */}
-        <div className="mt-6 border-t border-slate-150 pt-6">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-3">
-            Format Cetak Laporan:
-          </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <button
-              onClick={() => setPrintFormat("kolektif")}
-              className={`flex items-start gap-4 p-4 rounded-xl border text-left transition-all ${
-                printFormat === "kolektif"
-                  ? "border-[#0B122B] bg-[#0B122B]/5 ring-2 ring-[#0B122B]/20"
-                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-              }`}
-              id="opt-print-kolektif"
-            >
-              <LayoutGrid className={`w-5 h-5 shrink-0 mt-0.5 ${printFormat === "kolektif" ? "text-[#0B122B]" : "text-slate-400"}`} />
-              <div>
-                <p className={`font-bold text-sm ${printFormat === "kolektif" ? "text-[#0B122B]" : "text-slate-700"}`}>
-                  Format Resmi Sesuai Template (Tabel Rekapitulasi Kolektif)
-                </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Header biru gelap, judul kuning/putih, tabel berselang-seling biru muda, dan footer link alirsyadsolo.sch.id.
-                </p>
-              </div>
-            </button>
-
-            <button
-              onClick={() => setPrintFormat("individu")}
-              className={`flex items-start gap-4 p-4 rounded-xl border text-left transition-all ${
-                printFormat === "individu"
-                  ? "border-[#0B122B] bg-[#0B122B]/5 ring-2 ring-[#0B122B]/20"
-                  : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
-              }`}
-              id="opt-print-individu"
-            >
-              <FileText className={`w-5 h-5 shrink-0 mt-0.5 ${printFormat === "individu" ? "text-[#0B122B]" : "text-slate-400"}`} />
-              <div>
-                <p className={`font-bold text-sm ${printFormat === "individu" ? "text-[#0B122B]" : "text-slate-700"}`}>
-                  Laporan Individu Santri
-                </p>
-                <p className="text-xs text-slate-500 mt-1">
-                  Menampilkan lembar rapot individu per santri dengan tema resmi Al-Irsyad Surakarta.
-                </p>
-              </div>
-            </button>
-          </div>
-        </div>
       </div>
 
       {/* Printable Sheet Wrapper */}
@@ -277,8 +224,8 @@ export default function ReportPrinter({
           <div className="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500">
             Tidak ada data siswa atau laporan capaian untuk kriteria yang dipilih.
           </div>
-        ) : printFormat === "kolektif" ? (
-          // =================== KOLEKTIF VIEW (EXACT TEMPLATE MATCH) ===================
+        ) : (
+          // =================== REKAPITULASI KOLEKTIF VIEW ===================
           sortedClassIds.map((classId, classIdx) => {
             const classStudents = studentsByClass[classId] || [];
             const classMusyrifs = Array.from(new Set(classStudents.map((s) => s.musyrifNama).filter(Boolean)));
@@ -520,153 +467,6 @@ export default function ReportPrinter({
 
                 {/* BOTTOM FOOTER BAR (DARK NAVY BLUE #0B122B) */}
                 <div className={`bg-[#0B122B] ${footerBarPadding} text-center shrink-0 mt-auto`}>
-                  <p className="text-white font-extrabold text-xs sm:text-sm tracking-widest font-mono">
-                    www.alirsyadsolo.sch.id
-                  </p>
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          // =================== INDIVIDUAL VIEW ===================
-          filteredStudents.map((student, idx) => {
-            const capaian = getCapaianForStudent(student.id);
-            return (
-              <div
-                key={student.id}
-                className="bg-white shadow-2xl rounded-none md:rounded-lg overflow-hidden border border-slate-300 p-0 text-slate-900 print-card relative print-page-break flex flex-col justify-between min-h-[297mm] h-[297mm]"
-                style={{ height: "297mm", minHeight: "297mm" }}
-              >
-                {/* TOP HEADER BANNER */}
-                <div className="bg-[#0B122B] text-white pt-8 pb-8 px-6 sm:px-10 text-center relative overflow-hidden shrink-0">
-                  <div className="flex items-center justify-between mb-6">
-                    <HeaderEmblemLogo />
-                    <RightHeaderLogos />
-                  </div>
-
-                  <div className="space-y-1 my-2">
-                    <h2 className="text-yellow-400 font-extrabold text-base sm:text-lg tracking-widest uppercase">
-                      LAPORAN BULAN {getIndonesianMonthUpper(selectedBulan)}
-                    </h2>
-                    <h1 className="text-white font-extrabold text-xl sm:text-2xl tracking-wide uppercase italic leading-tight">
-                      TAHFIZHUL QUR'AN INDIVIDU
-                    </h1>
-                    <h3 className="text-white font-extrabold text-xl sm:text-2xl tracking-wide uppercase italic">
-                      SMP AL-IRSYAD SURAKARTA
-                    </h3>
-                    <p className="text-yellow-400 font-bold text-xs sm:text-sm tracking-widest uppercase pt-2">
-                      TAHUN AJARAN {getTahunAjaran(selectedBulan)}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Content Section */}
-                <div className="p-6 sm:p-8 bg-white space-y-6 flex-1 flex flex-col justify-between">
-                  {/* Student Details Card */}
-                  <div className="grid grid-cols-2 gap-y-3 gap-x-8 bg-[#EEF4FF] p-5 rounded-xl border border-slate-200 text-xs sm:text-sm">
-                    <div className="flex">
-                      <span className="w-32 font-bold text-slate-600">Nama Siswa</span>
-                      <span className="mr-2 font-bold">:</span>
-                      <span className="font-extrabold text-slate-900 uppercase">{student.nama}</span>
-                    </div>
-                    <div className="flex">
-                      <span className="w-32 font-bold text-slate-600">Kelas</span>
-                      <span className="mr-2 font-bold">:</span>
-                      <span className="font-bold text-slate-800">{student.kelasId}</span>
-                    </div>
-                    <div className="flex">
-                      <span className="w-32 font-bold text-slate-600">No. Induk Siswa</span>
-                      <span className="mr-2 font-bold">:</span>
-                      <span className="font-mono font-bold text-slate-800">{student.noInduk}</span>
-                    </div>
-                    <div className="flex">
-                      <span className="w-32 font-bold text-slate-600">Musyrif Tahfidz</span>
-                      <span className="mr-2 font-bold">:</span>
-                      <span className="font-bold text-slate-800">{student.musyrifNama}</span>
-                    </div>
-                  </div>
-
-                  {/* Performance Table */}
-                  <div className="overflow-hidden border border-[#0B122B]/30 rounded-lg">
-                    <table className="w-full text-xs sm:text-sm text-left border-collapse">
-                      <thead>
-                        <tr className="bg-[#0B122B] text-white uppercase text-[11px] font-extrabold tracking-wider text-center">
-                          <th className="py-3 px-4 border-r border-slate-700 w-20">Juz</th>
-                          <th className="py-3 px-4 border-r border-slate-700 text-left">Capaian Awal Bulan</th>
-                          <th className="py-3 px-4 border-r border-slate-700 text-left">Capaian Akhir Bulan</th>
-                          <th className="py-3 px-4 border-r border-slate-700 w-28">Total Baris</th>
-                          <th className="py-3 px-4 w-36">Murajaah Juziyyah</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {capaian ? (
-                          <tr className="border-t border-slate-200 bg-white">
-                            <td className="py-4 px-4 text-center font-extrabold text-xl text-[#0B122B] border-r border-slate-200 bg-[#EEF4FF]">
-                              {capaian.juz}
-                            </td>
-                            <td className="py-4 px-4 border-r border-slate-200 text-slate-800 align-top">
-                              <div className="font-bold text-slate-900">{capaian.capaianAwal || "-"}</div>
-                              <span className="text-[10px] text-slate-400 block mt-1">Materi hafalan awal periode</span>
-                            </td>
-                            <td className="py-4 px-4 border-r border-slate-200 text-slate-800 align-top">
-                              <div className="font-bold text-slate-900">{capaian.capaianAkhir || "-"}</div>
-                              <span className="text-[10px] text-slate-400 block mt-1">Hafalan terakhir dicapai</span>
-                            </td>
-                            <td className="py-4 px-4 text-center font-mono font-bold text-slate-800 border-r border-slate-200 align-middle">
-                              {capaian.totalBaris || 0} Baris
-                            </td>
-                            <td className="py-4 px-4 text-center align-middle font-bold text-slate-800">
-                              {capaian.juziyyah || "Belum"}
-                            </td>
-                          </tr>
-                        ) : (
-                          <tr>
-                            <td colSpan={5} className="py-12 px-4 text-center text-slate-400 italic">
-                              Belum ada input capaian tahfidz dari Musyrif untuk bulan ini.
-                            </td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {/* Teacher's Feedback Card */}
-                  <div className="border border-slate-200 rounded-xl p-5 bg-[#EEF4FF]/50">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B122B] mb-2">
-                      Catatan & Rekomendasi Musyrif:
-                    </h4>
-                    <p className="text-sm text-slate-800 italic leading-relaxed min-h-[50px]">
-                      {capaian?.catatan ? `"${capaian.catatan}"` : "Belum ada catatan pembinaan."}
-                    </p>
-                  </div>
-
-                  {/* Signatures */}
-                  <div className="grid grid-cols-2 gap-12 text-xs mt-12 mb-4 px-4">
-                    <div className="text-center">
-                      <p className="text-slate-600 mb-16">
-                        Mengetahui,<br />
-                        <strong className="text-slate-800">Penanggungjawab Tahfidz</strong>
-                      </p>
-                      <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
-                      <p className="font-bold text-slate-900">Muhammat Imam Syafi'i S.Pd.</p>
-                      <p className="text-xs font-bold text-slate-700">NIK. 103.244.00205</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-slate-600 mb-16">
-                        Surakarta, {new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}<br />
-                        <strong className="text-slate-800">Musyrif Halaqoh</strong>
-                      </p>
-                      <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
-                      <p className="font-bold text-slate-900">{student.musyrifNama}</p>
-                      <p className="text-xs font-bold text-slate-700">
-                        NIK. {musyrifs.find((m) => m.id === student.musyrifId)?.nik || student.musyrifId}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* BOTTOM FOOTER BAR */}
-                <div className="bg-[#0B122B] py-3.5 text-center shrink-0 mt-auto">
                   <p className="text-white font-extrabold text-xs sm:text-sm tracking-widest font-mono">
                     www.alirsyadsolo.sch.id
                   </p>
