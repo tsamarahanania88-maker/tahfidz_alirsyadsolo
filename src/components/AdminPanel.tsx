@@ -1213,60 +1213,61 @@ export default function AdminPanel({
                       <tr className="bg-slate-50 text-slate-500 border-b border-slate-200 uppercase font-bold tracking-wider">
                         <th className="py-3 px-4">Siswa</th>
                         <th className="py-3 px-4">Kelas</th>
-                        <th className="py-3 px-4 w-12 text-center">Juz</th>
-                        <th className="py-3 px-4">Awal Bulan</th>
-                        <th className="py-3 px-4">Akhir Bulan</th>
-                        <th className="py-3 px-4 w-20 text-center">Baris</th>
-                        <th className="py-3 px-4 text-center">Juziyyah</th>
-                        <th className="py-3 px-4">Catatan Musyrif</th>
+                        <th className="py-3 px-4">Capaian</th>
+                        <th className="py-3 px-4 text-center">Total Baris</th>
+                        <th className="py-3 px-4 text-center">Murajaah Juziyyah</th>
+                        <th className="py-3 px-4">Ket. / Predikat</th>
                         <th className="py-3 px-4 text-center w-16">Aksi</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
                       {filteredCapaiansReport.length === 0 ? (
                         <tr>
-                          <td colSpan={9} className="py-12 px-6 text-center text-slate-400 italic">
+                          <td colSpan={7} className="py-12 px-6 text-center text-slate-400 italic">
                             Belum ada input capaian untuk kriteria & bulan yang dipilih.
                           </td>
                         </tr>
                       ) : (
-                        filteredCapaiansReport.map((c) => (
-                          <tr key={c.id} className="hover:bg-slate-50/60 transition-colors">
-                            <td className="py-3 px-4">
-                              <div className="font-semibold text-slate-950">{c.namaSiswa}</div>
-                              <span className="text-[10px] text-slate-400 font-mono">Induk: {c.noInduk}</span>
-                            </td>
-                            <td className="py-3 px-4">
-                              <span className="inline-flex px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold text-[10px]">
-                                {c.kelasId}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 text-center font-bold text-brand-800">{c.juz}</td>
-                            <td className="py-3 px-4 text-slate-700">{c.capaianAwal || "-"}</td>
-                            <td className="py-3 px-4 text-slate-700">{c.capaianAkhir || "-"}</td>
-                            <td className="py-3 px-4 text-center font-bold font-mono text-slate-800">{c.totalBaris}</td>
-                            <td className="py-3 px-4 text-center">
-                              <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                                c.juziyyah === "Lancar" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
-                              }`}>
-                                {c.juziyyah}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4 text-slate-500 italic max-w-xs truncate" title={c.catatan}>
-                              {c.catatan || "-"}
-                            </td>
-                            <td className="py-3 px-4 text-center">
-                              <button
-                                onClick={() => handleDeleteSingleCapaianClick(c)}
-                                className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
-                                title="Hapus / Reset Data Capaian Siswa Ini"
-                                id={`btn-delete-capaian-${c.id}`}
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
-                            </td>
-                          </tr>
-                        ))
+                        filteredCapaiansReport.map((c) => {
+                          const capaianDisp = c.capaianAwal && c.capaianAkhir && c.capaianAwal !== c.capaianAkhir
+                            ? `${c.capaianAwal} - ${c.capaianAkhir}`
+                            : (c.capaianAkhir || c.capaianAwal || (c.juz ? `Juz ${c.juz}` : "-"));
+                          return (
+                            <tr key={c.id} className="hover:bg-slate-50/60 transition-colors">
+                              <td className="py-3 px-4">
+                                <div className="font-semibold text-slate-950">{c.namaSiswa}</div>
+                                <span className="text-[10px] text-slate-400 font-mono">Induk: {c.noInduk}</span>
+                              </td>
+                              <td className="py-3 px-4">
+                                <span className="inline-flex px-2 py-0.5 rounded bg-brand-50 text-brand-700 font-bold text-[10px]">
+                                  {c.kelasId}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 font-semibold text-slate-900">{capaianDisp}</td>
+                              <td className="py-3 px-4 text-center font-bold font-mono text-slate-800">
+                                {c.totalBaris !== undefined && String(c.totalBaris).trim() !== "" ? (typeof c.totalBaris === "number" || !isNaN(Number(c.totalBaris)) ? `${c.totalBaris} Baris` : c.totalBaris) : "-"}
+                              </td>
+                              <td className="py-3 px-4 text-center">
+                                <span className="inline-flex px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-800 border border-brand-200">
+                                  {c.juziyyah || "-"}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 text-slate-600 font-medium italic max-w-xs truncate" title={c.catatan}>
+                                {c.catatan || "-"}
+                              </td>
+                              <td className="py-3 px-4 text-center">
+                                <button
+                                  onClick={() => handleDeleteSingleCapaianClick(c)}
+                                  className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                                  title="Hapus / Reset Data Capaian Siswa Ini"
+                                  id={`btn-delete-capaian-${c.id}`}
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
                       )}
                     </tbody>
                   </table>

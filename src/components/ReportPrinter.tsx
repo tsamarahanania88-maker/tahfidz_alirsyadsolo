@@ -154,9 +154,9 @@ export default function ReportPrinter({
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 py-8 px-4 no-print">
+    <div className="min-h-screen bg-slate-100 py-8 px-4 print:p-0 print:m-0 print:bg-white print:min-h-0">
       {/* Control Panel */}
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-6 mb-8 border border-slate-200">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-6 mb-8 border border-slate-200 no-print">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <button
@@ -250,7 +250,7 @@ export default function ReportPrinter({
       </div>
 
       {/* Printable Sheet Wrapper */}
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="max-w-4xl mx-auto space-y-8 print:max-w-none print:w-full print:m-0 print:p-0 print:space-y-0">
         {filteredStudents.length === 0 ? (
           <div className="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500">
             Tidak ada data siswa atau laporan capaian untuk kriteria yang dipilih.
@@ -352,8 +352,8 @@ export default function ReportPrinter({
                                 {formatCapaianText(capaian)}
                               </td>
                               <td className="py-3.5 px-3 text-center font-bold text-slate-700 border-r border-slate-200 whitespace-nowrap">
-                                {capaian?.totalBaris !== undefined && capaian?.totalBaris > 0
-                                  ? `${capaian.totalBaris} Baris`
+                                {capaian?.totalBaris !== undefined && String(capaian?.totalBaris).trim() !== "" && String(capaian?.totalBaris).trim() !== "0"
+                                  ? (typeof capaian.totalBaris === "number" || !isNaN(Number(capaian.totalBaris)) ? `${capaian.totalBaris} Baris` : capaian.totalBaris)
                                   : "-"}
                               </td>
                               <td className="py-3.5 px-3 text-center font-medium text-slate-700 border-r border-slate-200">

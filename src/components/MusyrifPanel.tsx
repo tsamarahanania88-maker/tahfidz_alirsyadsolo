@@ -19,7 +19,8 @@ import {
   UserCheck,
   AlertCircle,
   RotateCcw,
-  Trash2
+  Trash2,
+  X
 } from "lucide-react";
 
 interface MusyrifPanelProps {
@@ -57,12 +58,11 @@ export default function MusyrifPanel({
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
 
   // Form states for Capaian
-  const [juz, setJuz] = useState("");
-  const [capaianAwal, setCapaianAwal] = useState("");
-  const [capaianAkhir, setCapaianAkhir] = useState("");
-  const [totalBaris, setTotalBaris] = useState<number>(0);
-  const [juziyyah, setJuziyyah] = useState("Lancar");
+  const [capaianText, setCapaianText] = useState("");
+  const [totalBaris, setTotalBaris] = useState<string | number>("");
+  const [juziyyah, setJuziyyah] = useState("");
   const [catatan, setCatatan] = useState("");
+  const [juz, setJuz] = useState("");
 
   // Change password form states
   const [oldPassword, setOldPassword] = useState("");
@@ -110,19 +110,20 @@ export default function MusyrifPanel({
     );
 
     if (existing) {
-      setJuz(existing.juz);
-      setCapaianAwal(existing.capaianAwal);
-      setCapaianAkhir(existing.capaianAkhir);
-      setTotalBaris(existing.totalBaris);
-      setJuziyyah(existing.juziyyah);
-      setCatatan(existing.catatan);
+      setJuz(existing.juz || "");
+      const formattedCap = existing.capaianAwal && existing.capaianAkhir && existing.capaianAwal !== existing.capaianAkhir
+        ? `${existing.capaianAwal} - ${existing.capaianAkhir}`
+        : (existing.capaianAkhir || existing.capaianAwal || "");
+      setCapaianText(formattedCap);
+      setTotalBaris(existing.totalBaris !== undefined && existing.totalBaris !== null ? existing.totalBaris : "");
+      setJuziyyah(existing.juziyyah || "");
+      setCatatan(existing.catatan || "");
     } else {
       // Clear fields for fresh entry
       setJuz("");
-      setCapaianAwal("");
-      setCapaianAkhir("");
-      setTotalBaris(0);
-      setJuziyyah("Lancar");
+      setCapaianText("");
+      setTotalBaris("");
+      setJuziyyah("");
       setCatatan("");
     }
   };
@@ -130,10 +131,9 @@ export default function MusyrifPanel({
   // Reset form input fields
   const handleResetForm = () => {
     setJuz("");
-    setCapaianAwal("");
-    setCapaianAkhir("");
-    setTotalBaris(0);
-    setJuziyyah("Lancar");
+    setCapaianText("");
+    setTotalBaris("");
+    setJuziyyah("");
     setCatatan("");
     showNotification("Isian form capaian berhasil direset/dikosongkan.");
   };
@@ -175,14 +175,16 @@ export default function MusyrifPanel({
     e.preventDefault();
     if (!editingStudent) return;
 
-    if (!juz || !capaianAwal || !capaianAkhir) {
-      showNotification("Field Juz, Capaian Awal & Akhir wajib diisi!", "error");
+    if (!capaianText.trim()) {
+      showNotification("Field CAPAIAN wajib diisi!", "error");
       return;
     }
 
     // Get class detail
     const studentClassObj = classes.find((c) => c.id === editingStudent.kelasId);
     const classNama = studentClassObj ? studentClassObj.nama : editingStudent.kelasId;
+
+    const parsedBaris = typeof totalBaris === "number" ? totalBaris : (parseInt(String(totalBaris).replace(/\D/g, ""), 10) || 0);
 
     const newCapaian: Capaian = {
       id: `${editingStudent.id}_${selectedBulan}`,
@@ -193,12 +195,12 @@ export default function MusyrifPanel({
       kelasNama: classNama,
       musyrifId: currentMusyrif.id,
       musyrifNama: currentMusyrif.nama,
-      juz,
-      capaianAwal,
-      capaianAkhir,
-      totalBaris: Number(totalBaris),
-      juziyyah,
-      catatan,
+      juz: juz || "-",
+      capaianAwal: "",
+      capaianAkhir: capaianText.trim(),
+      totalBaris: parsedBaris,
+      juziyyah: juziyyah.trim() || "-",
+      catatan: catatan.trim(),
       bulan: selectedBulan,
       updatedAt: new Date().toISOString(),
     };
@@ -367,147 +369,160 @@ export default function MusyrifPanel({
                 </div>
               </div>
 
-              {/* Editing Card Form */}
+              {/* Editing Modal Form Popup */}
               {editingStudent && (
-                <div className="bg-white rounded-2xl border border-brand-200 shadow-md p-6 max-w-3xl animate-slideIn">
-                  <div className="border-b border-slate-100 pb-4 mb-4 flex items-center justify-between">
-                    <div>
-                      <h3 className="text-base font-extrabold text-slate-800">
-                        Isi Capaian Tahfidz Siswa
-                      </h3>
-                      <p className="text-xs text-brand-700 font-bold mt-1 uppercase">
-                        {editingStudent.nama} ({editingStudent.noInduk}) &bull; Kelas {editingStudent.kelasId}
-                      </p>
-                    </div>
-                    <span className="text-xs bg-slate-100 px-2.5 py-1 rounded-full font-bold text-slate-600">
-                      Periode {formatIndonesianMonth(selectedBulan)}
-                    </span>
-                  </div>
-
-                  <form onSubmit={handleSaveCapaianSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+                  <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 w-full max-w-2xl animate-scaleIn my-auto relative">
+                    <div className="border-b border-slate-100 pb-4 mb-5 flex items-start justify-between gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">JUZ HAFALAN</label>
-                        <input
-                          type="text"
-                          required
-                          value={juz}
-                          onChange={(e) => setJuz(e.target.value)}
-                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-950 font-bold focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm"
-                          placeholder="Contoh: 30 / 29 / 1"
-                          id="input-capaian-juz"
-                        />
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-extrabold text-slate-800">
+                            Isi Capaian Tahfidz Siswa
+                          </h3>
+                          <span className="text-xs bg-brand-50 text-brand-800 border border-brand-200 px-2.5 py-0.5 rounded-full font-bold">
+                            Periode {formatIndonesianMonth(selectedBulan)}
+                          </span>
+                        </div>
+                        <p className="text-xs text-brand-700 font-bold mt-1 uppercase tracking-wide">
+                          {editingStudent.nama} ({editingStudent.noInduk}) &bull; Kelas {editingStudent.kelasId}
+                        </p>
                       </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Capaian Awal Bulan</label>
-                        <input
-                          type="text"
-                          required
-                          value={capaianAwal}
-                          onChange={(e) => setCapaianAwal(e.target.value)}
-                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm"
-                          placeholder="Surat & Ayat awal, misal: An-Naba 1"
-                          id="input-capaian-awal"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Capaian Akhir Bulan</label>
-                        <input
-                          type="text"
-                          required
-                          value={capaianAkhir}
-                          onChange={(e) => setCapaianAkhir(e.target.value)}
-                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm"
-                          placeholder="Surat & Ayat akhir, misal: An-Nazi'at 20"
-                          id="input-capaian-akhir"
-                        />
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setEditingStudent(null)}
+                        className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                        title="Tutup Form"
+                        id="btn-close-modal-capaian"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Total Baris Setoran</label>
-                        <input
-                          type="number"
-                          required
-                          value={totalBaris}
-                          onChange={(e) => setTotalBaris(parseInt(e.target.value, 10) || 0)}
-                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-mono"
-                          placeholder="Jumlah baris hafalan"
-                          id="input-capaian-baris"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Predikat / Juziyyah Kelancaran</label>
-                        <select
-                          value={juziyyah}
-                          onChange={(e) => setJuziyyah(e.target.value)}
-                          className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm bg-white"
-                          id="input-capaian-juziyyah"
-                        >
-                          <option value="Lancar">Lancar (Mumtaz)</option>
-                          <option value="Cukup Lancar">Cukup Lancar (Jayyid Jiddan)</option>
-                          <option value="Belum Lancar">Belum Lancar (Jayyid)</option>
-                          <option value="Sudah Juziyyah">Sudah Ujian Juziyyah</option>
-                        </select>
-                      </div>
-                    </div>
+                    <form onSubmit={handleSaveCapaianSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* 1. CAPAIAN */}
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            CAPAIAN <span className="text-rose-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={capaianText}
+                            onChange={(e) => setCapaianText(e.target.value)}
+                            className="block w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold"
+                            placeholder="Contoh: Surah An-Naba' : 1 - An-Nazi'at : 20 / Juz 30"
+                            id="input-capaian-text"
+                            autoFocus
+                          />
+                          <span className="text-[10px] text-slate-400 mt-1 block">Diisi manual sesuai capaian materi hafalan siswa</span>
+                        </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Catatan & Rekomendasi Guru</label>
-                      <textarea
-                        value={catatan}
-                        onChange={(e) => setCatatan(e.target.value)}
-                        rows={3}
-                        className="block w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm"
-                        placeholder="Masukkan catatan evaluasi hafalan santri..."
-                        id="input-capaian-catatan"
-                      />
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-3 border-t border-slate-100">
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={handleResetForm}
-                          className="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold rounded-lg text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-                          id="btn-reset-form-fields"
-                          title="Kosongkan seluruh isian form"
-                        >
-                          <RotateCcw className="w-3.5 h-3.5" /> Reset Isian Form
-                        </button>
+                        {/* 2. TOTAL BARIS */}
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            TOTAL BARIS <span className="text-rose-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={totalBaris}
+                            onChange={(e) => setTotalBaris(e.target.value)}
+                            className="block w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold"
+                            placeholder="Contoh: 15 / 20 Baris"
+                            id="input-capaian-baris"
+                          />
+                          <span className="text-[10px] text-slate-400 mt-1 block">Diisi manual jumlah baris setoran hafalan</span>
+                        </div>
                       </div>
 
-                      <div className="flex flex-wrap items-center justify-end gap-2">
-                        {capaians.some((c) => c.studentId === editingStudent.id && c.bulan === selectedBulan) && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {/* 3. MURAJAAH JUZIYYAH */}
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            MURAJAAH JUZIYYAH
+                          </label>
+                          <input
+                            type="text"
+                            list="juziyyah-suggestions"
+                            value={juziyyah}
+                            onChange={(e) => setJuziyyah(e.target.value)}
+                            className="block w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold"
+                            placeholder="Contoh: Juz 30 (Lancar) / Sudah Ujian Juziyyah"
+                            id="input-capaian-juziyyah"
+                          />
+                          <datalist id="juziyyah-suggestions">
+                            <option value="Juz 30 (Lancar)" />
+                            <option value="Juz 29 (Lancar)" />
+                            <option value="Sudah Ujian Juziyyah" />
+                            <option value="Lancar (Mumtaz)" />
+                            <option value="Cukup Lancar (Jayyid Jiddan)" />
+                            <option value="Belum Lancar" />
+                          </datalist>
+                          <span className="text-[10px] text-slate-400 mt-1 block">Diisi manual status murajaah / ujian juziyyah</span>
+                        </div>
+
+                        {/* 4. KET. / PREDIKAT */}
+                        <div>
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            KET. / PREDIKAT
+                          </label>
+                          <input
+                            type="text"
+                            value={catatan}
+                            onChange={(e) => setCatatan(e.target.value)}
+                            className="block w-full px-3.5 py-2.5 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm font-semibold"
+                            placeholder="Contoh: Mumtaz / Jayyid Jiddan / Hafalan sangat baik"
+                            id="input-capaian-catatan"
+                          />
+                          <span className="text-[10px] text-slate-400 mt-1 block">Diisi manual keterangan, predikat, atau catatan musyrif</span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-4 mt-2 border-t border-slate-100">
+                        <div className="flex items-center gap-2">
                           <button
                             type="button"
-                            onClick={() => handleResetSavedCapaian(editingStudent)}
-                            className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-lg text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-                            id="btn-delete-saved-capaian"
-                            title="Hapus data tersimpan untuk siswa ini pada bulan terpilih"
+                            onClick={handleResetForm}
+                            className="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 font-bold rounded-lg text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                            id="btn-reset-form-fields"
+                            title="Kosongkan seluruh isian form"
                           >
-                            <Trash2 className="w-3.5 h-3.5" /> Reset / Hapus Data Siswa
+                            <RotateCcw className="w-3.5 h-3.5" /> Reset Isian Form
                           </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => setEditingStudent(null)}
-                          className="px-4 py-2 border border-slate-300 text-slate-700 font-bold rounded-lg text-xs hover:bg-slate-50 transition-colors"
-                          id="btn-cancel-capaian"
-                        >
-                          Batal
-                        </button>
-                        <button
-                          type="submit"
-                          className="px-5 py-2 bg-brand-700 text-white font-bold rounded-lg text-xs hover:bg-brand-800 inline-flex items-center gap-1.5 shadow-sm transition-all transform active:scale-95"
-                          id="btn-save-capaian"
-                        >
-                          <Save className="w-4 h-4" /> Simpan Capaian
-                        </button>
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-end gap-2">
+                          {capaians.some((c) => c.studentId === editingStudent.id && c.bulan === selectedBulan) && (
+                            <button
+                              type="button"
+                              onClick={() => handleResetSavedCapaian(editingStudent)}
+                              className="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold rounded-lg text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                              id="btn-delete-saved-capaian"
+                              title="Hapus data tersimpan untuk siswa ini pada bulan terpilih"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" /> Reset / Hapus Data Siswa
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setEditingStudent(null)}
+                            className="px-4 py-2 border border-slate-300 text-slate-700 font-bold rounded-lg text-xs hover:bg-slate-50 transition-colors cursor-pointer"
+                            id="btn-cancel-capaian"
+                          >
+                            Batal
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-5 py-2 bg-brand-700 text-white font-bold rounded-lg text-xs hover:bg-brand-800 inline-flex items-center gap-1.5 shadow-sm transition-all transform active:scale-95 cursor-pointer"
+                            id="btn-save-capaian"
+                          >
+                            <Save className="w-4 h-4" /> Simpan Capaian
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
               )}
 
