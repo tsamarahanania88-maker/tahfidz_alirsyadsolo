@@ -26,38 +26,60 @@ interface ReportPrinterProps {
 // Official Al-Irsyad Al-Islamiyyah Logo
 const LOGO_URL = "https://www.alirsyad.or.id/wp-content/uploads/download/alirsyad-alislamiyyah.png";
 
-const HeaderEmblemLogo = () => (
-  <div className="flex items-center shrink-0">
-    <img
-      src={LOGO_URL}
-      alt="Al-Irsyad Al-Islamiyyah"
-      className="h-16 sm:h-20 w-auto object-contain"
-      referrerPolicy="no-referrer"
-    />
-  </div>
-);
+const HeaderEmblemLogo = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" | "compact" | "super" | "ultra" }) => {
+  const heightClass =
+    sizeVariant === "ultra"
+      ? "h-8 sm:h-9"
+      : sizeVariant === "super"
+      ? "h-10 sm:h-11"
+      : sizeVariant === "compact"
+      ? "h-12 sm:h-14"
+      : "h-16 sm:h-20";
+
+  return (
+    <div className="flex items-center shrink-0">
+      <img
+        src={LOGO_URL}
+        alt="Al-Irsyad Al-Islamiyyah"
+        className={`${heightClass} w-auto object-contain transition-all`}
+        referrerPolicy="no-referrer"
+      />
+    </div>
+  );
+};
 
 const DRIVE_RIGHT_HEADER_URL = "https://lh3.googleusercontent.com/d/1AxWqNswQPndetuhEJqVO2o-tQSQOFO73";
 const DRIVE_FALLBACK_URL = "https://drive.google.com/uc?export=view&id=1AxWqNswQPndetuhEJqVO2o-tQSQOFO73";
 
-const RightHeaderLogos = () => (
-  <div className="flex items-center shrink-0">
-    <img
-      src={DRIVE_RIGHT_HEADER_URL}
-      alt="Sekolah Mengedepankan Akhlak - SMQU SMP Qur'an"
-      className="h-16 sm:h-20 md:h-24 w-auto object-contain max-w-[280px] sm:max-w-[340px] transition-all"
-      referrerPolicy="no-referrer"
-      onError={(e) => {
-        const target = e.currentTarget;
-        if (target.src !== DRIVE_FALLBACK_URL) {
-          target.src = DRIVE_FALLBACK_URL;
-        } else if (target.src !== rightBannerImg) {
-          target.src = rightBannerImg;
-        }
-      }}
-    />
-  </div>
-);
+const RightHeaderLogos = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" | "compact" | "super" | "ultra" }) => {
+  const heightClass =
+    sizeVariant === "ultra"
+      ? "h-8 sm:h-9 max-w-[150px]"
+      : sizeVariant === "super"
+      ? "h-10 sm:h-11 max-w-[200px]"
+      : sizeVariant === "compact"
+      ? "h-12 sm:h-14 max-w-[250px]"
+      : "h-16 sm:h-20 md:h-24 max-w-[280px] sm:max-w-[340px]";
+
+  return (
+    <div className="flex items-center shrink-0">
+      <img
+        src={DRIVE_RIGHT_HEADER_URL}
+        alt="Sekolah Mengedepankan Akhlak - SMQU SMP Qur'an"
+        className={`${heightClass} w-auto object-contain transition-all`}
+        referrerPolicy="no-referrer"
+        onError={(e) => {
+          const target = e.currentTarget;
+          if (target.src !== DRIVE_FALLBACK_URL) {
+            target.src = DRIVE_FALLBACK_URL;
+          } else if (target.src !== rightBannerImg) {
+            target.src = rightBannerImg;
+          }
+        }}
+      />
+    </div>
+  );
+};
 
 export default function ReportPrinter({
   students,
@@ -279,6 +301,103 @@ export default function ReportPrinter({
               ? selectedMusyrifObj.id
               : classStudents[0]?.musyrifId || "";
 
+            // Dynamic scaling depending on total number of students in list
+            const studentCount = classStudents.length;
+            const sizeVariant: "normal" | "compact" | "super" | "ultra" =
+              studentCount > 15 ? "ultra" :
+              studentCount > 10 ? "super" :
+              studentCount > 6 ? "compact" : "normal";
+
+            const headerPadding =
+              sizeVariant === "ultra" ? "pt-1.5 pb-1.5 px-3" :
+              sizeVariant === "super" ? "pt-2.5 pb-2.5 px-4" :
+              sizeVariant === "compact" ? "pt-4 pb-4 px-6" :
+              "pt-8 pb-8 px-6 sm:px-10";
+
+            const logosRowMargin =
+              sizeVariant === "ultra" ? "mb-0.5" :
+              sizeVariant === "super" ? "mb-1" :
+              sizeVariant === "compact" ? "mb-2" :
+              "mb-6";
+
+            const titleBlockMargin =
+              sizeVariant === "ultra" ? "space-y-0 my-0.5" :
+              sizeVariant === "super" ? "space-y-0 my-0.5" :
+              sizeVariant === "compact" ? "space-y-0.5 my-1" :
+              "space-y-1 my-2";
+
+            const titleLaporanClass =
+              sizeVariant === "ultra" ? "text-[9px] tracking-wider" :
+              sizeVariant === "super" ? "text-[10px] tracking-wider" :
+              sizeVariant === "compact" ? "text-xs tracking-widest" :
+              "text-base sm:text-lg tracking-widest";
+
+            const titleTahfidzClass =
+              sizeVariant === "ultra" ? "text-xs sm:text-sm" :
+              sizeVariant === "super" ? "text-sm sm:text-base" :
+              sizeVariant === "compact" ? "text-base sm:text-lg" :
+              "text-xl sm:text-2xl";
+
+            const titleHalaqahClass =
+              sizeVariant === "ultra" ? "text-[10px] sm:text-xs" :
+              sizeVariant === "super" ? "text-xs sm:text-sm" :
+              sizeVariant === "compact" ? "text-sm sm:text-base" :
+              "text-lg sm:text-xl";
+
+            const titleSmpClass =
+              sizeVariant === "ultra" ? "text-xs sm:text-sm" :
+              sizeVariant === "super" ? "text-sm sm:text-base" :
+              sizeVariant === "compact" ? "text-base sm:text-lg" :
+              "text-xl sm:text-2xl";
+
+            const titleTahunClass =
+              sizeVariant === "ultra" ? "text-[8px] pt-0" :
+              sizeVariant === "super" ? "text-[9px] pt-0.5" :
+              sizeVariant === "compact" ? "text-[10px] pt-1" :
+              "text-xs sm:text-sm pt-2";
+
+            const tableThClass =
+              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8.5px]" :
+              sizeVariant === "super" ? "py-1 px-1.5 text-[9.5px]" :
+              sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
+              "py-3 px-2 text-[11px]";
+
+            const tableTdClass =
+              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8.5px]" :
+              sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
+              sizeVariant === "compact" ? "py-2 px-2 text-[10px]" :
+              "py-3.5 px-2 text-[11px]";
+
+            const tableTdNameClass =
+              sizeVariant === "ultra" ? "py-0.5 px-2 text-[9px]" :
+              sizeVariant === "super" ? "py-1 px-2.5 text-[9.5px]" :
+              sizeVariant === "compact" ? "py-2 px-3 text-[10px]" :
+              "py-3.5 px-4 text-[11px]";
+
+            const containerPadding =
+              sizeVariant === "ultra" ? "p-2 sm:p-3" :
+              sizeVariant === "super" ? "p-3 sm:p-4" :
+              sizeVariant === "compact" ? "p-4" :
+              "p-4 sm:p-6";
+
+            const signatureMarginTop =
+              sizeVariant === "ultra" ? "mt-1 mb-1 px-2 text-[9px]" :
+              sizeVariant === "super" ? "mt-2 mb-1 px-3 text-[10px]" :
+              sizeVariant === "compact" ? "mt-4 mb-2 px-4 text-[11px]" :
+              "mt-12 mb-4 px-4 text-xs";
+
+            const signatureSpace =
+              sizeVariant === "ultra" ? "mb-4" :
+              sizeVariant === "super" ? "mb-6" :
+              sizeVariant === "compact" ? "mb-8" :
+              "mb-16";
+
+            const footerBarPadding =
+              sizeVariant === "ultra" ? "py-1.5" :
+              sizeVariant === "super" ? "py-2" :
+              sizeVariant === "compact" ? "py-2.5" :
+              "py-3.5";
+
             return (
               <div
                 key={classId}
@@ -286,77 +405,76 @@ export default function ReportPrinter({
                 style={{ height: "297mm", minHeight: "297mm" }}
               >
                 {/* TOP HEADER BANNER (DARK NAVY BLUE #0B122B) */}
-                <div className="bg-[#0B122B] text-white pt-8 pb-8 px-6 sm:px-10 text-center relative overflow-hidden shrink-0">
+                <div className={`bg-[#0B122B] text-white ${headerPadding} text-center relative overflow-hidden shrink-0`}>
                   {/* Top Logos Row */}
-                  <div className="flex items-center justify-between mb-6">
-                    <HeaderEmblemLogo />
-                    <RightHeaderLogos />
+                  <div className={`flex items-center justify-between ${logosRowMargin}`}>
+                    <HeaderEmblemLogo sizeVariant={sizeVariant} />
+                    <RightHeaderLogos sizeVariant={sizeVariant} />
                   </div>
 
                   {/* Title Block */}
-                  <div className="space-y-1 my-2">
-                    <h2 className="text-yellow-400 font-extrabold text-base sm:text-lg tracking-widest uppercase">
+                  <div className={titleBlockMargin}>
+                    <h2 className={`text-yellow-400 font-extrabold uppercase ${titleLaporanClass}`}>
                       LAPORAN BULAN {getIndonesianMonthUpper(selectedBulan)}
                     </h2>
-                    <h1 className="text-white font-extrabold text-xl sm:text-2xl tracking-wide uppercase italic leading-tight">
+                    <h1 className={`text-white font-extrabold tracking-wide uppercase italic leading-tight ${titleTahfidzClass}`}>
                       TAHFIZHUL QUR'AN KELAS {selectedLevel ? `${selectedLevel}` : classId}
                     </h1>
-                    <h3 className="text-white font-bold text-lg sm:text-xl tracking-wide uppercase italic">
+                    <h3 className={`text-white font-bold tracking-wide uppercase italic ${titleHalaqahClass}`}>
                       {musyrifDisplayTitle.toUpperCase().startsWith("HALAQAH") || musyrifDisplayTitle.toUpperCase().startsWith("USTADZ") 
                         ? musyrifDisplayTitle.toUpperCase()
                         : `HALAQAH ${musyrifDisplayTitle.toUpperCase()}`}
                     </h3>
-                    <h3 className="text-white font-extrabold text-xl sm:text-2xl tracking-wide uppercase italic">
+                    <h3 className={`text-white font-extrabold tracking-wide uppercase italic ${titleSmpClass}`}>
                       SMP AL-IRSYAD SURAKARTA
                     </h3>
-                    <p className="text-yellow-400 font-bold text-xs sm:text-sm tracking-widest uppercase pt-2">
+                    <p className={`text-yellow-400 font-bold tracking-widest uppercase ${titleTahunClass}`}>
                       TAHUN AJARAN {getTahunAjaran(selectedBulan)}
                     </p>
                   </div>
                 </div>
 
                 {/* TABLE SECTION */}
-                <div className="p-4 sm:p-6 bg-white flex-1 flex flex-col justify-between">
+                <div className={`${containerPadding} bg-white flex-1 flex flex-col justify-between overflow-hidden`}>
                   <div className="overflow-hidden border border-[#0B122B]/30 rounded-none">
-                    <table className="w-full text-xs text-left border-collapse">
+                    <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-[#0B122B] text-white uppercase text-[11px] font-extrabold tracking-wider text-center">
-                          <th className="py-3 px-2 border-r border-slate-700 w-10">NO</th>
-                          <th className="py-3 px-4 border-r border-slate-700 text-left">NAMA</th>
-                          <th className="py-3 px-2 border-r border-slate-700 w-16">KELAS</th>
-                          <th className="py-3 px-4 border-r border-slate-700 text-left">CAPAIAN</th>
-                          <th className="py-3 px-3 border-r border-slate-700 w-24">TOTAL BARIS</th>
-                          <th className="py-3 px-3 border-r border-slate-700 w-32">MURAJAAH JUZIYYAH</th>
-                          <th className="py-3 px-3 w-28">KET. /PREDIKAT</th>
+                        <tr className="bg-[#0B122B] text-white uppercase font-extrabold tracking-wider text-center">
+                          <th className={`${tableThClass} border-r border-slate-700 w-8`}>NO</th>
+                          <th className={`${tableThClass} border-r border-slate-700 text-left`}>NAMA</th>
+                          <th className={`${tableThClass} border-r border-slate-700 w-14`}>KELAS</th>
+                          <th className={`${tableThClass} border-r border-slate-700 text-left`}>CAPAIAN</th>
+                          <th className={`${tableThClass} border-r border-slate-700 w-20`}>TOTAL BARIS</th>
+                          <th className={`${tableThClass} border-r border-slate-700 w-28`}>MURAJAAH JUZIYYAH</th>
+                          <th className={`${tableThClass} w-24`}>KET. /PREDIKAT</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200">
                         {classStudents.map((student, sIdx) => {
                           const capaian = getCapaianForStudent(student.id);
-                          // Alternating row color matching attached image: soft ice blue tint vs white
                           const isEven = sIdx % 2 === 1;
                           const rowBg = isEven ? "bg-white" : "bg-[#EEF4FF]";
 
                           return (
                             <tr key={student.id} className={`${rowBg} hover:bg-amber-50/50 transition-colors`}>
-                              <td className="py-3.5 px-2 text-center font-bold text-slate-700 border-r border-slate-200">
+                              <td className={`${tableTdClass} text-center font-bold text-slate-700 border-r border-slate-200`}>
                                 {sIdx + 1}
                               </td>
-                              <td className="py-3.5 px-4 font-bold text-slate-800 uppercase tracking-wide border-r border-slate-200 text-[11px]">
+                              <td className={`${tableTdNameClass} font-bold text-slate-800 uppercase tracking-wide border-r border-slate-200`}>
                                 {student.nama}
                               </td>
-                              <td className="py-3.5 px-2 text-center font-semibold text-slate-700 border-r border-slate-200">
+                              <td className={`${tableTdClass} text-center font-semibold text-slate-700 border-r border-slate-200`}>
                                 {student.kelasId}
                               </td>
-                              <td className="py-3.5 px-4 text-slate-800 font-medium border-r border-slate-200 leading-snug">
+                              <td className={`${tableTdClass} text-slate-800 font-medium border-r border-slate-200 leading-snug`}>
                                 {formatCapaianText(capaian)}
                               </td>
-                              <td className="py-3.5 px-3 text-center font-bold text-slate-700 border-r border-slate-200 whitespace-nowrap">
+                              <td className={`${tableTdClass} text-center font-bold text-slate-700 border-r border-slate-200 whitespace-nowrap`}>
                                 {capaian?.totalBaris !== undefined && String(capaian?.totalBaris).trim() !== "" && String(capaian?.totalBaris).trim() !== "0"
                                   ? (typeof capaian.totalBaris === "number" || !isNaN(Number(capaian.totalBaris)) ? `${capaian.totalBaris} Baris` : capaian.totalBaris)
                                   : "-"}
                               </td>
-                              <td className="py-3.5 px-3 text-center font-medium text-slate-700 border-r border-slate-200">
+                              <td className={`${tableTdClass} text-center font-medium text-slate-700 border-r border-slate-200`}>
                                 {capaian?.juziyyah ? (
                                   <span className="font-semibold text-slate-800">
                                     {capaian.juziyyah}
@@ -365,7 +483,7 @@ export default function ReportPrinter({
                                   "-"
                                 )}
                               </td>
-                              <td className="py-3.5 px-3 text-center font-medium text-slate-600">
+                              <td className={`${tableTdClass} text-center font-medium text-slate-600`}>
                                 {capaian?.catatan || "-"}
                               </td>
                             </tr>
@@ -376,22 +494,22 @@ export default function ReportPrinter({
                   </div>
 
                   {/* SIGNATURES SECTION */}
-                  <div className="grid grid-cols-2 gap-12 text-xs mt-12 mb-4 px-4">
+                  <div className={`grid grid-cols-2 gap-8 ${signatureMarginTop}`}>
                     <div className="text-center">
-                      <p className="text-slate-600 mb-16">
+                      <p className={`text-slate-600 ${signatureSpace}`}>
                         Mengetahui,<br />
                         <strong className="text-slate-800">Penanggungjawab Tahfidz</strong>
                       </p>
-                      <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
+                      <div className="w-44 border-b-2 border-slate-800 mx-auto mb-1"></div>
                       <p className="font-bold text-slate-900">Muhammat Imam Syafi'i S.Pd.</p>
                       <p className="text-xs font-bold text-slate-700">NIK. 103.244.00205</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-slate-600 mb-16">
+                      <p className={`text-slate-600 ${signatureSpace}`}>
                         Surakarta, {new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}<br />
                         <strong className="text-slate-800">Musyrif Halaqoh</strong>
                       </p>
-                      <div className="w-48 border-b-2 border-slate-800 mx-auto mb-1"></div>
+                      <div className="w-44 border-b-2 border-slate-800 mx-auto mb-1"></div>
                       <p className="font-bold text-slate-900">{musyrifSignName}</p>
                       <p className="text-xs font-bold text-slate-700">
                         {musyrifSignId ? `NIK. ${musyrifs.find((m) => m.id === musyrifSignId)?.nik || musyrifSignId}` : "Pembina Tahfidz"}
@@ -401,7 +519,7 @@ export default function ReportPrinter({
                 </div>
 
                 {/* BOTTOM FOOTER BAR (DARK NAVY BLUE #0B122B) */}
-                <div className="bg-[#0B122B] py-3.5 text-center shrink-0 mt-auto">
+                <div className={`bg-[#0B122B] ${footerBarPadding} text-center shrink-0 mt-auto`}>
                   <p className="text-white font-extrabold text-xs sm:text-sm tracking-widest font-mono">
                     www.alirsyadsolo.sch.id
                   </p>

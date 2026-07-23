@@ -12,6 +12,7 @@ import {
   Printer,
   Settings as SettingsIcon,
   ChevronRight,
+  ChevronLeft,
   LogOut,
   Info,
   CheckCircle,
@@ -91,6 +92,18 @@ export default function MusyrifPanel({
 
     return true;
   });
+
+  // Pagination state for student list (15 per page)
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 15;
+
+  const totalPages = Math.ceil(filteredMyStudents.length / ITEMS_PER_PAGE) || 1;
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+
+  const paginatedStudents = filteredMyStudents.slice(
+    (safeCurrentPage - 1) * ITEMS_PER_PAGE,
+    safeCurrentPage * ITEMS_PER_PAGE
+  );
 
   // Get filled vs unfilled stats for the selected month
   const studentsFilled = myStudents.filter((s) =>
@@ -362,6 +375,7 @@ export default function MusyrifPanel({
                     onChange={(e) => {
                       setSelectedBulan(e.target.value);
                       setEditingStudent(null);
+                      setCurrentPage(1);
                     }}
                     className="px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
                     id="m-input-bulan"
@@ -530,7 +544,10 @@ export default function MusyrifPanel({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Card Already Filled */}
                 <div
-                  onClick={() => setFilterStatus(filterStatus === "filled" ? "" : "filled")}
+                  onClick={() => {
+                    setFilterStatus(filterStatus === "filled" ? "" : "filled");
+                    setCurrentPage(1);
+                  }}
                   className={`border rounded-2xl p-5 shadow-sm flex items-center justify-between cursor-pointer transition-all duration-200 select-none ${
                     filterStatus === "filled"
                       ? "bg-emerald-100 border-emerald-400 ring-2 ring-emerald-500/20 scale-[1.01] shadow-md"
@@ -556,7 +573,10 @@ export default function MusyrifPanel({
 
                 {/* Card Unfilled */}
                 <div
-                  onClick={() => setFilterStatus(filterStatus === "unfilled" ? "" : "unfilled")}
+                  onClick={() => {
+                    setFilterStatus(filterStatus === "unfilled" ? "" : "unfilled");
+                    setCurrentPage(1);
+                  }}
                   className={`border rounded-2xl p-5 shadow-sm flex items-center justify-between cursor-pointer transition-all duration-200 select-none ${
                     filterStatus === "unfilled"
                       ? "bg-amber-100 border-amber-400 ring-2 ring-amber-500/20 scale-[1.01] shadow-md"
@@ -594,7 +614,10 @@ export default function MusyrifPanel({
                       }`}>
                         Filter: {filterStatus === "filled" ? "Sudah Diinput" : "Belum Diinput"}
                         <button
-                          onClick={() => setFilterStatus("")}
+                          onClick={() => {
+                            setFilterStatus("");
+                            setCurrentPage(1);
+                          }}
                           className="hover:bg-slate-200 rounded-full w-3.5 h-3.5 inline-flex items-center justify-center font-extrabold transition-colors"
                           title="Hapus filter"
                         >
@@ -607,7 +630,10 @@ export default function MusyrifPanel({
                     <span className="text-xs font-bold text-slate-500">Filter Jenjang:</span>
                     <select
                       value={filterJenjang}
-                      onChange={(e) => setFilterJenjang(e.target.value)}
+                      onChange={(e) => {
+                        setFilterJenjang(e.target.value);
+                        setCurrentPage(1);
+                      }}
                       className="px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-bold bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
                       id="m-filter-jenjang"
                     >
@@ -640,7 +666,7 @@ export default function MusyrifPanel({
                           </td>
                         </tr>
                       ) : (
-                        filteredMyStudents.map((s) => {
+                        paginatedStudents.map((s) => {
                           const record = capaians.find((c) => c.studentId === s.id && c.bulan === selectedBulan);
                           return (
                             <tr key={s.id} className="hover:bg-slate-50/60 transition-colors">
@@ -690,6 +716,40 @@ export default function MusyrifPanel({
                     </tbody>
                   </table>
                 </div>
+
+                {/* Pagination Controls */}
+                {filteredMyStudents.length > 0 && (
+                  <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600 font-medium">
+                    <div>
+                      Menampilkan <span className="font-extrabold text-slate-800">{(safeCurrentPage - 1) * ITEMS_PER_PAGE + 1}</span> - <span className="font-extrabold text-slate-800">{Math.min(safeCurrentPage * ITEMS_PER_PAGE, filteredMyStudents.length)}</span> dari <span className="font-extrabold text-slate-800">{filteredMyStudents.length}</span> Santri
+                    </div>
+                    {totalPages > 1 && (
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                          disabled={safeCurrentPage === 1}
+                          className="px-3 py-1.5 border border-slate-300 rounded-lg font-bold bg-white hover:bg-slate-100 text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-colors cursor-pointer"
+                          id="btn-musyrif-prev-page"
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" /> Sebelumnya
+                        </button>
+
+                        <div className="flex items-center gap-1 px-2 font-bold text-slate-700">
+                          Halaman {safeCurrentPage} dari {totalPages}
+                        </div>
+
+                        <button
+                          onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                          disabled={safeCurrentPage === totalPages}
+                          className="px-3 py-1.5 border border-slate-300 rounded-lg font-bold bg-white hover:bg-slate-100 text-slate-700 disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 transition-colors cursor-pointer"
+                          id="btn-musyrif-next-page"
+                        >
+                          Selanjutnya <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
