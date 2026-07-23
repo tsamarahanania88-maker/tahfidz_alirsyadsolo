@@ -251,27 +251,27 @@ export default function ReportPrinter({
             // Dynamic scaling depending on total number of students in list
             const studentCount = classStudents.length;
             const sizeVariant: "normal" | "compact" | "super" | "ultra" =
-              studentCount > 15 ? "ultra" :
-              studentCount > 10 ? "super" :
-              studentCount > 6 ? "compact" : "normal";
+              studentCount > 24 ? "ultra" :
+              studentCount > 18 ? "super" :
+              studentCount > 13 ? "compact" : "normal";
 
             const headerPadding =
               sizeVariant === "ultra" ? "pt-1.5 pb-1.5 px-3" :
               sizeVariant === "super" ? "pt-2.5 pb-2.5 px-4" :
               sizeVariant === "compact" ? "pt-4 pb-4 px-6" :
-              "pt-8 pb-8 px-6 sm:px-10";
+              "pt-6 pb-6 px-6 sm:px-10";
 
             const logosRowMargin =
               sizeVariant === "ultra" ? "mb-0.5" :
               sizeVariant === "super" ? "mb-1" :
               sizeVariant === "compact" ? "mb-2" :
-              "mb-6";
+              "mb-4";
 
             const titleBlockMargin =
               sizeVariant === "ultra" ? "space-y-0 my-0.5" :
               sizeVariant === "super" ? "space-y-0 my-0.5" :
               sizeVariant === "compact" ? "space-y-0.5 my-1" :
-              "space-y-1 my-2";
+              "space-y-1 my-1.5";
 
             const titleLaporanClass =
               sizeVariant === "ultra" ? "text-[9px] tracking-wider" :
@@ -301,43 +301,43 @@ export default function ReportPrinter({
               sizeVariant === "ultra" ? "text-[8px] pt-0" :
               sizeVariant === "super" ? "text-[9px] pt-0.5" :
               sizeVariant === "compact" ? "text-[10px] pt-1" :
-              "text-xs sm:text-sm pt-2";
+              "text-xs sm:text-sm pt-1.5";
 
             const tableThClass =
-              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8.5px]" :
-              sizeVariant === "super" ? "py-1 px-1.5 text-[9.5px]" :
-              sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
-              "py-3 px-2 text-[11px]";
+              sizeVariant === "ultra" ? "py-1 px-1 text-[8.5px]" :
+              sizeVariant === "super" ? "py-1.5 px-1.5 text-[9.5px]" :
+              sizeVariant === "compact" ? "py-2 px-2 text-[10.5px]" :
+              "py-3 px-3 text-xs";
 
             const tableTdClass =
               sizeVariant === "ultra" ? "py-0.5 px-1 text-[8.5px]" :
               sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
-              sizeVariant === "compact" ? "py-2 px-2 text-[10px]" :
-              "py-3.5 px-2 text-[11px]";
+              sizeVariant === "compact" ? "py-2 px-2 text-[10.5px]" :
+              "py-3 px-3 text-xs";
 
             const tableTdNameClass =
               sizeVariant === "ultra" ? "py-0.5 px-2 text-[9px]" :
               sizeVariant === "super" ? "py-1 px-2.5 text-[9.5px]" :
-              sizeVariant === "compact" ? "py-2 px-3 text-[10px]" :
-              "py-3.5 px-4 text-[11px]";
+              sizeVariant === "compact" ? "py-2 px-3 text-[10.5px]" :
+              "py-3 px-4 text-xs";
 
             const containerPadding =
               sizeVariant === "ultra" ? "p-2 sm:p-3" :
               sizeVariant === "super" ? "p-3 sm:p-4" :
-              sizeVariant === "compact" ? "p-4" :
-              "p-4 sm:p-6";
+              sizeVariant === "compact" ? "p-4 sm:p-5" :
+              "p-6";
 
             const signatureMarginTop =
-              sizeVariant === "ultra" ? "mt-1 mb-1 px-2 text-[9px]" :
-              sizeVariant === "super" ? "mt-2 mb-1 px-3 text-[10px]" :
-              sizeVariant === "compact" ? "mt-4 mb-2 px-4 text-[11px]" :
-              "mt-12 mb-4 px-4 text-xs";
+              sizeVariant === "ultra" ? "mt-auto pt-2 mb-2 px-2 text-[9px]" :
+              sizeVariant === "super" ? "mt-auto pt-3 mb-2 px-3 text-[10px]" :
+              sizeVariant === "compact" ? "mt-auto pt-4 mb-3 px-4 text-xs" :
+              "mt-auto pt-6 mb-4 px-6 text-xs";
 
             const signatureSpace =
               sizeVariant === "ultra" ? "mb-4" :
               sizeVariant === "super" ? "mb-6" :
               sizeVariant === "compact" ? "mb-8" :
-              "mb-16";
+              "mb-12";
 
             const footerBarPadding =
               sizeVariant === "ultra" ? "py-1.5" :
