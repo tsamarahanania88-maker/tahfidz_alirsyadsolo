@@ -105,13 +105,29 @@ export default function ReportPrinter({
     filteredStudents = filteredStudents.filter((s) => s.musyrifId === selectedMusyrifId);
   }
 
-  // Group students by class
+  // Helper to extract numeric/main grade level from kelasId (e.g., "7A" -> "7", "8B" -> "8")
+  const getGradeLevel = (kelasId: string) => {
+    const match = kelasId.match(/(\d+)/);
+    return match ? match[1] : kelasId;
+  };
+
+  // Group students by grade level (to consolidate e.g. 7A and 7B into Class 7 for a single halaqah)
   const studentsByClass: { [classId: string]: Student[] } = {};
   filteredStudents.forEach((student) => {
-    if (!studentsByClass[student.kelasId]) {
-      studentsByClass[student.kelasId] = [];
+    const gradeLevel = getGradeLevel(student.kelasId);
+    if (!studentsByClass[gradeLevel]) {
+      studentsByClass[gradeLevel] = [];
     }
-    studentsByClass[student.kelasId].push(student);
+    studentsByClass[gradeLevel].push(student);
+  });
+
+  // Sort students within each group by class (so 7A is listed before 7B) and then by name
+  Object.keys(studentsByClass).forEach((gradeLevel) => {
+    studentsByClass[gradeLevel].sort((a, b) => {
+      const classComp = a.kelasId.localeCompare(b.kelasId);
+      if (classComp !== 0) return classComp;
+      return a.nama.localeCompare(b.nama);
+    });
   });
 
   const sortedClassIds = Object.keys(studentsByClass).sort();
@@ -365,7 +381,7 @@ export default function ReportPrinter({
                       LAPORAN BULAN {getIndonesianMonthUpper(selectedBulan)}
                     </h2>
                     <h1 className={`text-white font-extrabold tracking-wide uppercase italic leading-tight ${titleTahfidzClass}`}>
-                      TAHFIZHUL QUR'AN KELAS {selectedLevel ? `${selectedLevel}` : classId}
+                      TAHFIZHUL QUR'AN KELAS {selectedClassId ? selectedClassId : (selectedLevel ? `${selectedLevel}` : classId)}
                     </h1>
                     <h3 className={`text-white font-bold tracking-wide uppercase italic ${titleHalaqahClass}`}>
                       {musyrifDisplayTitle.toUpperCase().startsWith("HALAQAH") || musyrifDisplayTitle.toUpperCase().startsWith("USTADZ") 
