@@ -189,7 +189,7 @@ export default function ReportPrinter({
   return (
     <div className="min-h-screen bg-slate-100 py-8 px-4 print:p-0 print:m-0 print:bg-white print:min-h-0">
       {/* Control Panel */}
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-6 mb-8 border border-slate-200 no-print">
+      <div className="max-w-[210mm] w-full mx-auto bg-white rounded-2xl shadow-md p-6 mb-8 border border-slate-200 no-print">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <button
@@ -235,7 +235,7 @@ export default function ReportPrinter({
       </div>
 
       {/* Printable Sheet Wrapper */}
-      <div className="max-w-4xl mx-auto space-y-8 print:max-w-none print:w-full print:m-0 print:p-0 print:space-y-0">
+      <div className="max-w-[210mm] w-full mx-auto space-y-8 print:max-w-none print:w-full print:m-0 print:p-0 print:space-y-0">
         {filteredStudents.length === 0 ? (
           <div className="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500">
             Tidak ada data siswa atau laporan capaian untuk kriteria yang dipilih.
@@ -267,21 +267,21 @@ export default function ReportPrinter({
             // Dynamic scaling depending on total number of students in list
             const studentCount = classStudents.length;
             const sizeVariant: "normal" | "compact" | "super" | "ultra" =
-              studentCount > 24 ? "ultra" :
-              studentCount > 18 ? "super" :
-              studentCount > 13 ? "compact" : "normal";
+              studentCount > 22 ? "ultra" :
+              studentCount > 16 ? "super" :
+              studentCount > 10 ? "compact" : "normal";
 
             const headerPadding =
-              sizeVariant === "ultra" ? "pt-1.5 pb-1.5 px-3" :
-              sizeVariant === "super" ? "pt-2.5 pb-2.5 px-4" :
-              sizeVariant === "compact" ? "pt-4 pb-4 px-6" :
-              "pt-6 pb-6 px-6 sm:px-10";
+              sizeVariant === "ultra" ? "pt-1 pb-1 px-3" :
+              sizeVariant === "super" ? "pt-2 pb-2 px-4" :
+              sizeVariant === "compact" ? "pt-3 pb-3 px-5" :
+              "pt-5 pb-5 px-6 sm:px-10";
 
             const logosRowMargin =
               sizeVariant === "ultra" ? "mb-0.5" :
               sizeVariant === "super" ? "mb-1" :
-              sizeVariant === "compact" ? "mb-2" :
-              "mb-4";
+              sizeVariant === "compact" ? "mb-1.5" :
+              "mb-3";
 
             const titleBlockMargin =
               sizeVariant === "ultra" ? "space-y-0 my-0.5" :
@@ -320,46 +320,46 @@ export default function ReportPrinter({
               "text-xs sm:text-sm pt-1.5";
 
             const tableThClass =
-              sizeVariant === "ultra" ? "py-1 px-1 text-[8.5px]" :
-              sizeVariant === "super" ? "py-1.5 px-1.5 text-[9.5px]" :
-              sizeVariant === "compact" ? "py-2 px-2 text-[10.5px]" :
-              "py-3 px-3 text-xs";
+              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8px]" :
+              sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
+              sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
+              "py-2.5 px-3 text-xs";
 
             const tableTdClass =
-              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8.5px]" :
+              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8px]" :
               sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
-              sizeVariant === "compact" ? "py-2 px-2 text-[10.5px]" :
-              "py-3 px-3 text-xs";
+              sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
+              "py-2 px-3 text-xs";
 
             const tableTdNameClass =
-              sizeVariant === "ultra" ? "py-0.5 px-2 text-[9px]" :
-              sizeVariant === "super" ? "py-1 px-2.5 text-[9.5px]" :
-              sizeVariant === "compact" ? "py-2 px-3 text-[10.5px]" :
-              "py-3 px-4 text-xs";
+              sizeVariant === "ultra" ? "py-0.5 px-1.5 text-[8.5px]" :
+              sizeVariant === "super" ? "py-1 px-2 text-[9px]" :
+              sizeVariant === "compact" ? "py-1.5 px-2.5 text-[10px]" :
+              "py-2 px-3 text-xs";
 
             const containerPadding =
-              sizeVariant === "ultra" ? "p-2 sm:p-3" :
-              sizeVariant === "super" ? "p-3 sm:p-4" :
-              sizeVariant === "compact" ? "p-4 sm:p-5" :
-              "p-6";
+              sizeVariant === "ultra" ? "pt-1 pb-2 px-3" :
+              sizeVariant === "super" ? "pt-2 pb-3 px-4" :
+              sizeVariant === "compact" ? "pt-3 pb-4 px-5" :
+              "pt-4 pb-5 px-6";
 
             const signatureMarginTop =
-              sizeVariant === "ultra" ? "mt-auto pt-2 mb-2 px-2 text-[9px]" :
-              sizeVariant === "super" ? "mt-auto pt-3 mb-2 px-3 text-[10px]" :
-              sizeVariant === "compact" ? "mt-auto pt-4 mb-3 px-4 text-xs" :
-              "mt-auto pt-6 mb-4 px-6 text-xs";
+              sizeVariant === "ultra" ? "mt-auto pt-1 mb-0.5 px-2 text-[8.5px]" :
+              sizeVariant === "super" ? "mt-auto pt-2 mb-1 px-3 text-[10px]" :
+              sizeVariant === "compact" ? "mt-auto pt-3 mb-2 px-4 text-xs" :
+              "mt-auto pt-4 mb-2 px-6 text-xs";
 
             const signatureSpace =
-              sizeVariant === "ultra" ? "mb-4" :
-              sizeVariant === "super" ? "mb-6" :
-              sizeVariant === "compact" ? "mb-8" :
-              "mb-12";
+              sizeVariant === "ultra" ? "mb-2" :
+              sizeVariant === "super" ? "mb-4" :
+              sizeVariant === "compact" ? "mb-6" :
+              "mb-10";
 
             const footerBarPadding =
               sizeVariant === "ultra" ? "py-1.5" :
               sizeVariant === "super" ? "py-2" :
               sizeVariant === "compact" ? "py-2.5" :
-              "py-3.5";
+              "py-3";
 
             return (
               <div
@@ -404,7 +404,7 @@ export default function ReportPrinter({
                       <thead>
                         <tr className="bg-[#0B122B] text-white uppercase font-extrabold tracking-wider text-center">
                           <th className={`${tableThClass} border-r border-slate-700 w-8`}>NO</th>
-                          <th className={`${tableThClass} border-r border-slate-700 text-left`}>NAMA</th>
+                          <th className={`${tableThClass} border-r border-slate-700 text-left w-40`}>NAMA</th>
                           <th className={`${tableThClass} border-r border-slate-700 w-14`}>KELAS</th>
                           <th className={`${tableThClass} border-r border-slate-700 text-left`}>CAPAIAN</th>
                           <th className={`${tableThClass} border-r border-slate-700 w-20`}>TOTAL BARIS</th>
