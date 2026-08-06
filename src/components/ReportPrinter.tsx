@@ -267,9 +267,9 @@ export default function ReportPrinter({
             // Dynamic scaling depending on total number of students in list
             const studentCount = classStudents.length;
             const sizeVariant: "normal" | "compact" | "super" | "ultra" =
-              studentCount > 22 ? "ultra" :
-              studentCount > 16 ? "super" :
-              studentCount > 10 ? "compact" : "normal";
+              studentCount > 24 ? "ultra" :
+              studentCount > 18 ? "super" :
+              studentCount > 13 ? "compact" : "normal";
 
             const headerPadding =
               sizeVariant === "ultra" ? "pt-1 pb-1 px-3" :
@@ -323,37 +323,37 @@ export default function ReportPrinter({
               sizeVariant === "ultra" ? "py-0.5 px-1 text-[8px]" :
               sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
               sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
-              "py-2.5 px-3 text-xs";
+              "py-3 px-3 text-xs";
 
             const tableTdClass =
               sizeVariant === "ultra" ? "py-0.5 px-1 text-[8px]" :
               sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
               sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
-              "py-2 px-3 text-xs";
+              "py-2.5 px-3 text-xs";
 
             const tableTdNameClass =
               sizeVariant === "ultra" ? "py-0.5 px-1.5 text-[8.5px]" :
               sizeVariant === "super" ? "py-1 px-2 text-[9px]" :
               sizeVariant === "compact" ? "py-1.5 px-2.5 text-[10px]" :
-              "py-2 px-3 text-xs";
+              "py-2.5 px-3 text-xs";
 
             const containerPadding =
-              sizeVariant === "ultra" ? "pt-1 pb-2 px-3" :
-              sizeVariant === "super" ? "pt-2 pb-3 px-4" :
-              sizeVariant === "compact" ? "pt-3 pb-4 px-5" :
-              "pt-4 pb-5 px-6";
+              sizeVariant === "ultra" ? "pt-1 pb-1 px-3" :
+              sizeVariant === "super" ? "pt-2 pb-1.5 px-4" :
+              sizeVariant === "compact" ? "pt-3 pb-2 px-5" :
+              "pt-4 pb-3 px-6";
 
             const signatureMarginTop =
-              sizeVariant === "ultra" ? "mt-auto pt-1 mb-0.5 px-2 text-[8.5px]" :
-              sizeVariant === "super" ? "mt-auto pt-2 mb-1 px-3 text-[10px]" :
-              sizeVariant === "compact" ? "mt-auto pt-3 mb-2 px-4 text-xs" :
-              "mt-auto pt-4 mb-2 px-6 text-xs";
+              sizeVariant === "ultra" ? "mt-auto pt-1 mb-0 px-2 text-[8px]" :
+              sizeVariant === "super" ? "mt-auto pt-1.5 mb-0 px-3 text-[9.5px]" :
+              sizeVariant === "compact" ? "mt-auto pt-2.5 mb-0 px-4 text-[11px]" :
+              "mt-auto pt-3.5 mb-0 px-6 text-xs";
 
             const signatureSpace =
-              sizeVariant === "ultra" ? "mb-2" :
-              sizeVariant === "super" ? "mb-4" :
-              sizeVariant === "compact" ? "mb-6" :
-              "mb-10";
+              sizeVariant === "ultra" ? "mb-1.5" :
+              sizeVariant === "super" ? "mb-3" :
+              sizeVariant === "compact" ? "mb-5" :
+              "mb-9";
 
             const footerBarPadding =
               sizeVariant === "ultra" ? "py-1.5" :
@@ -463,8 +463,11 @@ export default function ReportPrinter({
                         Mengetahui,<br />
                         <strong className="text-slate-800">Penanggungjawab Tahfidz</strong>
                       </p>
-                      <div className="w-44 border-b-2 border-slate-800 mx-auto mb-1"></div>
-                      <p className="font-bold text-slate-900">Muhammat Imam Syafi'i S.Pd.</p>
+                      <div className="mb-1">
+                        <span className="inline-block border-b-2 border-slate-800 pb-0.5 px-4 font-extrabold text-slate-900">
+                          Muhammat Imam Syafi'i S.Pd.
+                        </span>
+                      </div>
                       <p className="text-xs font-bold text-slate-700">NIK. 103.244.00205</p>
                     </div>
                     <div className="text-center">
@@ -472,8 +475,11 @@ export default function ReportPrinter({
                         Surakarta, {new Date().toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}<br />
                         <strong className="text-slate-800">Musyrif Halaqoh</strong>
                       </p>
-                      <div className="w-44 border-b-2 border-slate-800 mx-auto mb-1"></div>
-                      <p className="font-bold text-slate-900">{musyrifSignName}</p>
+                      <div className="mb-1">
+                        <span className="inline-block border-b-2 border-slate-800 pb-0.5 px-4 font-extrabold text-slate-900">
+                          {musyrifSignName}
+                        </span>
+                      </div>
                       <p className="text-xs font-bold text-slate-700">
                         {musyrifSignId ? `NIK. ${musyrifs.find((m) => m.id === musyrifSignId)?.nik || musyrifSignId}` : "Pembina Tahfidz"}
                       </p>
