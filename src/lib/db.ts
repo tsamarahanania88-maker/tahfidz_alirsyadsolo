@@ -204,6 +204,7 @@ export const dbService = {
         return list;
       } catch (err) {
         logFirestoreError("getClasses", err);
+        return getLocal("tahfidz_classes", DEFAULT_CLASSES);
       }
     }
     return getLocal("tahfidz_classes", DEFAULT_CLASSES);
@@ -272,6 +273,7 @@ export const dbService = {
         return list;
       } catch (err) {
         logFirestoreError("getMusyrifs", err);
+        return getLocal("tahfidz_musyrifs", DEFAULT_MUSYRIFS);
       }
     }
     return getLocal("tahfidz_musyrifs", DEFAULT_MUSYRIFS);
@@ -346,6 +348,7 @@ export const dbService = {
         return list;
       } catch (err) {
         logFirestoreError("getStudents", err);
+        return getLocal("tahfidz_students", DEFAULT_STUDENTS);
       }
     }
     return getLocal("tahfidz_students", DEFAULT_STUDENTS);
@@ -467,6 +470,7 @@ export const dbService = {
         return list;
       } catch (err) {
         logFirestoreError("getCapaians", err);
+        return getLocal("tahfidz_capaians", DEFAULT_CAPAIAN);
       }
     }
     return getLocal("tahfidz_capaians", DEFAULT_CAPAIAN);
@@ -550,6 +554,7 @@ export const dbService = {
         }
       } catch (err) {
         logFirestoreError("getAdminPassword", err);
+        return getLocal("tahfidz_admin_password", DEFAULT_ADMIN_PASSWORD);
       }
     }
     return getLocal("tahfidz_admin_password", DEFAULT_ADMIN_PASSWORD);
