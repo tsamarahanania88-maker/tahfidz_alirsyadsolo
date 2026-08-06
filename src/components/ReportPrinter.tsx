@@ -266,10 +266,60 @@ export default function ReportPrinter({
 
             // Dynamic scaling depending on total number of students in list
             const studentCount = classStudents.length;
-            const sizeVariant: "normal" | "compact" | "super" | "ultra" =
-              studentCount > 22 ? "ultra" :
-              studentCount > 16 ? "super" :
-              studentCount > 10 ? "compact" : "normal";
+
+            // Sophisticated, fine-grained sizing mapping based on studentCount to ensure beautiful proportions
+            let sizeVariant: "normal" | "compact" | "super" | "ultra" = "normal";
+            let tableTdPadding = "py-2 px-3";
+            let tableTdNamePadding = "py-2 px-3";
+            let tableThPadding = "py-2.5 px-3";
+            let signatureMt = "mt-auto pt-4 mb-2 px-6";
+            let justifyClass = "justify-between";
+
+            if (studentCount <= 6) {
+              sizeVariant = "normal";
+              tableTdPadding = "py-3 px-3";
+              tableTdNamePadding = "py-3 px-3";
+              tableThPadding = "py-3 px-3";
+              signatureMt = "mt-12 mb-2 px-6";
+              justifyClass = "justify-start";
+            } else if (studentCount <= 9) {
+              sizeVariant = "normal";
+              tableTdPadding = "py-4 px-3";
+              tableTdNamePadding = "py-4 px-3";
+              tableThPadding = "py-3.5 px-3";
+              signatureMt = "mt-16 mb-2 px-6";
+              justifyClass = "justify-start";
+            } else if (studentCount <= 13) {
+              // Medium-high students (like 11 students in the example):
+              // Expand the rows nicely so they fill the A4 page beautifully and push signatures down closer to the footer
+              sizeVariant = "normal";
+              tableTdPadding = "py-4 px-3";
+              tableTdNamePadding = "py-4 px-3";
+              tableThPadding = "py-3.5 px-3";
+              signatureMt = "mt-auto pt-4 mb-2 px-6";
+              justifyClass = "justify-between";
+            } else if (studentCount <= 17) {
+              sizeVariant = "compact";
+              tableTdPadding = "py-2.5 px-2.5";
+              tableTdNamePadding = "py-2.5 px-2.5";
+              tableThPadding = "py-2.5 px-2.5";
+              signatureMt = "mt-auto pt-3 mb-2 px-4";
+              justifyClass = "justify-between";
+            } else if (studentCount <= 22) {
+              sizeVariant = "super";
+              tableTdPadding = "py-1.5 px-1.5";
+              tableTdNamePadding = "py-1.5 px-2";
+              tableThPadding = "py-1.5 px-1.5";
+              signatureMt = "mt-auto pt-2 mb-1 px-3";
+              justifyClass = "justify-between";
+            } else {
+              sizeVariant = "ultra";
+              tableTdPadding = "py-0.5 px-1";
+              tableTdNamePadding = "py-0.5 px-1.5";
+              tableThPadding = "py-0.5 px-1";
+              signatureMt = "mt-auto pt-1 mb-0.5 px-2";
+              justifyClass = "justify-between";
+            }
 
             const headerPadding =
               sizeVariant === "ultra" ? "pt-1 pb-1 px-3" :
@@ -319,23 +369,26 @@ export default function ReportPrinter({
               sizeVariant === "compact" ? "text-[10px] pt-1" :
               "text-xs sm:text-sm pt-1.5";
 
-            const tableThClass =
-              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8px]" :
-              sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
-              sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
-              "py-2.5 px-3 text-xs";
+            const tableThClass = `${tableThPadding} ${
+              sizeVariant === "ultra" ? "text-[8px]" :
+              sizeVariant === "super" ? "text-[9px]" :
+              sizeVariant === "compact" ? "text-[10px]" :
+              "text-xs"
+            }`;
 
-            const tableTdClass =
-              sizeVariant === "ultra" ? "py-0.5 px-1 text-[8px]" :
-              sizeVariant === "super" ? "py-1 px-1.5 text-[9px]" :
-              sizeVariant === "compact" ? "py-1.5 px-2 text-[10px]" :
-              "py-2 px-3 text-xs";
+            const tableTdClass = `${tableTdPadding} ${
+              sizeVariant === "ultra" ? "text-[8px]" :
+              sizeVariant === "super" ? "text-[9px]" :
+              sizeVariant === "compact" ? "text-[10px]" :
+              "text-xs"
+            }`;
 
-            const tableTdNameClass =
-              sizeVariant === "ultra" ? "py-0.5 px-1.5 text-[8.5px]" :
-              sizeVariant === "super" ? "py-1 px-2 text-[9px]" :
-              sizeVariant === "compact" ? "py-1.5 px-2.5 text-[10px]" :
-              "py-2 px-3 text-xs";
+            const tableTdNameClass = `${tableTdNamePadding} ${
+              sizeVariant === "ultra" ? "text-[8.5px]" :
+              sizeVariant === "super" ? "text-[9px]" :
+              sizeVariant === "compact" ? "text-[10px]" :
+              "text-xs"
+            }`;
 
             const containerPadding =
               sizeVariant === "ultra" ? "pt-1 pb-2 px-3" :
@@ -343,11 +396,11 @@ export default function ReportPrinter({
               sizeVariant === "compact" ? "pt-3 pb-4 px-5" :
               "pt-4 pb-5 px-6";
 
-            const signatureMarginTop =
-              sizeVariant === "ultra" ? "mt-auto pt-1 mb-0.5 px-2 text-[8.5px]" :
-              sizeVariant === "super" ? "mt-auto pt-2 mb-1 px-3 text-[10px]" :
-              sizeVariant === "compact" ? "mt-auto pt-3 mb-2 px-4 text-xs" :
-              "mt-auto pt-4 mb-2 px-6 text-xs";
+            const signatureMarginTop = `${signatureMt} ${
+              sizeVariant === "ultra" ? "text-[8.5px]" :
+              sizeVariant === "super" ? "text-[10px]" :
+              "text-xs"
+            }`;
 
             const signatureSpace =
               sizeVariant === "ultra" ? "mb-2" :
@@ -398,7 +451,7 @@ export default function ReportPrinter({
                 </div>
 
                 {/* TABLE SECTION */}
-                <div className={`${containerPadding} bg-white flex-1 flex flex-col justify-between overflow-hidden`}>
+                <div className={`${containerPadding} bg-white flex-1 flex flex-col ${justifyClass} overflow-hidden`}>
                   <div className="overflow-hidden border border-[#0B122B]/30 rounded-none">
                     <table className="w-full text-left border-collapse">
                       <thead>
