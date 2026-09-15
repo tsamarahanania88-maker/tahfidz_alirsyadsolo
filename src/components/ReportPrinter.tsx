@@ -5,11 +5,59 @@
 
 import React from "react";
 import { Student, Class, Musyrif, Capaian } from "../types";
-import { Printer, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Printer, ArrowLeft, CheckCircle2, BookOpen } from "lucide-react";
 
 import logoImg from "../assets/images/al_irsyad_logo_hd_1784773161816.jpg";
-
 import rightBannerImg from "../assets/images/header_right_banner_1784774190288.jpg";
+import headerRightLogo from "../assets/images/header_right_logo.png";
+
+// Islamic Geometric Pattern Watermark for Tahfidz Header
+const IslamicGeometricBg = () => (
+  <svg
+    className="absolute inset-0 w-full h-full opacity-15 pointer-events-none"
+    xmlns="http://www.w3.org/2000/svg"
+    width="100%"
+    height="100%"
+  >
+    <defs>
+      <pattern id="islamic-geom-star" width="48" height="48" patternUnits="userSpaceOnUse">
+        <g stroke="#FDE047" strokeWidth="0.85" fill="none">
+          {/* Islamic 8-Point Star Interlacing */}
+          <path d="M24,4 L30,14 L41,14 L33,22 L36,34 L24,27 L12,34 L15,22 L7,14 L18,14 Z" />
+          <circle cx="24" cy="24" r="9" strokeDasharray="2 2" strokeOpacity="0.7" />
+          <rect x="12" y="12" width="24" height="24" transform="rotate(45 24 24)" strokeOpacity="0.5" />
+          <path d="M0,0 L48,48 M48,0 L0,48" strokeOpacity="0.25" />
+        </g>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#islamic-geom-star)" />
+  </svg>
+);
+
+// Traditional Islamic Manuscript Corner Flourish
+const IslamicCornerFlourish = ({ className = "" }: { className?: string }) => (
+  <svg
+    viewBox="0 0 60 60"
+    className={`w-12 h-12 sm:w-16 sm:h-16 text-yellow-300 pointer-events-none ${className}`}
+    fill="none"
+    stroke="currentColor"
+  >
+    <path d="M3,3 L36,3 Q16,3 16,22 L16,46" strokeWidth="1.75" />
+    <path d="M8,8 L44,8 Q22,8 22,28 L22,52" strokeWidth="1" strokeDasharray="2 2" strokeOpacity="0.8" />
+    <circle cx="4" cy="4" r="3" fill="currentColor" />
+    <circle cx="16" cy="16" r="2" fill="currentColor" fillOpacity="0.6" />
+    <path d="M12,3 Q12,12 3,12" strokeWidth="1.5" />
+  </svg>
+);
+
+// 8-Pointed Quranic Star (Rub el Hizb) Marker
+const RubElHizbIcon = ({ className = "w-4 h-4 text-yellow-300" }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={`${className} shrink-0 inline-block`} fill="currentColor">
+    <path d="M12 1.5l2.6 3.6 4.4-.7-1.1 4.4 3.7 2.7-3.7 2.7 1.1 4.4-4.4-.7L12 22.5l-2.6-3.6-4.4.7 1.1-4.4-3.7-2.7 3.7-2.7-1.1-4.4 4.4.7L12 1.5z" />
+    <circle cx="12" cy="12" r="3.2" fill="#173E7C" />
+    <circle cx="12" cy="12" r="1.5" fill="#FDE047" />
+  </svg>
+);
 
 interface ReportPrinterProps {
   students: Student[];
@@ -29,49 +77,52 @@ const LOGO_URL = "https://www.alirsyad.or.id/wp-content/uploads/download/alirsya
 const HeaderEmblemLogo = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" | "compact" | "super" | "ultra" }) => {
   const heightClass =
     sizeVariant === "ultra"
-      ? "h-8 sm:h-9"
+      ? "h-6 sm:h-7"
       : sizeVariant === "super"
-      ? "h-10 sm:h-11"
+      ? "h-7 sm:h-8"
       : sizeVariant === "compact"
-      ? "h-12 sm:h-14"
-      : "h-16 sm:h-20";
+      ? "h-8 sm:h-9"
+      : "h-10 sm:h-12";
 
   return (
     <div className="flex items-center shrink-0">
       <img
         src={LOGO_URL}
         alt="Al-Irsyad Al-Islamiyyah"
-        className={`${heightClass} w-auto object-contain transition-all`}
+        className={`${heightClass} w-auto object-contain transition-all drop-shadow-sm`}
         referrerPolicy="no-referrer"
+        onError={(e) => {
+          const target = e.currentTarget;
+          if (target.src !== logoImg) {
+            target.src = logoImg;
+          }
+        }}
       />
     </div>
   );
 };
 
-const DRIVE_RIGHT_HEADER_URL = "https://lh3.googleusercontent.com/d/1AxWqNswQPndetuhEJqVO2o-tQSQOFO73";
-const DRIVE_FALLBACK_URL = "https://drive.google.com/uc?export=view&id=1AxWqNswQPndetuhEJqVO2o-tQSQOFO73";
-
 const RightHeaderLogos = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" | "compact" | "super" | "ultra" }) => {
   const heightClass =
     sizeVariant === "ultra"
-      ? "h-8 sm:h-9 max-w-[150px]"
+      ? "h-6 sm:h-7 max-w-[130px]"
       : sizeVariant === "super"
-      ? "h-10 sm:h-11 max-w-[200px]"
+      ? "h-7 sm:h-8 max-w-[160px]"
       : sizeVariant === "compact"
-      ? "h-12 sm:h-14 max-w-[250px]"
-      : "h-16 sm:h-20 md:h-24 max-w-[280px] sm:max-w-[340px]";
+      ? "h-8 sm:h-9 max-w-[190px]"
+      : "h-9 sm:h-10 md:h-11 max-w-[210px] sm:max-w-[250px]";
 
   return (
     <div className="flex items-center shrink-0">
       <img
-        src={DRIVE_RIGHT_HEADER_URL}
+        src={headerRightLogo}
         alt="Sekolah Mengedepankan Akhlak - SMQU SMP Qur'an"
-        className={`${heightClass} w-auto object-contain transition-all`}
+        className={`${heightClass} w-auto object-contain transition-all drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]`}
         referrerPolicy="no-referrer"
         onError={(e) => {
           const target = e.currentTarget;
-          if (target.src !== DRIVE_FALLBACK_URL) {
-            target.src = DRIVE_FALLBACK_URL;
+          if (target.src !== "/Story Ig PART 4_20260915_195906_0000.png") {
+            target.src = "/Story Ig PART 4_20260915_195906_0000.png";
           } else if (target.src !== rightBannerImg) {
             target.src = rightBannerImg;
           }
@@ -212,7 +263,7 @@ export default function ReportPrinter({
           <div className="flex items-center gap-3">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#0B122B] hover:bg-[#152042] text-yellow-400 font-bold rounded-xl shadow-md transition-all transform active:scale-95 text-sm"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#173E7C] to-[#21539E] hover:from-[#133368] hover:to-[#1B4380] text-yellow-300 font-bold rounded-xl shadow-md transition-all transform active:scale-95 text-sm"
               id="btn-trigger-print"
             >
               <Printer className="w-5 h-5 text-white" /> Cetak Laporan (PDF)
@@ -248,12 +299,6 @@ export default function ReportPrinter({
             
             // Selected musyrif object if specific filter active
             const selectedMusyrifObj = selectedMusyrifId ? musyrifs.find(m => m.id === selectedMusyrifId) : null;
-            const musyrifDisplayTitle = selectedMusyrifObj 
-              ? selectedMusyrifObj.nama 
-              : classMusyrifs.length === 1 
-              ? classMusyrifs[0] 
-              : "HALAQOH USTADZ";
-
             const musyrifSignName = selectedMusyrifObj
               ? selectedMusyrifObj.nama
               : classMusyrifs.length === 1 
@@ -301,12 +346,6 @@ export default function ReportPrinter({
               sizeVariant === "compact" ? "text-base sm:text-lg" :
               "text-xl sm:text-2xl";
 
-            const titleHalaqahClass =
-              sizeVariant === "ultra" ? "text-[10px] sm:text-xs" :
-              sizeVariant === "super" ? "text-xs sm:text-sm" :
-              sizeVariant === "compact" ? "text-sm sm:text-base" :
-              "text-lg sm:text-xl";
-
             const titleSmpClass =
               sizeVariant === "ultra" ? "text-xs sm:text-sm" :
               sizeVariant === "super" ? "text-sm sm:text-base" :
@@ -337,7 +376,10 @@ export default function ReportPrinter({
               sizeVariant === "compact" ? "py-1.5 px-2.5 text-[10px]" :
               "py-2.5 px-3 text-xs";
 
+            const isClass8 = String(classId).startsWith("8") || selectedLevel === "8";
+
             const containerPadding =
+              isClass8 && studentCount <= 20 ? "pt-5 pb-3 px-6" :
               sizeVariant === "ultra" ? "pt-1 pb-1 px-3" :
               sizeVariant === "super" ? "pt-2 pb-1.5 px-4" :
               sizeVariant === "compact" ? "pt-3 pb-2 px-5" :
@@ -350,6 +392,7 @@ export default function ReportPrinter({
               "mt-auto pt-3.5 mb-0 px-6 text-xs";
 
             const signatureSpace =
+              isClass8 && studentCount <= 20 ? "mb-12" :
               sizeVariant === "ultra" ? "mb-1.5" :
               sizeVariant === "super" ? "mb-3" :
               sizeVariant === "compact" ? "mb-5" :
@@ -367,48 +410,75 @@ export default function ReportPrinter({
                 className="bg-white shadow-2xl rounded-none md:rounded-lg overflow-hidden border border-slate-300 p-0 text-slate-900 print-card relative print-page-break flex flex-col justify-between min-h-[297mm] h-[297mm]"
                 style={{ height: "297mm", minHeight: "297mm" }}
               >
-                {/* TOP HEADER BANNER (DARK NAVY BLUE #0B122B) */}
-                <div className={`bg-[#0B122B] text-white ${headerPadding} text-center relative overflow-hidden shrink-0`}>
+                {/* TOP HEADER BANNER (BRIGHTER ROYAL ISLAMIC BLUE WITH TAHFIDZ ORNAMENTS) */}
+                <div className={`bg-gradient-to-r from-[#173E7C] via-[#21539E] to-[#173E7C] border-b-4 border-amber-400 text-white ${headerPadding} text-center relative overflow-hidden shrink-0 shadow-sm`}>
+                  {/* Islamic Geometric Pattern Overlay */}
+                  <IslamicGeometricBg />
+
+                  {/* Corner Arabesque Flourishes */}
+                  <IslamicCornerFlourish className="absolute -top-1 -left-1 opacity-45" />
+                  <IslamicCornerFlourish className="absolute -top-1 -right-1 opacity-45 -scale-x-100" />
+
                   {/* Top Logos Row */}
-                  <div className={`flex items-center justify-between ${logosRowMargin}`}>
+                  <div className={`flex items-center justify-between relative z-10 ${logosRowMargin}`}>
                     <HeaderEmblemLogo sizeVariant={sizeVariant} />
                     <RightHeaderLogos sizeVariant={sizeVariant} />
                   </div>
 
-                  {/* Title Block */}
-                  <div className={titleBlockMargin}>
-                    <h2 className={`text-yellow-400 font-extrabold uppercase ${titleLaporanClass}`}>
+                  {/* Title Block with Tahfidz Decorations */}
+                  <div className={`${titleBlockMargin} relative z-10`}>
+                    {/* Basmalah Calligraphy Ribbon */}
+                    <div className="flex items-center justify-center gap-2 text-yellow-300/95 my-0.5">
+                      <span className="h-[1px] w-6 sm:w-12 bg-gradient-to-r from-transparent to-yellow-300/70"></span>
+                      <span className="text-[11px] sm:text-xs tracking-widest font-serif drop-shadow text-yellow-200">
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                      </span>
+                      <span className="h-[1px] w-6 sm:w-12 bg-gradient-to-l from-transparent to-yellow-300/70"></span>
+                    </div>
+
+                    <h2 className={`text-yellow-300 font-extrabold uppercase ${titleLaporanClass} drop-shadow-sm`}>
                       LAPORAN BULAN {getIndonesianMonthUpper(selectedBulan)}
                     </h2>
-                    <h1 className={`text-white font-extrabold tracking-wide uppercase italic leading-tight ${titleTahfidzClass}`}>
-                      TAHFIZHUL QUR'AN KELAS {selectedClassId ? selectedClassId : (selectedLevel ? `${selectedLevel}` : classId)}
-                    </h1>
-                    <h3 className={`text-white font-bold tracking-wide uppercase italic ${titleHalaqahClass}`}>
-                      {musyrifDisplayTitle.toUpperCase().startsWith("HALAQAH") || musyrifDisplayTitle.toUpperCase().startsWith("USTADZ") 
-                        ? musyrifDisplayTitle.toUpperCase()
-                        : `HALAQAH ${musyrifDisplayTitle.toUpperCase()}`}
-                    </h3>
-                    <h3 className={`text-white font-extrabold tracking-wide uppercase italic ${titleSmpClass}`}>
+
+                    {/* Main Tahfidz Title with Quranic 8-Point Stars */}
+                    <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
+                      <RubElHizbIcon className={sizeVariant === "ultra" ? "w-3 h-3 text-yellow-300" : "w-4 h-4 sm:w-5 sm:h-5 text-yellow-300"} />
+                      <h1 className={`text-white font-extrabold tracking-wide uppercase italic leading-tight ${titleTahfidzClass} drop-shadow-md`}>
+                        TAHFIZHUL QUR'AN KELAS {selectedClassId ? selectedClassId : (selectedLevel ? `${selectedLevel}` : classId)}
+                      </h1>
+                      <RubElHizbIcon className={sizeVariant === "ultra" ? "w-3 h-3 text-yellow-300" : "w-4 h-4 sm:w-5 sm:h-5 text-yellow-300"} />
+                    </div>
+
+                    <h3 className={`text-white font-extrabold tracking-wide uppercase italic ${titleSmpClass} drop-shadow-sm`}>
                       SMP AL-IRSYAD SURAKARTA
                     </h3>
-                    <p className={`text-yellow-400 font-bold tracking-widest uppercase ${titleTahunClass}`}>
-                      TAHUN AJARAN {getTahunAjaran(selectedBulan)}
-                    </p>
+
+                    {/* Tahfidz Badge & Academic Year */}
+                    <div className="flex items-center justify-center gap-2 pt-0.5">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-yellow-400/20 border border-yellow-300/40 text-yellow-200 text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase">
+                        <BookOpen className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-300 shrink-0" />
+                        <span>Mutaba'ah Hifzhul Qur'an</span>
+                      </span>
+                      <span className="text-yellow-300/60 font-bold">•</span>
+                      <p className={`text-yellow-300 font-bold tracking-widest uppercase ${titleTahunClass} inline-block`}>
+                        TAHUN AJARAN {getTahunAjaran(selectedBulan)}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 {/* TABLE SECTION */}
                 <div className={`${containerPadding} bg-white flex-1 flex flex-col justify-between overflow-hidden`}>
-                  <div className="overflow-hidden border border-[#0B122B]/30 rounded-none">
+                  <div className="overflow-hidden border border-[#173E7C]/40 rounded-none">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-[#0B122B] text-white uppercase font-extrabold tracking-wider text-center">
-                          <th className={`${tableThClass} border-r border-slate-700 w-8`}>NO</th>
-                          <th className={`${tableThClass} border-r border-slate-700 text-left w-40`}>NAMA</th>
-                          <th className={`${tableThClass} border-r border-slate-700 w-14`}>KELAS</th>
-                          <th className={`${tableThClass} border-r border-slate-700 text-left`}>CAPAIAN</th>
-                          <th className={`${tableThClass} border-r border-slate-700 w-20`}>TOTAL BARIS</th>
-                          <th className={`${tableThClass} border-r border-slate-700 w-28`}>MURAJAAH JUZIYYAH</th>
+                        <tr className="bg-gradient-to-r from-[#173E7C] via-[#1E4D94] to-[#173E7C] text-white uppercase font-extrabold tracking-wider text-center border-b-2 border-amber-400">
+                          <th className={`${tableThClass} border-r border-blue-900/40 w-8`}>NO</th>
+                          <th className={`${tableThClass} border-r border-blue-900/40 text-left w-40`}>NAMA</th>
+                          <th className={`${tableThClass} border-r border-blue-900/40 w-14`}>KELAS</th>
+                          <th className={`${tableThClass} border-r border-blue-900/40 text-left`}>CAPAIAN</th>
+                          <th className={`${tableThClass} border-r border-blue-900/40 w-20`}>TOTAL BARIS</th>
+                          <th className={`${tableThClass} border-r border-blue-900/40 w-28`}>MURAJAAH JUZIYYAH</th>
                           <th className={`${tableThClass} w-24`}>KET. /PREDIKAT</th>
                         </tr>
                       </thead>
@@ -487,9 +557,9 @@ export default function ReportPrinter({
                   </div>
                 </div>
 
-                {/* BOTTOM FOOTER BAR (DARK NAVY BLUE #0B122B) */}
-                <div className={`bg-[#0B122B] ${footerBarPadding} text-center shrink-0 mt-auto`}>
-                  <p className="text-white font-extrabold text-xs sm:text-sm tracking-widest font-mono">
+                {/* BOTTOM FOOTER BAR (BRIGHTER ROYAL ISLAMIC BLUE) */}
+                <div className={`bg-gradient-to-r from-[#173E7C] via-[#21539E] to-[#173E7C] border-t-2 border-amber-400 ${footerBarPadding} text-center shrink-0 mt-auto`}>
+                  <p className="text-yellow-200 font-extrabold text-xs sm:text-sm tracking-widest font-mono">
                     www.alirsyadsolo.sch.id
                   </p>
                 </div>
