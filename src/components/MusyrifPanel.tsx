@@ -369,9 +369,9 @@ export default function MusyrifPanel({
           </span>
         </header>
 
-        <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-6">
+        <div className={`print:p-0 print:m-0 print:max-w-none print:w-full print:space-y-0 ${activeTab === "sertifikat" ? "p-0 md:p-0 max-w-none space-y-0" : "p-6 md:p-8 max-w-7xl mx-auto space-y-6"}`}>
           {notification && (
-            <div className={`p-4 rounded-xl shadow-md flex items-center gap-3 border ${
+            <div className={`no-print p-4 rounded-xl shadow-md flex items-center gap-3 border ${
               notification.type === "success"
                 ? "bg-emerald-50 border-emerald-100 text-emerald-800"
                 : "bg-rose-50 border-rose-100 text-rose-800"
@@ -835,7 +835,7 @@ export default function MusyrifPanel({
 
           {/* ----------------- TAB CETAK SERTIFIKAT / PIAGAM ----------------- */}
           {activeTab === "sertifikat" && (
-            <div className="-mx-6 md:-mx-8 -my-6 md:-my-8 print:m-0 print:p-0 print:w-full">
+            <div className="w-full print:m-0 print:p-0">
               <CertificatePrinter
                 students={students}
                 classes={classes}

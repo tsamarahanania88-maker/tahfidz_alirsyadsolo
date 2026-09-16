@@ -242,8 +242,8 @@ export default function ReportPrinter({
       <style>{`
         @media print {
           @page {
-            size: A4 portrait !important;
-            margin: 0 !important;
+            size: A4 portrait;
+            margin: 0;
           }
         }
       `}</style>
