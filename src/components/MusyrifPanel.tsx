@@ -21,13 +21,16 @@ import {
   AlertCircle,
   RotateCcw,
   Trash2,
-  X
+  X,
+  Award
 } from "lucide-react";
+import CertificatePrinter from "./CertificatePrinter";
 
 interface MusyrifPanelProps {
   currentMusyrif: Musyrif;
   students: Student[];
   classes: Class[];
+  musyrifs?: Musyrif[];
   capaians: Capaian[];
   onSaveCapaian: (capaian: Capaian) => Promise<void>;
   onDeleteCapaian?: (id: string) => Promise<void>;
@@ -36,12 +39,13 @@ interface MusyrifPanelProps {
   onLogout: () => void;
 }
 
-type TabType = "input" | "cetak" | "pengaturan";
+type TabType = "input" | "cetak" | "sertifikat" | "pengaturan";
 
 export default function MusyrifPanel({
   currentMusyrif,
   students,
   classes,
+  musyrifs = [],
   capaians,
   onSaveCapaian,
   onDeleteCapaian,
@@ -51,6 +55,7 @@ export default function MusyrifPanel({
 }: MusyrifPanelProps) {
   const [activeTab, setActiveTab] = useState<TabType>("input");
   const [selectedBulan, setSelectedBulan] = useState("2026-07");
+  const [certStudentId, setCertStudentId] = useState<string | undefined>(undefined);
   const [notification, setNotification] = useState<{ text: string; type: "success" | "error" } | null>(null);
   const [filterJenjang, setFilterJenjang] = useState("");
   const [filterStatus, setFilterStatus] = useState<"" | "filled" | "unfilled">("");
@@ -303,6 +308,23 @@ export default function MusyrifPanel({
               id="m-tab-cetak"
             >
               <Printer className="w-4 h-4" /> Cetak Laporan
+            </button>
+            <button
+              onClick={() => {
+                setCertStudentId(undefined);
+                setActiveTab("sertifikat");
+              }}
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                activeTab === "sertifikat" ? "bg-white text-brand-800 shadow-md" : "text-brand-100 hover:bg-brand-700/50"
+              }`}
+              id="m-tab-sertifikat"
+            >
+              <div className="flex items-center gap-3">
+                <Award className="w-4 h-4 text-amber-400" /> Cetak Sertifikat
+              </div>
+              <span className="text-[9px] bg-amber-400 text-amber-950 font-black px-1.5 py-0.5 rounded uppercase tracking-wider">
+                Piagam
+              </span>
             </button>
             <button
               onClick={() => setActiveTab("pengaturan")}
@@ -697,6 +719,17 @@ export default function MusyrifPanel({
                                   >
                                     <Edit className="w-3 h-3" /> {record ? "Edit" : "Input"} Capaian
                                   </button>
+                                  <button
+                                    onClick={() => {
+                                      setCertStudentId(s.id);
+                                      setActiveTab("sertifikat");
+                                    }}
+                                    className="inline-flex items-center gap-1 px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg text-[10px] font-bold transition-colors cursor-pointer"
+                                    title="Cetak Piagam Penghargaan untuk santri ini"
+                                    id={`btn-piagam-siswa-${s.noInduk}`}
+                                  >
+                                    <Award className="w-3 h-3 text-amber-600" /> Piagam
+                                  </button>
                                   {record && (
                                     <button
                                       onClick={() => handleResetSavedCapaian(s)}
@@ -797,6 +830,21 @@ export default function MusyrifPanel({
                   </div>
                 </div>
               </div>
+            </div>
+          )}
+
+          {/* ----------------- TAB CETAK SERTIFIKAT / PIAGAM ----------------- */}
+          {activeTab === "sertifikat" && (
+            <div className="-mx-6 md:-mx-8 -my-6 md:-my-8">
+              <CertificatePrinter
+                students={students}
+                classes={classes}
+                musyrifs={musyrifs}
+                capaians={capaians}
+                currentMusyrif={currentMusyrif}
+                initialStudentId={certStudentId}
+                onClose={() => setActiveTab("input")}
+              />
             </div>
           )}
 

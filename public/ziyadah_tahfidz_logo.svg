@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 185" width="100%" height="100%">
+  <defs>
+    <style>
+      .arabic-ziyadah { fill: #004724; }
+      .tahfidz-text {
+        font-family: Montserrat, 'Arial Black', -apple-system, sans-serif;
+        font-weight: 900;
+        font-style: italic;
+        fill: #009B4D;
+        letter-spacing: -0.5px;
+      }
+      .excellence-text {
+        font-family: Montserrat, -apple-system, Arial, sans-serif;
+        font-weight: 800;
+        fill: #004724;
+        letter-spacing: 1.8px;
+        text-anchor: middle;
+      }
+    </style>
+  </defs>
+
+  <!-- 1. TOP: ARABIC CALLIGRAPHY زيادة -->
+  <g class="arabic-ziyadah">
+    <!-- Dot above Zay (far right) -->
+    <rect x="220" y="8" width="15" height="15" rx="2" />
+
+    <!-- Letter Zay (ز) -->
+    <path d="M 220 34 L 235 34 L 235 76 C 235 98 226 112 204 112 L 200 100 C 215 100 220 90 220 78 L 220 34 Z" />
+
+    <!-- Two dots below Yaa (ـيـ) -->
+    <rect x="168" y="104" width="13" height="13" rx="2" />
+    <rect x="187" y="104" width="13" height="13" rx="2" />
+
+    <!-- Baseline connecting Yaa to Zay -->
+    <rect x="156" y="82" width="65" height="16" />
+
+    <!-- Letter Alif (ا) -->
+    <rect x="156" y="32" width="17" height="66" rx="1.5" />
+
+    <!-- Letter Dal (د) -->
+    <path d="M 98 34 L 115 34 L 115 82 L 148 82 L 148 98 L 98 98 Z" />
+
+    <!-- Two dots above Taa Marbutah (far left) -->
+    <rect x="19" y="8" width="15" height="15" rx="2" />
+    <rect x="39" y="8" width="15" height="15" rx="2" />
+
+    <!-- Letter Taa Marbutah (ة) -->
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M 12 34 C 7 34 4 37 4 42 L 4 90 C 4 95 7 98 12 98 L 64 98 C 69 98 72 95 72 90 L 72 42 C 72 37 69 34 64 34 Z M 20 48 C 20 46 22 44 25 44 L 51 44 C 54 44 56 46 56 48 L 56 84 C 56 86 54 88 51 88 L 25 88 C 22 88 20 86 20 84 Z" />
+  </g>
+
+  <!-- 2. MIDDLE: TAHFIDZ -->
+  <text x="4" y="138" class="tahfidz-text" font-size="38" transform="skewX(-10)">TAHFIDZ</text>
+
+  <!-- 3. BOTTOM: YELLOW BANNER WITH EXCELLENCE PROGRAM -->
+  <rect x="4" y="148" width="242" height="32" rx="8" fill="#FFDD00" />
+  <text x="125" y="170" class="excellence-text" font-size="13">EXCELLENCE PROGRAM</text>
+</svg>

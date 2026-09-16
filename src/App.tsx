@@ -326,6 +326,7 @@ export default function App() {
             currentMusyrif={currentMusyrif}
             students={students}
             classes={classes}
+            musyrifs={musyrifs}
             capaians={capaians}
             onSaveCapaian={handleSaveCapaian}
             onDeleteCapaian={handleDeleteCapaian}
