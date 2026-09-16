@@ -239,6 +239,14 @@ export default function ReportPrinter({
 
   return (
     <div className="min-h-screen bg-slate-100 py-8 px-4 print:p-0 print:m-0 print:bg-white print:min-h-0">
+      <style>{`
+        @media print {
+          @page {
+            size: A4 portrait !important;
+            margin: 0 !important;
+          }
+        }
+      `}</style>
       {/* Control Panel */}
       <div className="max-w-[210mm] w-full mx-auto bg-white rounded-2xl shadow-md p-6 mb-8 border border-slate-200 no-print">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

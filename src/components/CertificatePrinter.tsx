@@ -23,7 +23,7 @@ import {
   RefreshCw,
   X
 } from "lucide-react";
-import headerRightLogo from "../assets/images/header_right_logo.png";
+import headerRightLogo from "../assets/images/logo_kanan.png";
 
 export interface CertificateData {
   namaSiswa: string;
@@ -48,7 +48,6 @@ export interface CertificateData {
     nama: string;
     nik: string;
   };
-  showStampAndSignatures: boolean;
 }
 
 interface CertificatePrinterProps {
@@ -117,82 +116,13 @@ const AlIrsyadWingedLogo = ({ className = "w-16 h-12", isWatermark = false }: { 
   );
 };
 
-// Official Blue Stamp of SMP Al-Irsyad Surakarta
-const OfficialSchoolStamp = () => (
-  <div className="relative w-28 h-28 flex items-center justify-center opacity-85 select-none pointer-events-none transform -rotate-6 filter drop-shadow-sm">
-    <svg viewBox="0 0 200 200" className="w-full h-full text-blue-700">
-      <circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="none" />
-      <circle cx="100" cy="100" r="86" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="100" cy="100" r="58" fill="none" stroke="currentColor" strokeWidth="2" />
-
-      {/* Circular text along path */}
-      <path id="stampUpperCircle" d="M 22 100 A 78 78 0 1 1 178 100" fill="none" />
-      <text className="text-[10.5px] font-bold tracking-[0.14em] uppercase" fill="currentColor">
-        <textPath href="#stampUpperCircle" startOffset="50%" textAnchor="middle">
-          YAYASAN AL-IRSYAD AL-ISLAMIYYAH
-        </textPath>
-      </text>
-
-      <path id="stampLowerCircle" d="M 178 100 A 78 78 0 0 1 22 100" fill="none" />
-      <text className="text-[10px] font-bold tracking-[0.16em] uppercase" fill="currentColor">
-        <textPath href="#stampLowerCircle" startOffset="50%" textAnchor="middle">
-          SURAKARTA &bull; SMP
-        </textPath>
-      </text>
-
-      {/* Center inner stamp content */}
-      <g className="text-center font-extrabold">
-        <text x="100" y="88" textAnchor="middle" className="text-[11px] tracking-wider uppercase font-black" fill="currentColor">
-          SMP
-        </text>
-        <line x1="68" y1="94" x2="132" y2="94" stroke="currentColor" strokeWidth="1.2" />
-        <text x="100" y="106" textAnchor="middle" className="text-[7.5px] tracking-tight uppercase" fill="currentColor">
-          SEKOLAH MENENGAH PERTAMA
-        </text>
-        <line x1="68" y1="110" x2="132" y2="110" stroke="currentColor" strokeWidth="1.2" />
-        <text x="100" y="122" textAnchor="middle" className="text-[7.5px] font-bold tracking-widest uppercase" fill="currentColor">
-          TERAKREDITASI
-        </text>
-      </g>
-    </svg>
-  </div>
-);
-
-// Vector Signatures for Authentic Look
-const SignatureMusyrif = () => (
-  <svg viewBox="0 0 160 65" className="w-32 h-14 text-slate-800 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M 22 46 Q 30 18 38 28 Q 44 40 48 24 Q 54 14 58 44" />
-    <path d="M 34 32 L 100 36" />
-    <path d="M 50 36 Q 74 20 98 26 Q 118 32 142 24" strokeWidth="1.8" />
-    <path d="M 112 30 L 134 46" />
-  </svg>
-);
-
-const SignatureWaka = () => (
-  <svg viewBox="0 0 160 65" className="w-36 h-14 text-slate-900 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M 25 50 Q 32 10 42 16 Q 52 24 50 48 Q 48 60 56 36 Q 64 12 70 20 Q 76 30 80 48" />
-    <path d="M 45 32 Q 85 24 125 36" />
-    <path d="M 85 22 Q 95 10 102 24 Q 108 38 115 16 Q 122 36 135 44" strokeWidth="1.8" />
-    <circle cx="120" cy="28" r="8" strokeWidth="1.5" />
-  </svg>
-);
-
-const SignaturePenanggungjawab = () => (
-  <svg viewBox="0 0 160 65" className="w-32 h-14 text-slate-800 pointer-events-none" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M 18 42 C 28 18 36 46 45 40 C 55 34 65 18 78 38 C 88 48 105 28 128 32 C 138 34 146 26 150 24" />
-    <path d="M 35 44 L 140 40" strokeWidth="1.5" />
-    <path d="M 110 32 Q 130 14 142 42" strokeWidth="1.8" />
-  </svg>
-);
-
 // Single Certificate Document View
 const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
   return (
     <div
-      className="certificate-page relative w-full bg-[#fbfaf5] text-slate-800 overflow-hidden shadow-2xl mx-auto select-none print:shadow-none print:m-0"
+      className="certificate-page relative w-full bg-[#fbfaf5] text-slate-800 overflow-hidden shadow-2xl mx-auto select-none print:shadow-none print:m-0 print:border-none print:w-[297mm] print:h-[210mm] print:min-h-[210mm] print:max-h-[210mm]"
       style={{
         aspectRatio: "1.414 / 1",
-        minHeight: "185mm",
         boxSizing: "border-box",
       }}
     >
@@ -261,7 +191,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
       <div className="absolute inset-4 sm:inset-5 md:inset-6 border-[0.85px] border-[#d8c593] pointer-events-none rounded-[1px]" />
 
       {/* ================= MAIN CERTIFICATE CONTENT CONTAINER ================= */}
-      <div className="relative z-10 h-full w-full flex flex-col justify-between p-6 sm:p-8 md:p-10 box-border">
+      <div className="relative z-10 h-full w-full flex flex-col justify-between p-6 sm:p-8 md:p-10 print:p-8 print:h-[210mm] box-border">
         {/* HEADER SECTION */}
         <div className="flex items-start justify-between gap-4">
           {/* Top-Left: Official Al-Irsyad School Identity */}
@@ -298,9 +228,9 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
               className="h-11 sm:h-13 md:h-15 lg:h-16 w-auto max-w-[240px] sm:max-w-[290px] md:max-w-[340px] lg:max-w-[380px] object-contain drop-shadow-[0_1px_2px_rgba(0,0,0,0.12)] transition-all"
               onError={(e) => {
                 const target = e.currentTarget;
-                if (target.src !== "/Untitled design.png") {
-                  target.src = "/Untitled design.png";
-                } else if (target.src !== "/header_right_logo.png") {
+                if (!target.src.endsWith("/logo_kanan.png")) {
+                  target.src = "/logo_kanan.png";
+                } else if (!target.src.endsWith("/header_right_logo.png")) {
                   target.src = "/header_right_logo.png";
                 }
               }}
@@ -395,14 +325,8 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
                 {data.musyrif.jabatan}
               </p>
 
-              {/* Signature Area */}
-              <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center relative w-full">
-                {data.showStampAndSignatures ? (
-                  <SignatureMusyrif />
-                ) : (
-                  <div className="h-full w-full" />
-                )}
-              </div>
+              {/* Ruang Tanda Tangan */}
+              <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center relative w-full" />
 
               <p className="text-[11px] sm:text-xs md:text-sm font-extrabold text-slate-900 leading-tight border-b border-slate-900/60 pb-0.5 px-2 min-w-[120px] sm:min-w-[150px]">
                 {data.musyrif.nama}
@@ -430,21 +354,8 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
                 {data.wakaKeagamaan.jabatan}
               </p>
 
-              {/* Signature & Official Stamp Area */}
-              <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center relative w-full">
-                {data.showStampAndSignatures && (
-                  <>
-                    {/* Official Blue Stamp positioned slightly to left */}
-                    <div className="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 z-0">
-                      <OfficialSchoolStamp />
-                    </div>
-                    {/* Waka Signature overlapping stamp */}
-                    <div className="relative z-10">
-                      <SignatureWaka />
-                    </div>
-                  </>
-                )}
-              </div>
+              {/* Ruang Tanda Tangan & Cap Stempel Resmi */}
+              <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center relative w-full" />
 
               <p className="text-[11px] sm:text-xs md:text-sm font-extrabold text-slate-900 leading-tight border-b border-slate-900/60 pb-0.5 px-2 min-w-[120px] sm:min-w-[150px]">
                 {data.wakaKeagamaan.nama}
@@ -463,14 +374,8 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
                 {data.penanggungjawabTahfidz.jabatan}
               </p>
 
-              {/* Signature Area */}
-              <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center relative w-full">
-                {data.showStampAndSignatures ? (
-                  <SignaturePenanggungjawab />
-                ) : (
-                  <div className="h-full w-full" />
-                )}
-              </div>
+              {/* Ruang Tanda Tangan */}
+              <div className="h-14 sm:h-16 md:h-20 flex items-center justify-center relative w-full" />
 
               <p className="text-[11px] sm:text-xs md:text-sm font-extrabold text-slate-900 leading-tight border-b border-slate-900/60 pb-0.5 px-2 min-w-[120px] sm:min-w-[150px]">
                 {data.penanggungjawabTahfidz.nama}
@@ -544,23 +449,6 @@ export default function CertificatePrinter({
   };
 
   const [tanggalSurat, setTanggalSurat] = useState(formatTanggalCetakOtomatis);
-  const [showSignatures, setShowSignatures] = useState(true);
-
-  // Signatories
-  // 1. Kolom Kiri: Musyrif
-  const [musyrifJabatan, setMusyrifJabatan] = useState("Musyrif");
-  const [musyrifNama, setMusyrifNama] = useState(currentMusyrif?.nama || "");
-  const [musyrifNik, setMusyrifNik] = useState("");
-
-  // 2. Kolom Tengah: Waka Bidang Keagamaan
-  const [wakaJabatan, setWakaJabatan] = useState("Waka Bidang Keagamaan");
-  const [wakaNama, setWakaNama] = useState("Yusuf Arifin, S.Pd");
-  const [wakaNik, setWakaNik] = useState("Nomor Identitas: 103.244.00172");
-
-  // 3. Kolom Kanan: Penanggungjawab Tahfidz
-  const [penanggungjawabJabatan, setPenanggungjawabJabatan] = useState("Penanggungjawab Tahfidz");
-  const [penanggungjawabNama, setPenanggungjawabNama] = useState("Muhammat Imam Syafi'i, S.Pd.");
-  const [penanggungjawabNik, setPenanggungjawabNik] = useState("NIK. 103.244.00205");
 
   // Show detailed customization panel
   const [showCustomizer, setShowCustomizer] = useState(false);
@@ -618,15 +506,10 @@ export default function CertificatePrinter({
     const kelasStr = classObj ? classObj.nama : student.kelasId;
     const assignedMusyrif = musyrifs.find((m) => m.id === student.musyrifId) || currentMusyrif;
 
-    const finalMusyrifNama =
-      musyrifNama.trim() !== ""
-        ? musyrifNama
-        : (assignedMusyrif?.nama || currentMusyrif?.nama || "Musyrif Tahfidz");
-
-    const finalMusyrifNik =
-      musyrifNik.trim() !== ""
-        ? musyrifNik
-        : (assignedMusyrif?.nik ? `NIK. ${assignedMusyrif.nik}` : (currentMusyrif?.nik ? `NIK. ${currentMusyrif.nik}` : ""));
+    const finalMusyrifNama = assignedMusyrif?.nama || currentMusyrif?.nama || "Musyrif Tahfidz";
+    const finalMusyrifNik = assignedMusyrif?.nik
+      ? `NIK. ${assignedMusyrif.nik}`
+      : (currentMusyrif?.nik ? `NIK. ${currentMusyrif.nik}` : "");
 
     return {
       namaSiswa: student.nama,
@@ -637,21 +520,20 @@ export default function CertificatePrinter({
       jumlahHafalan,
       tanggalSurat: tanggalSurat || formatTanggalCetakOtomatis(),
       musyrif: {
-        jabatan: musyrifJabatan || "Musyrif",
+        jabatan: "Musyrif",
         nama: finalMusyrifNama,
         nik: finalMusyrifNik,
       },
       wakaKeagamaan: {
-        jabatan: wakaJabatan || "Waka Bidang Keagamaan",
-        nama: wakaNama || "Yusuf Arifin, S.Pd",
-        nik: wakaNik || "Nomor Identitas: 103.244.00172",
+        jabatan: "Waka Bidang Keagamaan",
+        nama: "Yusuf Arifin, S.Pd",
+        nik: "NIK. 103.244.00172",
       },
       penanggungjawabTahfidz: {
-        jabatan: penanggungjawabJabatan || "Penanggungjawab Tahfidz",
-        nama: penanggungjawabNama || "Muhammat Imam Syafi'i, S.Pd.",
-        nik: penanggungjawabNik || "NIK. 103.244.00205",
+        jabatan: "Penanggungjawab Tahfidz",
+        nama: "Muhammat Imam Syafi'i, S.Pd.",
+        nik: "NIK. 103.244.00205",
       },
-      showStampAndSignatures: showSignatures,
     };
   };
 
@@ -659,38 +541,72 @@ export default function CertificatePrinter({
   const batchStudents = myStudents.filter((s) => selectedBatchIds.includes(s.id));
 
   return (
-    <div className="min-h-screen bg-slate-900/50 flex flex-col">
+    <div className="min-h-screen bg-slate-900/50 flex flex-col print:bg-white print:min-h-0 print:block">
       {/* Dynamic Landscape Print CSS injected when printing */}
       <style>{`
         @media print {
           @page {
-            size: A4 landscape !important;
-            margin: 0 !important;
+            size: 297mm 210mm !important;
+            margin: 0mm !important;
           }
-          body {
-            background-color: white !important;
+          html, body {
+            width: 297mm !important;
+            height: 210mm !important;
+            min-height: 210mm !important;
+            max-height: 210mm !important;
             margin: 0 !important;
             padding: 0 !important;
+            background: white !important;
+            background-color: white !important;
+            overflow: hidden !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
-          .no-print {
+          .no-print,
+          header.no-print,
+          aside.no-print,
+          main.no-print {
             display: none !important;
           }
           .certificate-print-wrapper {
             display: block !important;
-            width: 100vw !important;
+            width: 297mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: white !important;
+          }
+          .certificate-print-page {
+            width: 297mm !important;
+            height: 210mm !important;
+            min-height: 210mm !important;
+            max-height: 210mm !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            page-break-after: always !important;
+            break-after: page !important;
             margin: 0 !important;
             padding: 0 !important;
           }
+          .certificate-print-page:last-child {
+            page-break-after: auto !important;
+            break-after: auto !important;
+          }
           .certificate-page {
-            width: 100vw !important;
-            height: 100vh !important;
-            min-height: 100vh !important;
-            max-height: 100vh !important;
-            page-break-after: always !important;
-            break-after: page !important;
+            width: 297mm !important;
+            height: 210mm !important;
+            min-height: 210mm !important;
+            max-height: 210mm !important;
+            box-sizing: border-box !important;
+            margin: 0 auto !important;
+            overflow: hidden !important;
             box-shadow: none !important;
+            border: none !important;
             border-radius: 0 !important;
-            margin: 0 !important;
+            background-color: #fbfaf5 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
         }
       `}</style>
@@ -749,15 +665,15 @@ export default function CertificatePrinter({
             <Printer className="w-4 h-4" />
             <span>
               {printMode === "single"
-                ? "Cetak Sertifikat Ini"
-                : `Cetak Massal (${batchStudents.length} Santri)`}
+                ? "Cetak Dokumen Sekarang (A4)"
+                : `Cetak Dokumen Sekarang (${batchStudents.length} Santri A4)`}
             </span>
           </button>
         </div>
       </header>
 
       {/* MAIN WORKSPACE (SPLIT VIEW IN SCREEN MODE) */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <div className="no-print flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* SIDEBAR SELECTOR & CUSTOMIZER (HIDDEN IN PRINT) */}
         <aside className="no-print w-full lg:w-96 bg-white border-r border-slate-200 p-4 sm:p-5 overflow-y-auto space-y-5 shadow-md">
           {/* Mode Switcher: Single vs Batch */}
@@ -971,173 +887,12 @@ export default function CertificatePrinter({
                   id="input-cert-tanggal"
                 />
               </div>
-
-              {/* 1. Kolom Kiri: Musyrif */}
-              <div className="pt-2 border-t border-slate-200 space-y-2">
-                <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
-                  1. Kolom Kiri (Musyrif)
-                </span>
-                <div>
-                  <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                    Nama Musyrif :
-                  </label>
-                  <input
-                    type="text"
-                    value={musyrifNama}
-                    onChange={(e) => setMusyrifNama(e.target.value)}
-                    className="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                    placeholder="Nama Musyrif (Kosongkan = otomatis santri)"
-                    id="input-cert-musyrif-nama"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                      Jabatan :
-                    </label>
-                    <input
-                      type="text"
-                      value={musyrifJabatan}
-                      onChange={(e) => setMusyrifJabatan(e.target.value)}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                      placeholder="Musyrif"
-                      id="input-cert-musyrif-jabatan"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                      NIK / Identitas :
-                    </label>
-                    <input
-                      type="text"
-                      value={musyrifNik}
-                      onChange={(e) => setMusyrifNik(e.target.value)}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                      placeholder="NIK. -"
-                      id="input-cert-musyrif-nik"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 2. Kolom Tengah: Waka Bidang Keagamaan */}
-              <div className="pt-2 border-t border-slate-200 space-y-2">
-                <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
-                  2. Kolom Tengah (Waka Bidang Keagamaan)
-                </span>
-                <div>
-                  <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                    Nama Waka :
-                  </label>
-                  <input
-                    type="text"
-                    value={wakaNama}
-                    onChange={(e) => setWakaNama(e.target.value)}
-                    className="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                    placeholder="Yusuf Arifin, S.Pd"
-                    id="input-cert-waka-nama"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                      Jabatan :
-                    </label>
-                    <input
-                      type="text"
-                      value={wakaJabatan}
-                      onChange={(e) => setWakaJabatan(e.target.value)}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                      placeholder="Waka Bidang Keagamaan"
-                      id="input-cert-waka-jabatan"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                      Nomor Identitas :
-                    </label>
-                    <input
-                      type="text"
-                      value={wakaNik}
-                      onChange={(e) => setWakaNik(e.target.value)}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                      placeholder="Nomor Identitas: 103.244.00172"
-                      id="input-cert-waka-nik"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* 3. Kolom Kanan: Penanggungjawab Tahfidz */}
-              <div className="pt-2 border-t border-slate-200 space-y-2">
-                <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
-                  3. Kolom Kanan (Penanggungjawab Tahfidz)
-                </span>
-                <div>
-                  <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                    Nama Penanggungjawab :
-                  </label>
-                  <input
-                    type="text"
-                    value={penanggungjawabNama}
-                    onChange={(e) => setPenanggungjawabNama(e.target.value)}
-                    className="w-full px-3 py-1.5 border border-slate-300 rounded-lg text-xs font-semibold text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                    placeholder="Muhammat Imam Syafi'i, S.Pd."
-                    id="input-cert-pj-nama"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                      Jabatan :
-                    </label>
-                    <input
-                      type="text"
-                      value={penanggungjawabJabatan}
-                      onChange={(e) => setPenanggungjawabJabatan(e.target.value)}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                      placeholder="Penanggungjawab Tahfidz"
-                      id="input-cert-pj-jabatan"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] font-semibold text-slate-500 mb-0.5">
-                      NIK / Identitas :
-                    </label>
-                    <input
-                      type="text"
-                      value={penanggungjawabNik}
-                      onChange={(e) => setPenanggungjawabNik(e.target.value)}
-                      className="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs font-medium text-slate-800 bg-white focus:ring-2 focus:ring-emerald-500"
-                      placeholder="NIK. 103.244.00205"
-                      id="input-cert-pj-nik"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Toggle Stamp & Signatures */}
-              <div className="pt-2 border-t border-slate-200">
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700">
-                  <input
-                    type="checkbox"
-                    checked={showSignatures}
-                    onChange={(e) => setShowSignatures(e.target.checked)}
-                    className="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
-                    id="toggle-cert-signatures"
-                  />
-                  <span>Sertakan Tanda Tangan & Cap Stempel Resmi</span>
-                </label>
-                <p className="text-[10px] text-slate-400 ml-6 mt-0.5">
-                  Centang untuk cetak dengan stempel biru & tanda tangan, atau hapus centang jika ingin tanda tangan basah manual.
-                </p>
-              </div>
             </div>
           </div>
         </aside>
 
         {/* MAIN PREVIEW CANVAS AREA */}
-        <main className="flex-1 bg-slate-800/90 overflow-y-auto p-4 sm:p-6 md:p-8 flex flex-col items-center justify-start min-h-[calc(100vh-60px)]">
+        <main className="no-print flex-1 bg-slate-800/90 overflow-y-auto p-4 sm:p-6 md:p-8 flex flex-col items-center justify-start min-h-[calc(100vh-60px)]">
           {/* Certificate Preview Card */}
           <div className="w-full max-w-5xl space-y-4">
             {/* Action Header on Top of Canvas */}
@@ -1156,11 +911,11 @@ export default function CertificatePrinter({
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleTriggerPrint}
-                  className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg shadow-md flex items-center gap-1.5 transition-all cursor-pointer"
+                  className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold rounded-lg shadow-md flex items-center gap-2 transition-all cursor-pointer text-xs"
                   id="btn-print-action-preview"
                 >
-                  <Printer className="w-3.5 h-3.5" />
-                  <span>Cetak Dokumen Sekarang (A4 Landscape)</span>
+                  <Printer className="w-4 h-4" />
+                  <span>Cetak Dokumen Sekarang (A4)</span>
                 </button>
               </div>
             </div>
@@ -1184,10 +939,17 @@ export default function CertificatePrinter({
       {/* This section renders exclusively when window.print() is executed */}
       <div className="certificate-print-wrapper hidden print:block">
         {printMode === "single" ? (
-          activeStudent && <CertificateDocument data={buildCertData(activeStudent)} />
+          activeStudent ? (
+            <div className="certificate-print-page">
+              <CertificateDocument data={buildCertData(activeStudent)} />
+            </div>
+          ) : null
         ) : (
-          batchStudents.map((student) => (
-            <div key={student.id} className="print-page-break">
+          batchStudents.map((student, idx) => (
+            <div
+              key={student.id}
+              className={`certificate-print-page ${idx < batchStudents.length - 1 ? "print-page-break" : ""}`}
+            >
               <CertificateDocument data={buildCertData(student)} />
             </div>
           ))

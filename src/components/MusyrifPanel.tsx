@@ -271,9 +271,9 @@ export default function MusyrifPanel({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row print:block print:bg-white">
       {/* Sidebar for Musyrif */}
-      <aside className="w-full md:w-64 bg-brand-800 text-white shrink-0 shadow-lg flex flex-col justify-between md:min-h-screen">
+      <aside className="no-print w-full md:w-64 bg-brand-800 text-white shrink-0 shadow-lg flex flex-col justify-between md:min-h-screen">
         <div className="p-6">
           <div className="flex items-center gap-3 border-b border-brand-700 pb-5 mb-6">
             <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center overflow-hidden p-1 shadow-inner shrink-0">
@@ -359,8 +359,8 @@ export default function MusyrifPanel({
       </aside>
 
       {/* Main stage */}
-      <main className="flex-1 overflow-y-auto">
-        <header className="bg-white border-b border-slate-200 py-4 px-6 md:px-8 flex items-center justify-between shadow-sm sticky top-0 z-10">
+      <main className="flex-1 overflow-y-auto print:overflow-visible print:p-0 print:m-0">
+        <header className="no-print bg-white border-b border-slate-200 py-4 px-6 md:px-8 flex items-center justify-between shadow-sm sticky top-0 z-10">
           <div>
             <h2 className="text-xs font-semibold text-slate-400">SMP Al Irsyad Surakarta &bull; Portal Musyrif</h2>
           </div>
@@ -835,7 +835,7 @@ export default function MusyrifPanel({
 
           {/* ----------------- TAB CETAK SERTIFIKAT / PIAGAM ----------------- */}
           {activeTab === "sertifikat" && (
-            <div className="-mx-6 md:-mx-8 -my-6 md:-my-8">
+            <div className="-mx-6 md:-mx-8 -my-6 md:-my-8 print:m-0 print:p-0 print:w-full">
               <CertificatePrinter
                 students={students}
                 classes={classes}
