@@ -245,7 +245,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
             {/* Divider line directly under the banner */}
             <div className="cert-school-line w-full h-[1.5px] bg-[#005a32]/70 my-1 sm:my-1.5" />
             {/* School address directly under the line */}
-            <p className="cert-school-addr font-['Montserrat',sans-serif] text-[7.5px] sm:text-[9px] md:text-[10px] font-semibold text-[#1e3a2b] tracking-[0.14em] leading-normal uppercase pl-0.5">
+            <p className="cert-school-addr text-[8px] sm:text-[9.5px] md:text-[10.5px] font-bold text-slate-600 tracking-tight leading-tight uppercase pl-0.5">
               JL. KAPTEN MULYADI NO. 117 TELP. (0271) 647730 SURAKARTA 57113
             </p>
           </div>
@@ -737,13 +737,10 @@ export default function CertificatePrinter({
             margin: 1mm 0 !important;
           }
           .certificate-page .cert-school-addr {
-            font-family: 'Montserrat', sans-serif !important;
-            font-size: 6.6pt !important;
-            font-weight: 600 !important;
-            letter-spacing: 0.14em !important;
-            line-height: 1.2 !important;
-            color: #1e3a2b !important;
-            margin-top: 0.5mm !important;
+            font-size: 6.8pt !important;
+            line-height: 1.1 !important;
+            color: #475569 !important;
+            margin-top: 0 !important;
           }
           .certificate-page .cert-program-logo {
             height: 18mm !important;
