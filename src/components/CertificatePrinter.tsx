@@ -271,8 +271,8 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
         </div>
 
         {/* CENTER BODY SECTION: TITLE & RECIPIENT */}
-        {/* Centered vertically on the sheet between header and footer with generous breathing room */}
-        <div className="cert-body-center flex flex-col items-center text-center my-auto px-4 sm:px-8 space-y-1 sm:space-y-2 md:space-y-2.5 pt-3 sm:pt-4 md:pt-5 pb-2 sm:pb-3">
+        {/* Diturunkan dan dipusatkan tepat di tengah lembar sertifikat antara kop atas dan tanda tangan bawah */}
+        <div className="cert-body-center flex flex-col items-center text-center my-auto px-4 sm:px-8 space-y-1 sm:space-y-2 md:space-y-2.5 pt-7 sm:pt-9 md:pt-11 pb-1 sm:pb-2">
           {/* Main Title: "Piagam Penghargaan" in Gothic/Fraktur style */}
           <h1
             className="cert-title text-4xl sm:text-5xl md:text-6xl lg:text-[64px] font-normal text-[#0a5c36] tracking-wide leading-tight select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]"
@@ -408,11 +408,11 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
                 {data.musyrif.nama}
               </p>
               {data.musyrif.nik ? (
-                <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-700 mt-1">
+                <p className="cert-sig-nik text-xs sm:text-sm md:text-[15px] font-semibold text-slate-700 mt-1">
                   {data.musyrif.nik}
                 </p>
               ) : (
-                <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-500 mt-1">
+                <p className="cert-sig-nik text-xs sm:text-sm md:text-[15px] font-semibold text-slate-500 mt-1">
                   Pembina Tahfidz
                 </p>
               )}
@@ -436,7 +436,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
               <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[150px] sm:min-w-[190px] md:min-w-[210px]">
                 {data.wakaKeagamaan.nama}
               </p>
-              <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-700 mt-1">
+              <p className="cert-sig-nik text-xs sm:text-sm md:text-[15px] font-semibold text-slate-700 mt-1">
                 {data.wakaKeagamaan.nik}
               </p>
             </div>
@@ -456,7 +456,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
               <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[150px] sm:min-w-[190px] md:min-w-[210px]">
                 {data.penanggungjawabTahfidz.nama}
               </p>
-              <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-700 mt-1">
+              <p className="cert-sig-nik text-xs sm:text-sm md:text-[15px] font-semibold text-slate-700 mt-1">
                 {data.penanggungjawabTahfidz.nik}
               </p>
             </div>
@@ -754,8 +754,8 @@ export default function CertificatePrinter({
           .certificate-page .cert-body-center {
             margin-top: auto !important;
             margin-bottom: auto !important;
-            padding-top: 5mm !important;
-            padding-bottom: 3mm !important;
+            padding-top: 11mm !important;
+            padding-bottom: 2mm !important;
           }
           .certificate-page .cert-title {
             font-size: 46pt !important;
@@ -852,7 +852,7 @@ export default function CertificatePrinter({
             padding-bottom: 2px !important;
           }
           .certificate-page .cert-sig-nik {
-            font-size: 9.5pt !important;
+            font-size: 11.5pt !important;
             font-weight: 600 !important;
             margin-top: 2px !important;
           }
