@@ -271,7 +271,8 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
         </div>
 
         {/* CENTER BODY SECTION: TITLE & RECIPIENT */}
-        <div className="flex flex-col items-center text-center my-auto px-4 sm:px-8 space-y-0.5 sm:space-y-1.5 md:space-y-2 -mt-1 sm:-mt-2">
+        {/* Centered vertically on the sheet between header and footer with generous breathing room */}
+        <div className="cert-body-center flex flex-col items-center text-center my-auto px-4 sm:px-8 space-y-1 sm:space-y-2 md:space-y-2.5 pt-3 sm:pt-4 md:pt-5 pb-2 sm:pb-3">
           {/* Main Title: "Piagam Penghargaan" in Gothic/Fraktur style */}
           <h1
             className="cert-title text-4xl sm:text-5xl md:text-6xl lg:text-[64px] font-normal text-[#0a5c36] tracking-wide leading-tight select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]"
@@ -313,7 +314,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
           </div>
 
           {/* PREDIKAT & JUMLAH HAFALAN NOTCHED RIBBON PILL */}
-          <div className="cert-ribbon-wrapper pt-1.5 sm:pt-2">
+          <div className="cert-ribbon-wrapper pt-2 sm:pt-2.5">
             <div className="inline-flex items-center relative">
               {/* Left Ribbon End Notch */}
               <div className="cert-notch-left w-5 sm:w-6 md:w-8 h-8 sm:h-9 md:h-10 bg-[#0a5c36] relative flex items-center -mr-1 rounded-l-sm shadow-sm">
@@ -707,6 +708,12 @@ export default function CertificatePrinter({
           .certificate-page .cert-program-logo {
             height: 18mm !important;
             max-width: 110mm !important;
+          }
+          .certificate-page .cert-body-center {
+            margin-top: auto !important;
+            margin-bottom: auto !important;
+            padding-top: 5mm !important;
+            padding-bottom: 3mm !important;
           }
           .certificate-page .cert-title {
             font-size: 46pt !important;
