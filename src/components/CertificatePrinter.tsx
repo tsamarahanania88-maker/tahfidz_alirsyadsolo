@@ -223,30 +223,30 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
       </div>
 
       {/* ================= MAIN CERTIFICATE CONTENT CONTAINER ================= */}
-      <div className="cert-content-container relative z-10 h-full w-full flex flex-col justify-between p-6 sm:p-8 md:p-10 box-border">
+      <div className="cert-content-container relative z-10 h-full w-full flex flex-col justify-between p-5 sm:p-7 md:p-8 box-border">
         {/* HEADER SECTION */}
         <div className="flex items-start justify-between gap-4">
           {/* Top-Left: Official Al-Irsyad School Identity */}
-          <div className="flex items-center gap-3 sm:gap-3.5 max-w-[58%]">
+          <div className="flex items-center gap-3 sm:gap-4 max-w-[60%]">
             {/* Official Al-Irsyad Winged Emblem Logo */}
             <img
               src="/al_irsyad_official_logo.png"
               alt="Logo Al-Irsyad Surakarta"
-              className="cert-school-logo w-14 sm:w-16 md:w-18 h-auto max-h-14 sm:max-h-16 md:max-h-18 object-contain shrink-0 drop-shadow-sm"
+              className="cert-school-logo w-16 sm:w-20 md:w-24 h-auto max-h-16 sm:max-h-20 md:max-h-24 object-contain shrink-0 drop-shadow-sm"
               onError={(e) => {
                 e.currentTarget.src = "/al_irsyad_official_logo.png";
               }}
             />
 
             <div className="flex flex-col">
-              <h2 className="cert-school-h2 text-sm sm:text-base md:text-lg font-black text-[#0a5c36] uppercase tracking-wide leading-none">
+              <h2 className="cert-school-h2 text-base sm:text-lg md:text-xl font-black text-[#0a5c36] uppercase tracking-wide leading-none">
                 SMP AL-IRSYAD
               </h2>
-              <h3 className="cert-school-h3 text-xs sm:text-sm md:text-base font-extrabold text-[#0a5c36] uppercase tracking-[0.26em] leading-tight mt-0.5">
+              <h3 className="cert-school-h3 text-sm sm:text-base md:text-lg font-extrabold text-[#0a5c36] uppercase tracking-[0.24em] leading-tight mt-0.5">
                 SURAKARTA
               </h3>
-              <div className="cert-school-line w-full h-[1px] bg-[#0a5c36]/40 my-1" />
-              <p className="cert-school-addr text-[7.5px] sm:text-[8.5px] md:text-[9.5px] font-semibold text-slate-600 tracking-tight leading-tight uppercase">
+              <div className="cert-school-line w-full h-[1.5px] bg-[#0a5c36]/60 my-1" />
+              <p className="cert-school-addr text-[8.5px] sm:text-[10px] md:text-[11px] font-bold text-slate-600 tracking-tight leading-tight uppercase">
                 JL. KAPTEN MULYADI NO.117 TELP. (0271) 647730 SURAKARTA 57113
               </p>
             </div>
@@ -257,7 +257,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
             <img
               src={headerRightLogo}
               alt="SMPQU SMP Qur'an - Ziyadah Tahfidz Excellence Program"
-              className="cert-program-logo h-11 sm:h-12 md:h-14 lg:h-15 w-auto max-w-[240px] sm:max-w-[290px] md:max-w-[340px] lg:max-w-[370px] object-contain drop-shadow-[0_1px_2px_rgba(0,0,0,0.08)] transition-all"
+              className="cert-program-logo h-14 sm:h-16 md:h-20 lg:h-[86px] w-auto max-w-[270px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[440px] object-contain drop-shadow-[0_1px_3px_rgba(0,0,0,0.1)] transition-all"
               onError={(e) => {
                 const target = e.currentTarget;
                 if (!target.src.includes("header_right_logo.png")) {
@@ -271,10 +271,10 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
         </div>
 
         {/* CENTER BODY SECTION: TITLE & RECIPIENT */}
-        <div className="flex flex-col items-center text-center my-auto px-4 sm:px-8 space-y-1 sm:space-y-1.5 md:space-y-2">
+        <div className="flex flex-col items-center text-center my-auto px-4 sm:px-8 space-y-1 sm:space-y-2 md:space-y-2.5">
           {/* Main Title: "Piagam Penghargaan" in Gothic/Fraktur style */}
           <h1
-            className="cert-title text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal text-[#0a5c36] tracking-wide leading-none select-none drop-shadow-[0_1px_1px_rgba(0,0,0,0.08)]"
+            className="cert-title text-4xl sm:text-5xl md:text-6xl lg:text-[66px] font-normal text-[#0a5c36] tracking-wide leading-tight select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.1)]"
             style={{
               fontFamily: "'UnifrakturMaguntia', 'Cinzel Decorative', Georgia, serif",
             }}
@@ -283,24 +283,24 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
           </h1>
 
           {/* Subtitle */}
-          <p className="cert-subtitle text-xs sm:text-sm md:text-[15px] text-slate-700 font-medium tracking-wide">
+          <p className="cert-subtitle text-sm sm:text-base md:text-lg text-slate-800 font-semibold tracking-wide">
             Barakallah atas hafalannya ananda :
           </p>
 
           {/* Student Name */}
-          <div className="pt-0.5 sm:pt-1 pb-0.5 w-full max-w-xl">
-            <h2 className="cert-student-name text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight uppercase leading-tight font-sans">
+          <div className="pt-0.5 sm:pt-1 pb-0.5 w-full max-w-2xl">
+            <h2 className="cert-student-name text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-black text-slate-900 tracking-tight uppercase leading-snug font-sans">
               {data.namaSiswa || "Nama Santri"}
             </h2>
             {/* Elegant Name Underline with Center Diamond */}
-            <div className="cert-student-underline relative flex items-center justify-center w-48 sm:w-64 md:w-80 mx-auto mt-1 sm:mt-1.5">
-              <div className="w-full h-[1.5px] bg-slate-800" />
-              <div className="absolute w-2 h-2 bg-[#0a5c36] rotate-45 border border-white" />
+            <div className="cert-student-underline relative flex items-center justify-center w-64 sm:w-80 md:w-96 mx-auto mt-1 sm:mt-2">
+              <div className="w-full h-[2px] bg-slate-900" />
+              <div className="absolute w-2.5 h-2.5 bg-[#0a5c36] rotate-45 border-2 border-white" />
             </div>
           </div>
 
           {/* Student Class & Tasmi Details */}
-          <div className="cert-details space-y-0.5 sm:space-y-1 text-slate-800 text-xs sm:text-sm md:text-[14.5px] font-medium leading-snug">
+          <div className="cert-details space-y-1 sm:space-y-1.5 text-slate-800 text-sm sm:text-base md:text-lg font-medium leading-normal">
             <p>
               <span className="font-bold">Kelas :</span> {data.kelas}
             </p>
@@ -313,31 +313,31 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
           </div>
 
           {/* PREDIKAT & JUMLAH HAFALAN NOTCHED RIBBON PILL */}
-          <div className="cert-ribbon-wrapper pt-1.5 sm:pt-2.5">
+          <div className="cert-ribbon-wrapper pt-2 sm:pt-3">
             <div className="inline-flex items-center relative">
               {/* Left Ribbon End Notch */}
-              <div className="cert-notch-left w-4 sm:w-5 md:w-6 h-7 sm:h-8 md:h-9 bg-[#0a5c36] relative flex items-center -mr-1 rounded-l-sm">
+              <div className="cert-notch-left w-5 sm:w-6 md:w-8 h-8 sm:h-10 md:h-11 bg-[#0a5c36] relative flex items-center -mr-1 rounded-l-sm shadow-sm">
                 <div
-                  className="absolute left-0 top-0 bottom-0 w-2.5 bg-[#fbfaf5]"
+                  className="absolute left-0 top-0 bottom-0 w-3 bg-[#fbfaf5]"
                   style={{ clipPath: "polygon(0 0, 0 100%, 100% 50%)" }}
                 />
               </div>
 
               {/* Center Pill */}
-              <div className="cert-ribbon-pill px-5 sm:px-7 md:px-9 py-1 sm:py-1.5 md:py-2 bg-white border-2 border-[#0a5c36] rounded-full shadow-sm flex items-center gap-3 sm:gap-4 z-10">
-                <span className="cert-ribbon-text text-xs sm:text-sm md:text-[14.5px] font-extrabold text-[#0a5c36] tracking-wide whitespace-nowrap">
-                  Predikat : <span className="text-slate-900">{data.predikat}</span>
+              <div className="cert-ribbon-pill px-6 sm:px-9 md:px-12 py-1.5 sm:py-2 md:py-2.5 bg-white border-2 md:border-[2.5px] border-[#0a5c36] rounded-full shadow-sm flex items-center gap-3 sm:gap-5 z-10">
+                <span className="cert-ribbon-text text-sm sm:text-base md:text-lg font-extrabold text-[#0a5c36] tracking-wide whitespace-nowrap">
+                  Predikat : <span className="text-slate-900 font-black">{data.predikat}</span>
                 </span>
-                <span className="text-[#0a5c36] font-bold text-sm sm:text-base">|</span>
-                <span className="cert-ribbon-text text-xs sm:text-sm md:text-[14.5px] font-extrabold text-[#0a5c36] tracking-wide whitespace-nowrap">
-                  Jumlah hafalan : <span className="text-slate-900">{data.jumlahHafalan}</span>
+                <span className="text-[#0a5c36] font-extrabold text-base sm:text-lg md:text-xl">|</span>
+                <span className="cert-ribbon-text text-sm sm:text-base md:text-lg font-extrabold text-[#0a5c36] tracking-wide whitespace-nowrap">
+                  Jumlah hafalan : <span className="text-slate-900 font-black">{data.jumlahHafalan}</span>
                 </span>
               </div>
 
               {/* Right Ribbon End Notch */}
-              <div className="cert-notch-right w-4 sm:w-5 md:w-6 h-7 sm:h-8 md:h-9 bg-[#0a5c36] relative flex items-center -ml-1 rounded-r-sm">
+              <div className="cert-notch-right w-5 sm:w-6 md:w-8 h-8 sm:h-10 md:h-11 bg-[#0a5c36] relative flex items-center -ml-1 rounded-r-sm shadow-sm">
                 <div
-                  className="absolute right-0 top-0 bottom-0 w-2.5 bg-[#fbfaf5]"
+                  className="absolute right-0 top-0 bottom-0 w-3 bg-[#fbfaf5]"
                   style={{ clipPath: "polygon(100% 0, 100% 100%, 0 50%)" }}
                 />
               </div>
@@ -346,29 +346,29 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
         </div>
 
         {/* FOOTER: 3 SIGNATURE COLUMNS (LEFT: MUSYRIF, CENTER: DATE & WAKA, RIGHT: PENANGGUNGJAWAB TAHFIDZ) */}
-        <div className="cert-footer mt-auto pt-2 sm:pt-3">
-          <div className="cert-footer-grid grid grid-cols-3 gap-2 sm:gap-4 items-end text-center">
+        <div className="cert-footer mt-auto pt-2 sm:pt-4">
+          <div className="cert-footer-grid grid grid-cols-3 gap-3 sm:gap-6 items-end text-center">
             {/* 1. BAGIAN KIRI: MUSYRIF */}
             <div className="flex flex-col items-center">
               {/* Spacer matching the date row in the center */}
-              <div className="cert-sig-spacer h-4 sm:h-5" />
+              <div className="cert-sig-spacer h-5 sm:h-6" />
 
-              <p className="cert-sig-role text-[11px] sm:text-xs md:text-sm font-bold text-slate-800 leading-tight">
+              <p className="cert-sig-role text-xs sm:text-sm md:text-base font-bold text-slate-800 leading-tight">
                 {data.musyrif.jabatan}
               </p>
 
               {/* Ruang Tanda Tangan */}
               <div className="cert-sig-box h-12 sm:h-14 md:h-16 flex items-center justify-center relative w-full" />
 
-              <p className="cert-sig-name text-[11px] sm:text-xs md:text-sm font-extrabold text-slate-900 leading-tight border-b border-slate-900/60 pb-0.5 px-2 min-w-[120px] sm:min-w-[150px]">
+              <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[140px] sm:min-w-[180px]">
                 {data.musyrif.nama}
               </p>
               {data.musyrif.nik ? (
-                <p className="cert-sig-nik text-[9px] sm:text-[10px] md:text-xs font-semibold text-slate-700 mt-0.5">
+                <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-700 mt-1">
                   {data.musyrif.nik}
                 </p>
               ) : (
-                <p className="cert-sig-nik text-[9px] sm:text-[10px] md:text-xs font-semibold text-slate-500 mt-0.5">
+                <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-500 mt-1">
                   Pembina Tahfidz
                 </p>
               )}
@@ -377,22 +377,22 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
             {/* 2. BAGIAN TENGAH: OTOMATIS TANGGAL CETAK KEMUDIAN WAKA BIDANG KEAGAMAAN */}
             <div className="flex flex-col items-center relative">
               {/* Otomatis Tanggal Cetak */}
-              <div className="cert-date-text text-center text-xs sm:text-sm font-semibold text-slate-800 mb-1 leading-tight">
+              <div className="cert-date-text text-center text-xs sm:text-sm md:text-base font-bold text-slate-800 mb-1 leading-tight">
                 {data.tanggalSurat}
               </div>
 
               {/* Jabatan Waka Bidang Keagamaan */}
-              <p className="cert-sig-role text-[11px] sm:text-xs md:text-sm font-bold text-slate-800 leading-tight">
+              <p className="cert-sig-role text-xs sm:text-sm md:text-base font-bold text-slate-800 leading-tight">
                 {data.wakaKeagamaan.jabatan}
               </p>
 
               {/* Ruang Tanda Tangan & Cap Stempel Resmi */}
               <div className="cert-sig-box h-12 sm:h-14 md:h-16 flex items-center justify-center relative w-full" />
 
-              <p className="cert-sig-name text-[11px] sm:text-xs md:text-sm font-extrabold text-slate-900 leading-tight border-b border-slate-900/60 pb-0.5 px-2 min-w-[120px] sm:min-w-[150px]">
+              <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[140px] sm:min-w-[180px]">
                 {data.wakaKeagamaan.nama}
               </p>
-              <p className="cert-sig-nik text-[9px] sm:text-[10px] md:text-xs font-semibold text-slate-700 mt-0.5">
+              <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-700 mt-1">
                 {data.wakaKeagamaan.nik}
               </p>
             </div>
@@ -400,19 +400,19 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
             {/* 3. KOLOM KANAN: PENANGGUNGJAWAB TAHFIDZ */}
             <div className="flex flex-col items-center">
               {/* Spacer matching the date row in the center */}
-              <div className="cert-sig-spacer h-4 sm:h-5" />
+              <div className="cert-sig-spacer h-5 sm:h-6" />
 
-              <p className="cert-sig-role text-[11px] sm:text-xs md:text-sm font-bold text-slate-800 leading-tight">
+              <p className="cert-sig-role text-xs sm:text-sm md:text-base font-bold text-slate-800 leading-tight">
                 {data.penanggungjawabTahfidz.jabatan}
               </p>
 
               {/* Ruang Tanda Tangan */}
               <div className="cert-sig-box h-12 sm:h-14 md:h-16 flex items-center justify-center relative w-full" />
 
-              <p className="cert-sig-name text-[11px] sm:text-xs md:text-sm font-extrabold text-slate-900 leading-tight border-b border-slate-900/60 pb-0.5 px-2 min-w-[120px] sm:min-w-[150px]">
+              <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[140px] sm:min-w-[180px]">
                 {data.penanggungjawabTahfidz.nama}
               </p>
-              <p className="cert-sig-nik text-[9px] sm:text-[10px] md:text-xs font-semibold text-slate-700 mt-0.5">
+              <p className="cert-sig-nik text-[10px] sm:text-xs md:text-sm font-semibold text-slate-700 mt-1">
                 {data.penanggungjawabTahfidz.nik}
               </p>
             </div>
@@ -667,83 +667,83 @@ export default function CertificatePrinter({
           .certificate-page .cert-content-container {
             height: 100% !important;
             max-height: 210mm !important;
-            padding: 13mm 18mm !important;
+            padding: 10mm 15mm !important;
             box-sizing: border-box !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
           }
           .certificate-page .cert-watermark-img {
-            width: 140mm !important;
-            max-width: 55% !important;
-            max-height: 58% !important;
+            width: 155mm !important;
+            max-width: 60% !important;
+            max-height: 62% !important;
             opacity: 0.09 !important;
           }
           .certificate-page .cert-school-logo {
-            width: 18mm !important;
-            max-height: 18mm !important;
+            width: 22mm !important;
+            max-height: 22mm !important;
           }
           .certificate-page .cert-school-h2 {
-            font-size: 14pt !important;
+            font-size: 16pt !important;
             line-height: 1 !important;
           }
           .certificate-page .cert-school-h3 {
-            font-size: 11pt !important;
-            letter-spacing: 0.26em !important;
+            font-size: 13pt !important;
+            letter-spacing: 0.24em !important;
             line-height: 1.1 !important;
           }
           .certificate-page .cert-school-line {
-            height: 1px !important;
-            margin: 3px 0 !important;
+            height: 1.5px !important;
+            margin: 3.5px 0 !important;
           }
           .certificate-page .cert-school-addr {
-            font-size: 7pt !important;
+            font-size: 8pt !important;
             line-height: 1.1 !important;
           }
           .certificate-page .cert-program-logo {
-            height: 13.5mm !important;
-            max-width: 90mm !important;
+            height: 18mm !important;
+            max-width: 110mm !important;
           }
           .certificate-page .cert-title {
-            font-size: 38pt !important;
+            font-size: 46pt !important;
             line-height: 1.05 !important;
             font-family: 'UnifrakturMaguntia', 'Cinzel Decorative', Georgia, serif !important;
             color: #0a5c36 !important;
           }
           .certificate-page .cert-subtitle {
-            font-size: 11pt !important;
+            font-size: 13pt !important;
             margin-top: 3px !important;
           }
           .certificate-page .cert-student-name {
-            font-size: 22pt !important;
+            font-size: 28pt !important;
             line-height: 1.15 !important;
-            font-weight: 800 !important;
+            font-weight: 900 !important;
             text-transform: uppercase !important;
           }
           .certificate-page .cert-student-underline {
-            width: 250px !important;
-            margin-top: 4px !important;
+            width: 320px !important;
+            margin-top: 5px !important;
           }
           .certificate-page .cert-details {
-            font-size: 10.5pt !important;
-            line-height: 1.35 !important;
-            margin-top: 3px !important;
+            font-size: 12.5pt !important;
+            line-height: 1.4 !important;
+            margin-top: 4px !important;
           }
           .certificate-page .cert-ribbon-wrapper {
-            padding-top: 6px !important;
+            padding-top: 8px !important;
           }
           .certificate-page .cert-notch-left,
           .certificate-page .cert-notch-right {
-            width: 20px !important;
-            height: 32px !important;
+            width: 24px !important;
+            height: 38px !important;
           }
           .certificate-page .cert-ribbon-pill {
-            padding: 4px 28px !important;
+            padding: 6px 36px !important;
             background-color: #ffffff !important;
-            border: 2px solid #0a5c36 !important;
+            border: 2.5px solid #0a5c36 !important;
           }
           .certificate-page .cert-ribbon-text {
-            font-size: 10.5pt !important;
+            font-size: 12.5pt !important;
             font-weight: 800 !important;
           }
           .certificate-page .cert-footer {
@@ -757,31 +757,31 @@ export default function CertificatePrinter({
             align-items: flex-end !important;
           }
           .certificate-page .cert-sig-spacer {
-            height: 14px !important;
+            height: 16px !important;
           }
           .certificate-page .cert-sig-role {
-            font-size: 10pt !important;
+            font-size: 11.5pt !important;
             font-weight: 700 !important;
-            line-height: 1.1 !important;
+            line-height: 1.15 !important;
           }
           .certificate-page .cert-sig-box {
             height: 13mm !important;
           }
           .certificate-page .cert-sig-name {
-            font-size: 10.5pt !important;
+            font-size: 12pt !important;
             font-weight: 800 !important;
-            min-width: 140px !important;
-            border-bottom: 1px solid rgba(15, 23, 42, 0.7) !important;
+            min-width: 160px !important;
+            border-bottom: 2px solid rgba(15, 23, 42, 0.8) !important;
             padding-bottom: 2px !important;
           }
           .certificate-page .cert-sig-nik {
-            font-size: 8pt !important;
+            font-size: 9.5pt !important;
             font-weight: 600 !important;
             margin-top: 2px !important;
           }
           .certificate-page .cert-date-text {
-            font-size: 10pt !important;
-            font-weight: 600 !important;
+            font-size: 11.5pt !important;
+            font-weight: 700 !important;
             margin-bottom: 3px !important;
           }
         }
