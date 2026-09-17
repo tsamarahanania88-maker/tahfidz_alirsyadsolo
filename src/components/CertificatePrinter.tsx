@@ -23,7 +23,7 @@ import {
   RefreshCw,
   X
 } from "lucide-react";
-import headerRightLogo from "../assets/images/Untitled design.png";
+import headerRightLogo from "../assets/images/header_right_logo.png";
 
 export interface CertificateData {
   namaSiswa: string;

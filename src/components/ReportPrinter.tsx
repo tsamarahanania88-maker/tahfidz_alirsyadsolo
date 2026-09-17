@@ -116,13 +116,13 @@ const RightHeaderLogos = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" |
     <div className="flex items-center shrink-0">
       <img
         src={headerRightLogo}
-        alt="Sekolah Mengedepankan Akhlak - SMQU SMP Qur'an"
-        className={`${heightClass} w-auto object-contain transition-all drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]`}
+        alt="SMPQU SMP Qur'an - Ziyadah Tahfidz Excellence Program"
+        className={`${heightClass} w-auto object-contain transition-all drop-shadow-[0_1px_2px_rgba(0,0,0,0.15)]`}
         referrerPolicy="no-referrer"
         onError={(e) => {
           const target = e.currentTarget;
-          if (target.src !== "/Story Ig PART 4_20260915_195906_0000.png") {
-            target.src = "/Story Ig PART 4_20260915_195906_0000.png";
+          if (!target.src.includes("header_right_logo.png")) {
+            target.src = "/header_right_logo.png";
           } else if (target.src !== rightBannerImg) {
             target.src = rightBannerImg;
           }
