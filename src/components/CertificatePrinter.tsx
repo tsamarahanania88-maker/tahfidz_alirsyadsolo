@@ -23,6 +23,7 @@ import {
   RefreshCw,
   X
 } from "lucide-react";
+import smpAlIrsyadBanner from "../assets/images/smp_al_irsyad_banner.png";
 import headerRightLogo from "../assets/images/header_right_logo.png";
 
 export interface CertificateData {
@@ -226,30 +227,27 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
       <div className="cert-content-container relative z-10 h-full w-full flex flex-col justify-between pt-8 sm:pt-9 md:pt-10 px-6 sm:px-8 md:px-10 pb-7 sm:pb-9 md:pb-11 box-border">
         {/* HEADER SECTION (Nudged down slightly for breathing room from the top border) */}
         <div className="flex items-start justify-between gap-4 mt-1 sm:mt-1.5 md:mt-2">
-          {/* Top-Left: Official Al-Irsyad School Identity */}
-          <div className="flex items-center gap-3 sm:gap-4 max-w-[60%]">
-            {/* Official Al-Irsyad Winged Emblem Logo */}
+          {/* Top-Left: Official Al-Irsyad School Identity Banner */}
+          <div className="flex flex-col items-start w-fit max-w-[52%]">
             <img
-              src="/al_irsyad_official_logo.png"
-              alt="Logo Al-Irsyad Surakarta"
-              className="cert-school-logo w-16 sm:w-20 md:w-24 h-auto max-h-16 sm:max-h-20 md:max-h-24 object-contain shrink-0 drop-shadow-sm"
+              src={smpAlIrsyadBanner}
+              alt="SMP Al-Irsyad Surakarta"
+              className="cert-school-banner h-12 sm:h-14 md:h-16 lg:h-[78px] w-auto max-w-[280px] sm:max-w-[340px] md:max-w-[420px] object-contain object-left drop-shadow-[0_1px_2px_rgba(0,0,0,0.08)] transition-all"
               onError={(e) => {
-                e.currentTarget.src = "/al_irsyad_official_logo.png";
+                const target = e.currentTarget;
+                if (!target.src.includes("smp_al_irsyad_banner.png")) {
+                  target.src = "/smp_al_irsyad_banner.png";
+                } else if (!target.src.endsWith("/X%20BANNER.png")) {
+                  target.src = "/X BANNER.png";
+                }
               }}
             />
-
-            <div className="flex flex-col">
-              <h2 className="cert-school-h2 text-base sm:text-lg md:text-xl font-black text-[#0a5c36] uppercase tracking-wide leading-none">
-                SMP AL-IRSYAD
-              </h2>
-              <h3 className="cert-school-h3 text-sm sm:text-base md:text-lg font-extrabold text-[#0a5c36] uppercase tracking-[0.24em] leading-tight mt-0.5">
-                SURAKARTA
-              </h3>
-              <div className="cert-school-line w-full h-[1.5px] bg-[#0a5c36]/60 my-1" />
-              <p className="cert-school-addr text-[8.5px] sm:text-[10px] md:text-[11px] font-bold text-slate-600 tracking-tight leading-tight uppercase">
-                JL. KAPTEN MULYADI NO.117 TELP. (0271) 647730 SURAKARTA 57113
-              </p>
-            </div>
+            {/* Divider line directly under the banner */}
+            <div className="cert-school-line w-full h-[1.5px] bg-[#005a32]/70 my-1 sm:my-1.5" />
+            {/* School address directly under the line */}
+            <p className="cert-school-addr text-[8px] sm:text-[9.5px] md:text-[10.5px] font-bold text-slate-600 tracking-tight leading-tight uppercase pl-0.5">
+              JL. KAPTEN MULYADI NO. 117 TELP. (0271) 647730 SURAKARTA 57113
+            </p>
           </div>
 
           {/* Top-Right: Official Program Identity (SMPQU SMP QUR'AN + ZIYADAH TAHFIDZ EXCELLENCE PROGRAM) */}
@@ -726,26 +724,23 @@ export default function CertificatePrinter({
             max-height: 72% !important;
             opacity: 0.10 !important;
           }
-          .certificate-page .cert-school-logo {
-            width: 22mm !important;
-            max-height: 22mm !important;
-          }
-          .certificate-page .cert-school-h2 {
-            font-size: 16pt !important;
-            line-height: 1 !important;
-          }
-          .certificate-page .cert-school-h3 {
-            font-size: 13pt !important;
-            letter-spacing: 0.24em !important;
-            line-height: 1.1 !important;
+          .certificate-page .cert-school-banner {
+            height: 16.5mm !important;
+            max-width: 95mm !important;
+            object-fit: contain !important;
+            object-position: left center !important;
           }
           .certificate-page .cert-school-line {
+            width: 100% !important;
             height: 1.5px !important;
-            margin: 3.5px 0 !important;
+            background-color: rgba(0, 90, 50, 0.7) !important;
+            margin: 1mm 0 !important;
           }
           .certificate-page .cert-school-addr {
-            font-size: 8pt !important;
+            font-size: 6.8pt !important;
             line-height: 1.1 !important;
+            color: #475569 !important;
+            margin-top: 0 !important;
           }
           .certificate-page .cert-program-logo {
             height: 18mm !important;
