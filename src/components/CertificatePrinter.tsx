@@ -223,9 +223,9 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
       </div>
 
       {/* ================= MAIN CERTIFICATE CONTENT CONTAINER ================= */}
-      <div className="cert-content-container relative z-10 h-full w-full flex flex-col justify-between p-5 sm:p-7 md:p-8 box-border">
-        {/* HEADER SECTION */}
-        <div className="flex items-start justify-between gap-4">
+      <div className="cert-content-container relative z-10 h-full w-full flex flex-col justify-between pt-8 sm:pt-9 md:pt-10 px-6 sm:px-8 md:px-10 pb-7 sm:pb-9 md:pb-11 box-border">
+        {/* HEADER SECTION (Nudged down slightly for breathing room from the top border) */}
+        <div className="flex items-start justify-between gap-4 mt-1 sm:mt-1.5 md:mt-2">
           {/* Top-Left: Official Al-Irsyad School Identity */}
           <div className="flex items-center gap-3 sm:gap-4 max-w-[60%]">
             {/* Official Al-Irsyad Winged Emblem Logo */}
@@ -346,7 +346,8 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
         </div>
 
         {/* FOOTER: 3 SIGNATURE COLUMNS (LEFT: MUSYRIF, CENTER: DATE & WAKA, RIGHT: PENANGGUNGJAWAB TAHFIDZ) */}
-        <div className="cert-footer mt-auto pt-2 sm:pt-4">
+        {/* Raised up with mb-2 sm:mb-3 md:mb-4 so it does not crowd the bottom edge */}
+        <div className="cert-footer mt-auto pt-2 sm:pt-3 mb-1 sm:mb-2 md:mb-3">
           <div className="cert-footer-grid grid grid-cols-3 gap-3 sm:gap-6 items-end text-center">
             {/* 1. BAGIAN KIRI: MUSYRIF */}
             <div className="flex flex-col items-center">
@@ -358,7 +359,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
               </p>
 
               {/* Ruang Tanda Tangan */}
-              <div className="cert-sig-box h-12 sm:h-14 md:h-16 flex items-center justify-center relative w-full" />
+              <div className="cert-sig-box h-10 sm:h-12 md:h-14 flex items-center justify-center relative w-full" />
 
               <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[140px] sm:min-w-[180px]">
                 {data.musyrif.nama}
@@ -387,7 +388,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
               </p>
 
               {/* Ruang Tanda Tangan & Cap Stempel Resmi */}
-              <div className="cert-sig-box h-12 sm:h-14 md:h-16 flex items-center justify-center relative w-full" />
+              <div className="cert-sig-box h-10 sm:h-12 md:h-14 flex items-center justify-center relative w-full" />
 
               <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[140px] sm:min-w-[180px]">
                 {data.wakaKeagamaan.nama}
@@ -407,7 +408,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
               </p>
 
               {/* Ruang Tanda Tangan */}
-              <div className="cert-sig-box h-12 sm:h-14 md:h-16 flex items-center justify-center relative w-full" />
+              <div className="cert-sig-box h-10 sm:h-12 md:h-14 flex items-center justify-center relative w-full" />
 
               <p className="cert-sig-name text-xs sm:text-sm md:text-base font-extrabold text-slate-900 leading-tight border-b-2 border-slate-900/80 pb-0.5 px-3 min-w-[140px] sm:min-w-[180px]">
                 {data.penanggungjawabTahfidz.nama}
@@ -667,7 +668,10 @@ export default function CertificatePrinter({
           .certificate-page .cert-content-container {
             height: 100% !important;
             max-height: 210mm !important;
-            padding: 10mm 15mm !important;
+            padding-top: 14mm !important;
+            padding-left: 16mm !important;
+            padding-right: 16mm !important;
+            padding-bottom: 14mm !important;
             box-sizing: border-box !important;
             display: flex !important;
             flex-direction: column !important;
@@ -748,7 +752,8 @@ export default function CertificatePrinter({
           }
           .certificate-page .cert-footer {
             margin-top: auto !important;
-            padding-top: 8px !important;
+            padding-top: 6px !important;
+            margin-bottom: 3mm !important;
           }
           .certificate-page .cert-footer-grid {
             display: grid !important;
@@ -765,7 +770,7 @@ export default function CertificatePrinter({
             line-height: 1.15 !important;
           }
           .certificate-page .cert-sig-box {
-            height: 13mm !important;
+            height: 11mm !important;
           }
           .certificate-page .cert-sig-name {
             font-size: 12pt !important;
