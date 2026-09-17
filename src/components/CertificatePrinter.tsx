@@ -215,7 +215,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
         <img
           src="/al_irsyad_official_logo.png"
           alt="Watermark Al-Irsyad Al-Islamiyyah"
-          className="cert-watermark-img w-[480px] max-w-[55%] max-h-[58%] object-contain opacity-[0.09] filter contrast-125"
+          className="cert-watermark-img w-[640px] max-w-[72%] max-h-[72%] object-contain opacity-[0.10] filter contrast-125"
           onError={(e) => {
             e.currentTarget.src = "/al_irsyad_official_logo.png";
           }}
@@ -314,34 +314,76 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
           </div>
 
           {/* PREDIKAT & JUMLAH HAFALAN NOTCHED RIBBON PILL */}
-          <div className="cert-ribbon-wrapper pt-2 sm:pt-2.5">
-            <div className="inline-flex items-center relative">
-              {/* Left Ribbon End Notch */}
-              <div className="cert-notch-left w-5 sm:w-6 md:w-8 h-8 sm:h-9 md:h-10 bg-[#0a5c36] relative flex items-center -mr-1 rounded-l-sm shadow-sm">
-                <div
-                  className="absolute left-0 top-0 bottom-0 w-3 bg-[#fbfaf5]"
-                  style={{ clipPath: "polygon(0 0, 0 100%, 100% 50%)" }}
+          <div className="cert-ribbon-wrapper pt-2 sm:pt-2.5 flex items-center justify-center">
+            <div className="cert-ribbon-container inline-flex items-center relative filter drop-shadow-[0_2px_4px_rgba(10,92,54,0.10)]">
+              {/* Left Ribbon Wing: Ekor pita melipat menyatu mulus ke balik lingkaran kapsul */}
+              <svg
+                className="cert-ribbon-wing cert-wing-left w-9 sm:w-11 md:w-12 h-9 sm:h-10 md:h-11 -mr-5 sm:-mr-6 md:-mr-7 z-0 select-none"
+                viewBox="0 0 48 38"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Pita hijau utama dengan lekukan swallowtail tembus pandang */}
+                <path
+                  d="M48 0H4L16 19L4 38H48V0Z"
+                  fill="#0a5c36"
                 />
-              </div>
+                {/* Bayangan lipatan pita (3D ribbon fold shadow) */}
+                <path
+                  d="M48 0L28 19L48 38V0Z"
+                  fill="#05361e"
+                  opacity="0.35"
+                />
+                {/* Garis aksen emas mewah khas Al-Irsyad */}
+                <path
+                  d="M48 2.5H7L16.5 19L7 35.5H48"
+                  stroke="#d4af37"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity="0.85"
+                />
+              </svg>
 
-              {/* Center Pill */}
-              <div className="cert-ribbon-pill px-6 sm:px-9 md:px-12 py-1.5 sm:py-2 md:py-2 bg-white border-2 md:border-[2.5px] border-[#0a5c36] rounded-full shadow-sm flex items-center gap-3 sm:gap-5 z-10">
+              {/* Center Pill: Lingkaran kapsul putih bersih dengan border hijau tajam */}
+              <div className="cert-ribbon-pill relative z-10 h-9 sm:h-10 md:h-11 px-7 sm:px-10 md:px-12 bg-white border-2 md:border-[2.5px] border-[#0a5c36] rounded-full shadow-sm flex items-center justify-center gap-3 sm:gap-5">
                 <span className="cert-ribbon-text text-sm sm:text-base md:text-lg font-extrabold text-[#0a5c36] tracking-wide whitespace-nowrap">
                   Predikat : <span className="text-slate-900 font-black">{data.predikat}</span>
                 </span>
-                <span className="text-[#0a5c36] font-extrabold text-base sm:text-lg md:text-xl">|</span>
+                <span className="text-[#0a5c36] font-black text-base sm:text-lg md:text-xl select-none">|</span>
                 <span className="cert-ribbon-text text-sm sm:text-base md:text-lg font-extrabold text-[#0a5c36] tracking-wide whitespace-nowrap">
                   Jumlah hafalan : <span className="text-slate-900 font-black">{data.jumlahHafalan}</span>
                 </span>
               </div>
 
-              {/* Right Ribbon End Notch */}
-              <div className="cert-notch-right w-5 sm:w-6 md:w-8 h-8 sm:h-9 md:h-10 bg-[#0a5c36] relative flex items-center -ml-1 rounded-r-sm shadow-sm">
-                <div
-                  className="absolute right-0 top-0 bottom-0 w-3 bg-[#fbfaf5]"
-                  style={{ clipPath: "polygon(100% 0, 100% 100%, 0 50%)" }}
+              {/* Right Ribbon Wing: Ekor pita melipat simetris ke kanan */}
+              <svg
+                className="cert-ribbon-wing cert-wing-right w-9 sm:w-11 md:w-12 h-9 sm:h-10 md:h-11 -ml-5 sm:-ml-6 md:-ml-7 z-0 select-none"
+                viewBox="0 0 48 38"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Pita hijau utama dengan lekukan swallowtail tembus pandang */}
+                <path
+                  d="M0 0H44L32 19L44 38H0V0Z"
+                  fill="#0a5c36"
                 />
-              </div>
+                {/* Bayangan lipatan pita (3D ribbon fold shadow) */}
+                <path
+                  d="M0 0L20 19L0 38V0Z"
+                  fill="#05361e"
+                  opacity="0.35"
+                />
+                {/* Garis aksen emas mewah khas Al-Irsyad */}
+                <path
+                  d="M0 2.5H41L31.5 19L41 35.5H0"
+                  stroke="#d4af37"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  opacity="0.85"
+                />
+              </svg>
             </div>
           </div>
         </div>
@@ -679,10 +721,10 @@ export default function CertificatePrinter({
             justify-content: space-between !important;
           }
           .certificate-page .cert-watermark-img {
-            width: 155mm !important;
-            max-width: 60% !important;
-            max-height: 62% !important;
-            opacity: 0.09 !important;
+            width: 190mm !important;
+            max-width: 72% !important;
+            max-height: 72% !important;
+            opacity: 0.10 !important;
           }
           .certificate-page .cert-school-logo {
             width: 22mm !important;
@@ -742,16 +784,39 @@ export default function CertificatePrinter({
           }
           .certificate-page .cert-ribbon-wrapper {
             padding-top: 8px !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
           }
-          .certificate-page .cert-notch-left,
-          .certificate-page .cert-notch-right {
-            width: 24px !important;
-            height: 38px !important;
+          .certificate-page .cert-ribbon-container {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important;
+          }
+          .certificate-page .cert-ribbon-wing {
+            height: 36px !important;
+            width: 44px !important;
+            display: block !important;
+          }
+          .certificate-page .cert-wing-left {
+            margin-right: -24px !important;
+          }
+          .certificate-page .cert-wing-right {
+            margin-left: -24px !important;
           }
           .certificate-page .cert-ribbon-pill {
-            padding: 6px 36px !important;
+            height: 36px !important;
+            padding: 0 32px !important;
             background-color: #ffffff !important;
             border: 2.5px solid #0a5c36 !important;
+            border-radius: 9999px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            position: relative !important;
+            z-index: 10 !important;
+            box-shadow: none !important;
           }
           .certificate-page .cert-ribbon-text {
             font-size: 12.5pt !important;
