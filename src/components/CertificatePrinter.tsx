@@ -121,9 +121,9 @@ const AlIrsyadWingedLogo = ({ className = "w-16 h-12", isWatermark = false }: { 
 const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
   return (
     <div
-      className="certificate-page relative w-full bg-[#fbfaf5] text-slate-800 overflow-hidden shadow-2xl mx-auto select-none print:shadow-none print:m-0 print:border-none print:w-[330mm] print:h-[215mm] print:min-h-[215mm] print:max-h-[215mm]"
+      className="certificate-page relative w-full bg-[#fbfaf5] text-slate-800 overflow-hidden shadow-2xl mx-auto select-none print:shadow-none print:m-0 print:border-none print:w-[297mm] print:h-[210mm] print:min-h-[210mm] print:max-h-[210mm]"
       style={{
-        aspectRatio: "330 / 215",
+        aspectRatio: "297 / 210",
         boxSizing: "border-box",
       }}
     >
@@ -628,7 +628,7 @@ export default function CertificatePrinter({
       {/* Dynamic Landscape Print CSS injected when printing */}
       <style>{`
         @page {
-          size: 330mm 215mm; /* F4 / Folio Landscape */
+          size: 297mm 210mm; /* A4 Landscape (297 x 210 mm) */
           margin: 0;
         }
         @media print {
@@ -636,10 +636,10 @@ export default function CertificatePrinter({
             box-sizing: border-box !important;
           }
           html, body {
-            width: 330mm !important;
-            height: 215mm !important;
-            max-width: 330mm !important;
-            max-height: 215mm !important;
+            width: 297mm !important;
+            height: 210mm !important;
+            max-width: 297mm !important;
+            max-height: 210mm !important;
             margin: 0 !important;
             padding: 0 !important;
             background: #ffffff !important;
@@ -657,19 +657,19 @@ export default function CertificatePrinter({
           }
           .certificate-print-wrapper {
             display: block !important;
-            width: 330mm !important;
-            height: 215mm !important;
-            max-width: 330mm !important;
-            max-height: 215mm !important;
+            width: 297mm !important;
+            height: 210mm !important;
+            max-width: 297mm !important;
+            max-height: 210mm !important;
             margin: 0 !important;
             padding: 0 !important;
             background: transparent !important;
           }
           .certificate-print-page {
-            width: 330mm !important;
-            height: 215mm !important;
-            min-height: 215mm !important;
-            max-height: 215mm !important;
+            width: 297mm !important;
+            height: 210mm !important;
+            min-height: 210mm !important;
+            max-height: 210mm !important;
             box-sizing: border-box !important;
             page-break-inside: avoid !important;
             break-inside: avoid !important;
@@ -688,10 +688,10 @@ export default function CertificatePrinter({
             break-after: avoid !important;
           }
           .certificate-page {
-            width: 330mm !important;
-            height: 215mm !important;
-            min-height: 215mm !important;
-            max-height: 215mm !important;
+            width: 297mm !important;
+            height: 210mm !important;
+            min-height: 210mm !important;
+            max-height: 210mm !important;
             box-sizing: border-box !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -705,21 +705,21 @@ export default function CertificatePrinter({
             print-color-adjust: exact !important;
           }
 
-          /* Exact element alignment to match preview 100% on 330mm x 215mm F4 */
+          /* Exact element alignment to match preview 100% on 297mm x 210mm A4 */
           .certificate-page .cert-content-container {
             height: 100% !important;
-            max-height: 215mm !important;
-            padding-top: 14mm !important;
-            padding-left: 16mm !important;
-            padding-right: 16mm !important;
-            padding-bottom: 14mm !important;
+            max-height: 210mm !important;
+            padding-top: 13mm !important;
+            padding-left: 15mm !important;
+            padding-right: 15mm !important;
+            padding-bottom: 13mm !important;
             box-sizing: border-box !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
           }
           .certificate-page .cert-watermark-img {
-            width: 190mm !important;
+            width: 175mm !important;
             max-width: 72% !important;
             max-height: 72% !important;
             opacity: 0.10 !important;
@@ -880,7 +880,7 @@ export default function CertificatePrinter({
               <h1 className="text-sm font-bold text-white flex items-center gap-2">
                 Cetak Piagam / Sertifikat Tasmi' Tahfidz
                 <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">
-                  F4 Landscape (Folio)
+                  A4 Landscape
                 </span>
               </h1>
               <p className="text-xs text-slate-400">
@@ -913,8 +913,8 @@ export default function CertificatePrinter({
             <Printer className="w-4 h-4" />
             <span>
               {printMode === "single"
-                ? "Cetak Dokumen Sekarang (F4)"
-                : `Cetak Dokumen Sekarang (${batchStudents.length} Santri F4)`}
+                ? "Cetak Dokumen Sekarang (A4)"
+                : `Cetak Dokumen Sekarang (${batchStudents.length} Santri A4)`}
             </span>
           </button>
         </div>
@@ -1241,7 +1241,7 @@ export default function CertificatePrinter({
                   id="btn-print-action-preview"
                 >
                   <Printer className="w-4 h-4" />
-                  <span>Cetak Dokumen Sekarang (F4)</span>
+                  <span>Cetak Dokumen Sekarang (A4)</span>
                 </button>
               </div>
             </div>

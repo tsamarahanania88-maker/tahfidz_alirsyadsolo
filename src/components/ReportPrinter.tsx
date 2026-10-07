@@ -103,36 +103,9 @@ const HeaderEmblemLogo = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" |
   );
 };
 
-const RightHeaderLogos = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" | "compact" | "super" | "ultra" }) => {
-  const heightClass =
-    sizeVariant === "ultra"
-      ? "h-7 sm:h-8"
-      : sizeVariant === "super"
-      ? "h-8 sm:h-9"
-      : sizeVariant === "compact"
-      ? "h-9 sm:h-10"
-      : "h-11 sm:h-12 md:h-13";
-
-  return (
-    <div className="flex items-center shrink-0">
-      <img
-        src={storyIgLogo}
-        alt="Program Unggulan Ziyadah Tahfidz - SMP Al-Irsyad Surakarta"
-        className={`${heightClass} w-auto object-contain transition-all drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]`}
-        referrerPolicy="no-referrer"
-        onError={(e) => {
-          const target = e.currentTarget;
-          if (!target.src.includes("Story%20Ig")) {
-            target.src = "/Story Ig PART 4_20260915_195906_0000.png";
-          } else if (!target.src.includes("story_ig_logo")) {
-            target.src = "/story_ig_logo.png";
-          } else if (target.src !== headerRightLogo) {
-            target.src = headerRightLogo;
-          }
-        }}
-      />
-    </div>
-  );
+// Sisi kanan kop dikosongkan sesuai permintaan pengguna (hanya menampilkan logo resmi Al-Irsyad di sisi kiri)
+const RightHeaderPlaceholder = () => {
+  return <div className="w-10 sm:w-12 md:w-14 shrink-0" aria-hidden="true" />;
 };
 
 export default function ReportPrinter({
@@ -243,10 +216,35 @@ export default function ReportPrinter({
   return (
     <div className="min-h-screen bg-slate-100 py-8 px-4 print:p-0 print:m-0 print:bg-white print:min-h-0">
       <style>{`
+        @page {
+          size: 215mm 330mm; /* F4 / Folio Portrait (215 x 330 mm) */
+          margin: 0;
+        }
         @media print {
-          @page {
-            size: 215mm 330mm; /* F4 / Folio Portrait */
-            margin: 0;
+          *, *:before, *:after {
+            box-sizing: border-box !important;
+          }
+          html, body {
+            width: 215mm !important;
+            height: 330mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          .print-card {
+            width: 215mm !important;
+            height: 330mm !important;
+            min-height: 330mm !important;
+            max-height: 330mm !important;
+            page-break-after: always !important;
+            break-after: page !important;
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
           }
         }
       `}</style>
@@ -261,9 +259,14 @@ export default function ReportPrinter({
             >
               <ArrowLeft className="w-4 h-4" /> Kembali ke Panel
             </button>
-            <h1 className="text-2xl font-bold text-slate-800">
-              Pratinjau Cetak Laporan Capaian Tahfidz
-            </h1>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h1 className="text-2xl font-bold text-slate-800">
+                Pratinjau Cetak Laporan Capaian Tahfidz
+              </h1>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                Kertas F4 / Folio (215 × 330 mm)
+              </span>
+            </div>
             <p className="text-sm text-slate-500 mt-1">
               Periode: <span className="font-semibold text-brand-600">{getFullMonthYearString(selectedBulan)}</span>
               {selectedLevel && ` | Jenjang: Kelas ${selectedLevel}`}
@@ -277,7 +280,7 @@ export default function ReportPrinter({
               className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#173E7C] to-[#21539E] hover:from-[#133368] hover:to-[#1B4380] text-yellow-300 font-bold rounded-xl shadow-md transition-all transform active:scale-95 text-sm"
               id="btn-trigger-print"
             >
-              <Printer className="w-5 h-5 text-white" /> Cetak Laporan (PDF)
+              <Printer className="w-5 h-5 text-white" /> Cetak Laporan F4 (PDF)
             </button>
           </div>
         </div>
@@ -285,12 +288,13 @@ export default function ReportPrinter({
         <div className="mt-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100 flex items-start gap-3">
           <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
           <div className="text-sm text-emerald-800">
-            <p className="font-bold">Panduan Cetak Laporan SMP Al-Irsyad Surakarta:</p>
+            <p className="font-bold">Panduan Cetak Laporan SMP Al-Irsyad Surakarta (Ukuran Kertas F4):</p>
             <ul className="list-disc list-inside mt-1 space-y-0.5 text-xs">
               <li>Desain telah disesuaikan persis dengan template resmi <strong>SMP Al-Irsyad Surakarta</strong>.</li>
-              <li>Pilih opsi <strong>"Save as PDF"</strong> pada dialog printer.</li>
-              <li>Pastikan mencentang <strong>"Background graphics"</strong> agar warna header biru gelap & baris berselang-seling tercetak sempurna.</li>
-              <li>Gunakan orientasi kertas <strong>Portrait</strong> dengan ukuran kertas <strong>F4 / Folio (215 x 330 mm)</strong>.</li>
+              <li>Ukuran kertas cetak telah diatur presisi untuk <strong>F4 / Folio (215 × 330 mm)</strong> dalam orientasi Portrait.</li>
+              <li>Pilih opsi <strong>"Save as PDF"</strong> atau printer tujuan pada dialog cetak.</li>
+              <li>Pastikan mencentang <strong>"Background graphics"</strong> agar warna header biru & baris tabel tercetak sempurna.</li>
+              <li>Pada pengaturan ukuran kertas printer, pilih <strong>F4 / Folio / 8.5 x 13 in (215 x 330 mm)</strong>.</li>
             </ul>
           </div>
         </div>
@@ -433,7 +437,7 @@ export default function ReportPrinter({
                   {/* Top Logos Row */}
                   <div className={`flex items-center justify-between relative z-10 ${logosRowMargin}`}>
                     <HeaderEmblemLogo sizeVariant={sizeVariant} />
-                    <RightHeaderLogos sizeVariant={sizeVariant} />
+                    <RightHeaderPlaceholder />
                   </div>
 
                   {/* Title Block with Tahfidz Decorations */}
