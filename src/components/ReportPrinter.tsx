@@ -10,6 +10,7 @@ import { Printer, ArrowLeft, CheckCircle2, BookOpen } from "lucide-react";
 import logoImg from "../assets/images/al_irsyad_logo_hd_1784773161816.jpg";
 import rightBannerImg from "../assets/images/header_right_banner_1784774190288.jpg";
 import headerRightLogo from "../assets/images/header_right_logo.png";
+import storyIgLogo from "../assets/images/Story Ig PART 4_20260915_195906_0000.png";
 
 // Islamic Geometric Pattern Watermark for Tahfidz Header
 const IslamicGeometricBg = () => (
@@ -105,26 +106,28 @@ const HeaderEmblemLogo = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" |
 const RightHeaderLogos = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" | "compact" | "super" | "ultra" }) => {
   const heightClass =
     sizeVariant === "ultra"
-      ? "h-6 sm:h-7 max-w-[130px]"
+      ? "h-7 sm:h-8"
       : sizeVariant === "super"
-      ? "h-7 sm:h-8 max-w-[160px]"
+      ? "h-8 sm:h-9"
       : sizeVariant === "compact"
-      ? "h-8 sm:h-9 max-w-[190px]"
-      : "h-9 sm:h-10 md:h-11 max-w-[210px] sm:max-w-[250px]";
+      ? "h-9 sm:h-10"
+      : "h-11 sm:h-12 md:h-13";
 
   return (
     <div className="flex items-center shrink-0">
       <img
-        src={headerRightLogo}
-        alt="SMPQU SMP Qur'an - Ziyadah Tahfidz Excellence Program"
-        className={`${heightClass} w-auto object-contain transition-all drop-shadow-[0_1px_2px_rgba(0,0,0,0.15)]`}
+        src={storyIgLogo}
+        alt="Program Unggulan Ziyadah Tahfidz - SMP Al-Irsyad Surakarta"
+        className={`${heightClass} w-auto object-contain transition-all drop-shadow-[0_1px_3px_rgba(0,0,0,0.2)]`}
         referrerPolicy="no-referrer"
         onError={(e) => {
           const target = e.currentTarget;
-          if (!target.src.includes("header_right_logo.png")) {
-            target.src = "/header_right_logo.png";
-          } else if (target.src !== rightBannerImg) {
-            target.src = rightBannerImg;
+          if (!target.src.includes("Story%20Ig")) {
+            target.src = "/Story Ig PART 4_20260915_195906_0000.png";
+          } else if (!target.src.includes("story_ig_logo")) {
+            target.src = "/story_ig_logo.png";
+          } else if (target.src !== headerRightLogo) {
+            target.src = headerRightLogo;
           }
         }}
       />
@@ -242,13 +245,13 @@ export default function ReportPrinter({
       <style>{`
         @media print {
           @page {
-            size: A4 portrait;
+            size: 215mm 330mm; /* F4 / Folio Portrait */
             margin: 0;
           }
         }
       `}</style>
       {/* Control Panel */}
-      <div className="max-w-[210mm] w-full mx-auto bg-white rounded-2xl shadow-md p-6 mb-8 border border-slate-200 no-print">
+      <div className="max-w-[215mm] w-full mx-auto bg-white rounded-2xl shadow-md p-6 mb-8 border border-slate-200 no-print">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <button
@@ -287,14 +290,14 @@ export default function ReportPrinter({
               <li>Desain telah disesuaikan persis dengan template resmi <strong>SMP Al-Irsyad Surakarta</strong>.</li>
               <li>Pilih opsi <strong>"Save as PDF"</strong> pada dialog printer.</li>
               <li>Pastikan mencentang <strong>"Background graphics"</strong> agar warna header biru gelap & baris berselang-seling tercetak sempurna.</li>
-              <li>Gunakan orientasi kertas <strong>Portrait</strong> dengan ukuran kertas <strong>A4</strong>.</li>
+              <li>Gunakan orientasi kertas <strong>Portrait</strong> dengan ukuran kertas <strong>F4 / Folio (215 x 330 mm)</strong>.</li>
             </ul>
           </div>
         </div>
       </div>
 
       {/* Printable Sheet Wrapper */}
-      <div className="max-w-[210mm] w-full mx-auto space-y-8 print:max-w-none print:w-full print:m-0 print:p-0 print:space-y-0">
+      <div className="max-w-[215mm] w-full mx-auto space-y-8 print:max-w-none print:w-full print:m-0 print:p-0 print:space-y-0">
         {filteredStudents.length === 0 ? (
           <div className="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500">
             Tidak ada data siswa atau laporan capaian untuk kriteria yang dipilih.
@@ -415,8 +418,8 @@ export default function ReportPrinter({
             return (
               <div
                 key={classId}
-                className="bg-white shadow-2xl rounded-none md:rounded-lg overflow-hidden border border-slate-300 p-0 text-slate-900 print-card relative print-page-break flex flex-col justify-between min-h-[297mm] h-[297mm]"
-                style={{ height: "297mm", minHeight: "297mm" }}
+                className="bg-white shadow-2xl rounded-none md:rounded-lg overflow-hidden border border-slate-300 p-0 text-slate-900 print-card relative print-page-break flex flex-col justify-between min-h-[330mm] h-[330mm]"
+                style={{ height: "330mm", minHeight: "330mm" }}
               >
                 {/* TOP HEADER BANNER (BRIGHTER ROYAL ISLAMIC BLUE WITH TAHFIDZ ORNAMENTS) */}
                 <div className={`bg-gradient-to-r from-[#173E7C] via-[#21539E] to-[#173E7C] border-b-4 border-amber-400 text-white ${headerPadding} text-center relative overflow-hidden shrink-0 shadow-sm`}>

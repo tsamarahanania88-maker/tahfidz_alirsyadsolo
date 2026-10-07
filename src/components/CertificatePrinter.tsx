@@ -121,15 +121,15 @@ const AlIrsyadWingedLogo = ({ className = "w-16 h-12", isWatermark = false }: { 
 const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
   return (
     <div
-      className="certificate-page relative w-full bg-[#fbfaf5] text-slate-800 overflow-hidden shadow-2xl mx-auto select-none print:shadow-none print:m-0 print:border-none print:w-[297mm] print:h-[210mm] print:min-h-[210mm] print:max-h-[210mm]"
+      className="certificate-page relative w-full bg-[#fbfaf5] text-slate-800 overflow-hidden shadow-2xl mx-auto select-none print:shadow-none print:m-0 print:border-none print:w-[330mm] print:h-[215mm] print:min-h-[215mm] print:max-h-[215mm]"
       style={{
-        aspectRatio: "297 / 210",
+        aspectRatio: "330 / 215",
         boxSizing: "border-box",
       }}
     >
       {/* Background SVG Framing & Sashes (Dot grid, Double Gold Border, Bottom-Left Corner & Gold Arc) */}
       <svg
-        viewBox="0 0 1000 707.1"
+        viewBox="0 0 1000 651.5"
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
         preserveAspectRatio="none"
       >
@@ -164,14 +164,14 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
         </defs>
 
         {/* 1. Dot Grid Texture */}
-        <rect width="1000" height="707.1" fill="url(#certDotPattern)" />
+        <rect width="1000" height="651.5" fill="url(#certDotPattern)" />
 
         {/* 2. Outer Gold Border */}
         <rect
           x="24"
           y="24"
           width="952"
-          height="659.1"
+          height="603.5"
           fill="none"
           stroke="#bda466"
           strokeWidth="2.4"
@@ -182,7 +182,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
           x="35"
           y="35"
           width="930"
-          height="637.1"
+          height="581.5"
           fill="none"
           stroke="#d8c593"
           strokeWidth="1.2"
@@ -190,13 +190,13 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
 
         {/* 4. Bottom-Left Dark Green Curved Wedge */}
         <path
-          d="M 0 440 Q 90 560 210 635 T 440 707.1 L 0 707.1 Z"
+          d="M 0 405 Q 90 515 210 585 T 440 651.5 L 0 651.5 Z"
           fill="url(#certGreenCornerGrad)"
         />
 
         {/* 5. Gold Highlight Swoosh along the curve */}
         <path
-          d="M 0 440 Q 90 560 210 635 T 440 707.1"
+          d="M 0 405 Q 90 515 210 585 T 440 651.5"
           fill="none"
           stroke="url(#certGoldSwooshGrad)"
           strokeWidth="4"
@@ -204,7 +204,7 @@ const CertificateDocument: React.FC<{ data: CertificateData }> = ({ data }) => {
 
         {/* 6. Gold Ribbon Curve swooping along the bottom edge */}
         <path
-          d="M 190 625 Q 340 688 560 703"
+          d="M 190 575 Q 340 635 560 648"
           fill="none"
           stroke="url(#certGoldBottomArc)"
           strokeWidth="2.6"
@@ -628,7 +628,7 @@ export default function CertificatePrinter({
       {/* Dynamic Landscape Print CSS injected when printing */}
       <style>{`
         @page {
-          size: A4 landscape;
+          size: 330mm 215mm; /* F4 / Folio Landscape */
           margin: 0;
         }
         @media print {
@@ -636,10 +636,10 @@ export default function CertificatePrinter({
             box-sizing: border-box !important;
           }
           html, body {
-            width: 297mm !important;
-            height: 210mm !important;
-            max-width: 297mm !important;
-            max-height: 210mm !important;
+            width: 330mm !important;
+            height: 215mm !important;
+            max-width: 330mm !important;
+            max-height: 215mm !important;
             margin: 0 !important;
             padding: 0 !important;
             background: #ffffff !important;
@@ -657,19 +657,19 @@ export default function CertificatePrinter({
           }
           .certificate-print-wrapper {
             display: block !important;
-            width: 297mm !important;
-            height: 210mm !important;
-            max-width: 297mm !important;
-            max-height: 210mm !important;
+            width: 330mm !important;
+            height: 215mm !important;
+            max-width: 330mm !important;
+            max-height: 215mm !important;
             margin: 0 !important;
             padding: 0 !important;
             background: transparent !important;
           }
           .certificate-print-page {
-            width: 297mm !important;
-            height: 210mm !important;
-            min-height: 210mm !important;
-            max-height: 210mm !important;
+            width: 330mm !important;
+            height: 215mm !important;
+            min-height: 215mm !important;
+            max-height: 215mm !important;
             box-sizing: border-box !important;
             page-break-inside: avoid !important;
             break-inside: avoid !important;
@@ -688,10 +688,10 @@ export default function CertificatePrinter({
             break-after: avoid !important;
           }
           .certificate-page {
-            width: 297mm !important;
-            height: 210mm !important;
-            min-height: 210mm !important;
-            max-height: 210mm !important;
+            width: 330mm !important;
+            height: 215mm !important;
+            min-height: 215mm !important;
+            max-height: 215mm !important;
             box-sizing: border-box !important;
             margin: 0 !important;
             padding: 0 !important;
@@ -705,10 +705,10 @@ export default function CertificatePrinter({
             print-color-adjust: exact !important;
           }
 
-          /* Exact element alignment to match preview 100% on 297mm x 210mm A4 */
+          /* Exact element alignment to match preview 100% on 330mm x 215mm F4 */
           .certificate-page .cert-content-container {
             height: 100% !important;
-            max-height: 210mm !important;
+            max-height: 215mm !important;
             padding-top: 14mm !important;
             padding-left: 16mm !important;
             padding-right: 16mm !important;
@@ -880,7 +880,7 @@ export default function CertificatePrinter({
               <h1 className="text-sm font-bold text-white flex items-center gap-2">
                 Cetak Piagam / Sertifikat Tasmi' Tahfidz
                 <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-semibold">
-                  A4 Landscape
+                  F4 Landscape (Folio)
                 </span>
               </h1>
               <p className="text-xs text-slate-400">
@@ -913,8 +913,8 @@ export default function CertificatePrinter({
             <Printer className="w-4 h-4" />
             <span>
               {printMode === "single"
-                ? "Cetak Dokumen Sekarang (A4)"
-                : `Cetak Dokumen Sekarang (${batchStudents.length} Santri A4)`}
+                ? "Cetak Dokumen Sekarang (F4)"
+                : `Cetak Dokumen Sekarang (${batchStudents.length} Santri F4)`}
             </span>
           </button>
         </div>
@@ -1241,7 +1241,7 @@ export default function CertificatePrinter({
                   id="btn-print-action-preview"
                 >
                   <Printer className="w-4 h-4" />
-                  <span>Cetak Dokumen Sekarang (A4)</span>
+                  <span>Cetak Dokumen Sekarang (F4)</span>
                 </button>
               </div>
             </div>
