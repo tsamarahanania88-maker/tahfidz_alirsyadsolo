@@ -12,16 +12,24 @@ import rightBannerImg from "../assets/images/header_right_banner_1784774190288.j
 import headerRightLogo from "../assets/images/header_right_logo.png";
 import storyIgLogo from "../assets/images/Story Ig PART 4_20260915_195906_0000.png";
 
-// Islamic Geometric Pattern Watermark for Tahfidz Header
-const IslamicGeometricBg = () => (
+// Islamic Geometric Pattern Watermark & Royal Blue Background for Tahfidz Header
+// Uses foreground SVG <rect> fills so mobile browsers (Android/iOS) ALWAYS print the blue header even when "Background graphics" is disabled
+const IslamicGeometricBg = ({ idSuffix = "0" }: { idSuffix?: string }) => (
   <svg
-    className="absolute inset-0 w-full h-full opacity-15 pointer-events-none"
+    className="absolute inset-0 w-full h-full pointer-events-none z-0"
     xmlns="http://www.w3.org/2000/svg"
     width="100%"
     height="100%"
+    preserveAspectRatio="none"
+    aria-hidden="true"
   >
     <defs>
-      <pattern id="islamic-geom-star" width="48" height="48" patternUnits="userSpaceOnUse">
+      <linearGradient id={`header-royal-grad-${idSuffix}`} x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#173E7C" />
+        <stop offset="50%" stopColor="#21539E" />
+        <stop offset="100%" stopColor="#173E7C" />
+      </linearGradient>
+      <pattern id={`islamic-geom-star-${idSuffix}`} width="48" height="48" patternUnits="userSpaceOnUse">
         <g stroke="#FDE047" strokeWidth="0.85" fill="none">
           {/* Islamic 8-Point Star Interlacing */}
           <path d="M24,4 L30,14 L41,14 L33,22 L36,34 L24,27 L12,34 L15,22 L7,14 L18,14 Z" />
@@ -31,7 +39,10 @@ const IslamicGeometricBg = () => (
         </g>
       </pattern>
     </defs>
-    <rect width="100%" height="100%" fill="url(#islamic-geom-star)" />
+    {/* Solid fallback + gradient + geometric pattern */}
+    <rect width="100%" height="100%" fill="#173E7C" />
+    <rect width="100%" height="100%" fill={`url(#header-royal-grad-${idSuffix})`} />
+    <rect width="100%" height="100%" fill={`url(#islamic-geom-star-${idSuffix})`} opacity="0.15" />
   </svg>
 );
 
@@ -39,7 +50,7 @@ const IslamicGeometricBg = () => (
 const IslamicCornerFlourish = ({ className = "" }: { className?: string }) => (
   <svg
     viewBox="0 0 60 60"
-    className={`w-12 h-12 sm:w-16 sm:h-16 text-yellow-300 pointer-events-none ${className}`}
+    className={`w-12 h-12 sm:w-16 sm:h-16 print:w-16 print:h-16 text-yellow-300 pointer-events-none z-[1] ${className}`}
     fill="none"
     stroke="currentColor"
   >
@@ -60,6 +71,38 @@ const RubElHizbIcon = ({ className = "w-4 h-4 text-yellow-300" }: { className?: 
   </svg>
 );
 
+// Table Header Cell with foreground SVG fill so white header text remains crisp on mobile print
+const ThWithBg = ({
+  children,
+  className = "",
+  thPaddingClass = "",
+  align = "center",
+}: {
+  children: React.ReactNode;
+  className?: string;
+  thPaddingClass?: string;
+  align?: "left" | "center";
+}) => (
+  <th className={`p-0 h-[1px] bg-[#173E7C] ${className}`}>
+    <div
+      className={`relative w-full h-full flex items-center ${
+        align === "left" ? "justify-start text-left" : "justify-center text-center"
+      } ${thPaddingClass}`}
+    >
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        width="100%"
+        height="100%"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <rect width="100%" height="100%" fill="#173E7C" />
+      </svg>
+      <span className="relative z-10 text-white">{children}</span>
+    </div>
+  </th>
+);
+
 interface ReportPrinterProps {
   students: Student[];
   classes: Class[];
@@ -78,19 +121,19 @@ const LOGO_URL = "https://www.alirsyad.or.id/wp-content/uploads/download/alirsya
 const HeaderEmblemLogo = ({ sizeVariant = "normal" }: { sizeVariant?: "normal" | "compact" | "super" | "ultra" }) => {
   const heightClass =
     sizeVariant === "ultra"
-      ? "h-6 sm:h-7"
+      ? "h-6 sm:h-7 print:h-7"
       : sizeVariant === "super"
-      ? "h-7 sm:h-8"
+      ? "h-7 sm:h-8 print:h-8"
       : sizeVariant === "compact"
-      ? "h-8 sm:h-9"
-      : "h-10 sm:h-12";
+      ? "h-8 sm:h-9 print:h-9"
+      : "h-10 sm:h-12 print:h-12";
 
   return (
     <div className="flex items-center shrink-0">
       <img
         src={LOGO_URL}
         alt="Al-Irsyad Al-Islamiyyah"
-        className={`${heightClass} w-auto object-contain transition-all drop-shadow-sm`}
+        className={`${heightClass} w-auto object-contain transition-all drop-shadow-sm print:drop-shadow-none`}
         referrerPolicy="no-referrer"
         onError={(e) => {
           const target = e.currentTarget;
@@ -226,7 +269,8 @@ export default function ReportPrinter({
           }
           html, body {
             width: 215mm !important;
-            height: 330mm !important;
+            height: auto !important;
+            min-height: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
             background: #ffffff !important;
@@ -245,6 +289,10 @@ export default function ReportPrinter({
             break-inside: avoid !important;
             overflow: hidden !important;
             box-sizing: border-box !important;
+          }
+          .print-card:last-child {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
           }
         }
       `}</style>
@@ -301,7 +349,8 @@ export default function ReportPrinter({
       </div>
 
       {/* Printable Sheet Wrapper */}
-      <div className="max-w-[215mm] w-full mx-auto space-y-8 print:max-w-none print:w-full print:m-0 print:p-0 print:space-y-0">
+      <div className="w-full overflow-x-auto print:overflow-visible pb-4 print:pb-0">
+        <div className="min-w-[215mm] max-w-[215mm] w-[215mm] mx-auto space-y-8 print:min-w-0 print:max-w-none print:w-full print:m-0 print:p-0 print:space-y-0">
         {filteredStudents.length === 0 ? (
           <div className="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500">
             Tidak ada data siswa atau laporan capaian untuk kriteria yang dipilih.
@@ -335,7 +384,7 @@ export default function ReportPrinter({
               sizeVariant === "ultra" ? "pt-1 pb-1 px-3" :
               sizeVariant === "super" ? "pt-2 pb-2 px-4" :
               sizeVariant === "compact" ? "pt-3 pb-3 px-5" :
-              "pt-5 pb-5 px-6 sm:px-10";
+              "pt-5 pb-5 px-6 sm:px-10 print:px-10";
 
             const logosRowMargin =
               sizeVariant === "ultra" ? "mb-0.5" :
@@ -353,25 +402,25 @@ export default function ReportPrinter({
               sizeVariant === "ultra" ? "text-[9px] tracking-wider" :
               sizeVariant === "super" ? "text-[10px] tracking-wider" :
               sizeVariant === "compact" ? "text-xs tracking-widest" :
-              "text-base sm:text-lg tracking-widest";
+              "text-base sm:text-lg print:text-lg tracking-widest";
 
             const titleTahfidzClass =
-              sizeVariant === "ultra" ? "text-xs sm:text-sm" :
-              sizeVariant === "super" ? "text-sm sm:text-base" :
-              sizeVariant === "compact" ? "text-base sm:text-lg" :
-              "text-xl sm:text-2xl";
+              sizeVariant === "ultra" ? "text-xs sm:text-sm print:text-sm" :
+              sizeVariant === "super" ? "text-sm sm:text-base print:text-base" :
+              sizeVariant === "compact" ? "text-base sm:text-lg print:text-lg" :
+              "text-xl sm:text-2xl print:text-2xl";
 
             const titleSmpClass =
-              sizeVariant === "ultra" ? "text-xs sm:text-sm" :
-              sizeVariant === "super" ? "text-sm sm:text-base" :
-              sizeVariant === "compact" ? "text-base sm:text-lg" :
-              "text-xl sm:text-2xl";
+              sizeVariant === "ultra" ? "text-xs sm:text-sm print:text-sm" :
+              sizeVariant === "super" ? "text-sm sm:text-base print:text-base" :
+              sizeVariant === "compact" ? "text-base sm:text-lg print:text-lg" :
+              "text-xl sm:text-2xl print:text-2xl";
 
             const titleTahunClass =
               sizeVariant === "ultra" ? "text-[8px] pt-0" :
               sizeVariant === "super" ? "text-[9px] pt-0.5" :
               sizeVariant === "compact" ? "text-[10px] pt-1" :
-              "text-xs sm:text-sm pt-1.5";
+              "text-xs sm:text-sm print:text-sm pt-0.5";
 
             const tableThClass =
               sizeVariant === "ultra" ? "py-0.5 px-1 text-[8px]" :
@@ -426,9 +475,9 @@ export default function ReportPrinter({
                 style={{ height: "330mm", minHeight: "330mm" }}
               >
                 {/* TOP HEADER BANNER (BRIGHTER ROYAL ISLAMIC BLUE WITH TAHFIDZ ORNAMENTS) */}
-                <div className={`bg-gradient-to-r from-[#173E7C] via-[#21539E] to-[#173E7C] border-b-4 border-amber-400 text-white ${headerPadding} text-center relative overflow-hidden shrink-0 shadow-sm`}>
-                  {/* Islamic Geometric Pattern Overlay */}
-                  <IslamicGeometricBg />
+                <div className={`bg-[#173E7C] bg-gradient-to-r from-[#173E7C] via-[#21539E] to-[#173E7C] border-b-4 border-amber-400 text-white ${headerPadding} text-center relative overflow-hidden shrink-0 shadow-sm print:shadow-none`}>
+                  {/* Foreground SVG Royal Blue & Islamic Geometric Pattern (Always prints on mobile HP) */}
+                  <IslamicGeometricBg idSuffix={String(classIdx)} />
 
                   {/* Corner Arabesque Flourishes */}
                   <IslamicCornerFlourish className="absolute -top-1 -left-1 opacity-45" />
@@ -444,38 +493,38 @@ export default function ReportPrinter({
                   <div className={`${titleBlockMargin} relative z-10`}>
                     {/* Basmalah Calligraphy Ribbon */}
                     <div className="flex items-center justify-center gap-2 text-yellow-300/95 my-0.5">
-                      <span className="h-[1px] w-6 sm:w-12 bg-gradient-to-r from-transparent to-yellow-300/70"></span>
-                      <span className="text-[11px] sm:text-xs tracking-widest font-serif drop-shadow text-yellow-200">
+                      <span className="h-[1px] w-6 sm:w-12 print:w-12 bg-gradient-to-r from-transparent to-yellow-300/70"></span>
+                      <span className="text-[11px] sm:text-xs print:text-xs tracking-widest font-serif drop-shadow print:drop-shadow-none text-[#FEF08A]">
                         بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                       </span>
-                      <span className="h-[1px] w-6 sm:w-12 bg-gradient-to-l from-transparent to-yellow-300/70"></span>
+                      <span className="h-[1px] w-6 sm:w-12 print:w-12 bg-gradient-to-l from-transparent to-yellow-300/70"></span>
                     </div>
 
-                    <h2 className={`text-yellow-300 font-extrabold uppercase ${titleLaporanClass} drop-shadow-sm`}>
+                    <h2 className={`text-[#FDE047] font-extrabold uppercase ${titleLaporanClass} drop-shadow-sm print:drop-shadow-none`}>
                       LAPORAN BULAN {getIndonesianMonthUpper(selectedBulan)}
                     </h2>
 
                     {/* Main Tahfidz Title with Quranic 8-Point Stars */}
-                    <div className="flex items-center justify-center gap-1.5 sm:gap-2.5">
-                      <RubElHizbIcon className={sizeVariant === "ultra" ? "w-3 h-3 text-yellow-300" : "w-4 h-4 sm:w-5 sm:h-5 text-yellow-300"} />
-                      <h1 className={`text-white font-extrabold tracking-wide uppercase italic leading-tight ${titleTahfidzClass} drop-shadow-md`}>
+                    <div className="flex items-center justify-center gap-1.5 sm:gap-2.5 print:gap-2.5">
+                      <RubElHizbIcon className={sizeVariant === "ultra" ? "w-3 h-3 text-[#FDE047]" : "w-4 h-4 sm:w-5 sm:h-5 print:w-5 print:h-5 text-[#FDE047]"} />
+                      <h1 className={`text-white font-extrabold tracking-wide uppercase italic leading-tight ${titleTahfidzClass} drop-shadow-md print:drop-shadow-none`}>
                         TAHFIZHUL QUR'AN KELAS {selectedClassId ? selectedClassId : (selectedLevel ? `${selectedLevel}` : classId)}
                       </h1>
-                      <RubElHizbIcon className={sizeVariant === "ultra" ? "w-3 h-3 text-yellow-300" : "w-4 h-4 sm:w-5 sm:h-5 text-yellow-300"} />
+                      <RubElHizbIcon className={sizeVariant === "ultra" ? "w-3 h-3 text-[#FDE047]" : "w-4 h-4 sm:w-5 sm:h-5 print:w-5 print:h-5 text-[#FDE047]"} />
                     </div>
 
-                    <h3 className={`text-white font-extrabold tracking-wide uppercase italic ${titleSmpClass} drop-shadow-sm`}>
+                    <h3 className={`text-white font-extrabold tracking-wide uppercase italic ${titleSmpClass} drop-shadow-sm print:drop-shadow-none`}>
                       SMP AL-IRSYAD SURAKARTA
                     </h3>
 
                     {/* Tahfidz Badge & Academic Year */}
-                    <div className="flex items-center justify-center gap-2 pt-0.5">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-yellow-400/20 border border-yellow-300/40 text-yellow-200 text-[8px] sm:text-[9.5px] font-bold tracking-wider uppercase">
-                        <BookOpen className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-yellow-300 shrink-0" />
+                    <div className="flex flex-wrap items-center justify-center gap-2 pt-0.5">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-yellow-400/20 border border-[#FDE047]/60 text-[#FEF08A] text-[8px] sm:text-[9.5px] print:text-[9.5px] font-bold tracking-wider uppercase">
+                        <BookOpen className="w-2.5 h-2.5 sm:w-3 sm:h-3 print:w-3 print:h-3 text-[#FDE047] shrink-0" />
                         <span>Mutaba'ah Hifzhul Qur'an</span>
                       </span>
-                      <span className="text-yellow-300/60 font-bold">•</span>
-                      <p className={`text-yellow-300 font-bold tracking-widest uppercase ${titleTahunClass} inline-block`}>
+                      <span className="text-[#FDE047]/80 font-bold">•</span>
+                      <p className={`text-[#FDE047] font-bold tracking-widest uppercase ${titleTahunClass} inline-block`}>
                         TAHUN AJARAN {getTahunAjaran(selectedBulan)}
                       </p>
                     </div>
@@ -487,14 +536,14 @@ export default function ReportPrinter({
                   <div className="overflow-hidden border border-[#173E7C]/40 rounded-none">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-gradient-to-r from-[#173E7C] via-[#1E4D94] to-[#173E7C] text-white uppercase font-extrabold tracking-wider text-center border-b-2 border-amber-400">
-                          <th className={`${tableThClass} border-r border-blue-900/40 w-8`}>NO</th>
-                          <th className={`${tableThClass} border-r border-blue-900/40 text-left w-40`}>NAMA</th>
-                          <th className={`${tableThClass} border-r border-blue-900/40 w-14`}>KELAS</th>
-                          <th className={`${tableThClass} border-r border-blue-900/40 text-left`}>CAPAIAN</th>
-                          <th className={`${tableThClass} border-r border-blue-900/40 w-20`}>TOTAL BARIS</th>
-                          <th className={`${tableThClass} border-r border-blue-900/40 w-28`}>MURAJAAH JUZIYYAH</th>
-                          <th className={`${tableThClass} w-24`}>KET. /PREDIKAT</th>
+                        <tr className="bg-[#173E7C] text-white uppercase font-extrabold tracking-wider text-center border-b-2 border-amber-400">
+                          <ThWithBg thPaddingClass={tableThClass} className="border-r border-blue-900/40 w-8">NO</ThWithBg>
+                          <ThWithBg thPaddingClass={tableThClass} align="left" className="border-r border-blue-900/40 w-40">NAMA</ThWithBg>
+                          <ThWithBg thPaddingClass={tableThClass} className="border-r border-blue-900/40 w-14">KELAS</ThWithBg>
+                          <ThWithBg thPaddingClass={tableThClass} align="left" className="border-r border-blue-900/40">CAPAIAN</ThWithBg>
+                          <ThWithBg thPaddingClass={tableThClass} className="border-r border-blue-900/40 w-20">TOTAL BARIS</ThWithBg>
+                          <ThWithBg thPaddingClass={tableThClass} className="border-r border-blue-900/40 w-28">MURAJAAH JUZIYYAH</ThWithBg>
+                          <ThWithBg thPaddingClass={tableThClass} className="w-24">KET. /PREDIKAT</ThWithBg>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-200">
@@ -573,8 +622,25 @@ export default function ReportPrinter({
                 </div>
 
                 {/* BOTTOM FOOTER BAR (BRIGHTER ROYAL ISLAMIC BLUE) */}
-                <div className={`bg-gradient-to-r from-[#173E7C] via-[#21539E] to-[#173E7C] border-t-2 border-amber-400 ${footerBarPadding} text-center shrink-0 mt-auto`}>
-                  <p className="text-yellow-200 font-extrabold text-xs sm:text-sm tracking-widest font-mono">
+                <div className={`bg-[#173E7C] bg-gradient-to-r from-[#173E7C] via-[#21539E] to-[#173E7C] border-t-2 border-amber-400 ${footerBarPadding} text-center shrink-0 mt-auto relative overflow-hidden`}>
+                  <svg
+                    className="absolute inset-0 w-full h-full pointer-events-none z-0"
+                    width="100%"
+                    height="100%"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                  >
+                    <defs>
+                      <linearGradient id={`footer-royal-grad-${classIdx}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#173E7C" />
+                        <stop offset="50%" stopColor="#21539E" />
+                        <stop offset="100%" stopColor="#173E7C" />
+                      </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" fill="#173E7C" />
+                    <rect width="100%" height="100%" fill={`url(#footer-royal-grad-${classIdx})`} />
+                  </svg>
+                  <p className="relative z-10 text-[#FEF08A] font-extrabold text-xs sm:text-sm print:text-sm tracking-widest font-mono">
                     www.alirsyadsolo.sch.id
                   </p>
                 </div>
@@ -582,6 +648,7 @@ export default function ReportPrinter({
             );
           })
         )}
+        </div>
       </div>
     </div>
   );
